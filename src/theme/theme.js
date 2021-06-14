@@ -1,12 +1,20 @@
 // Material Ui Imports
 import { createMuiTheme } from "@material-ui/core/styles";
 
-const theme = createMuiTheme({
+export const theme = createMuiTheme({
   palette: {
     common: {
+      green2: "#499F68",
       green3: "#77B28C",
     },
-    primary: "#157A6E",
-    secondary: "#499F68",
+    primary: {
+      main: "#157A6E",
+    },
+    secondary: {
+      main: "#77B28C",
+    },
+    text: {
+      primary: "#ffffff",
+    },
   },
 });
