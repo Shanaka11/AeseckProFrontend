@@ -68,13 +68,14 @@ const useStyles = makeStyles((theme: Theme)=>({
 
 // Interfaces
 interface CarousalProps {
-    children:  React.ReactNode[]
+    children:  React.ReactNode[],
+    fixed?: boolean,
 }
 
 // Consts
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
-const Carousal:React.FC<CarousalProps> = ( { children } ) => {
+const Carousal:React.FC<CarousalProps> = ( { children, fixed } ) => {
 
     // Style
     const classes = useStyles()
@@ -120,16 +121,33 @@ const Carousal:React.FC<CarousalProps> = ( { children } ) => {
             </div>            
             {/* Slides */}
             <div>
-                <AutoPlaySwipeableViews
-                    axis={'x'}
-                    index={activeIndex}
-                    onChangeIndex={handleStepChange} 
-                    interval={5000} 
-                >
-                {
-                    children
+                { fixed ? 
+                    (
+                        <SwipeableViews
+                            axis={'x'}
+                            index={activeIndex}
+                            onChangeIndex={handleStepChange} 
+                            autoPlay={false}
+                        >
+                        {
+                            children
+                        }                        
+                        </SwipeableViews>
+                    )
+                    :
+                    (
+                        <AutoPlaySwipeableViews
+                            axis={'x'}
+                            index={activeIndex}
+                            onChangeIndex={handleStepChange} 
+                            interval={5000} 
+                        >
+                        {
+                            children
+                        }
+                        </AutoPlaySwipeableViews>
+                    )
                 }
-                </AutoPlaySwipeableViews>
             </div>
         </div>
     )

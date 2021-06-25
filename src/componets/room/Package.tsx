@@ -19,6 +19,9 @@ const useStyles = makeStyles((theme: Theme) => ({
         color: theme.palette.text.primary,
         minHeight: 200
     },
+    containerSelected: {
+        background: `${theme.palette.primary.dark} !important`
+    },    
     button: {
         backgroundColor: '#499F68',
         color: theme.palette.text.primary,
@@ -36,12 +39,14 @@ interface PackageData {
 }
 
 interface PackageProps {
-    data: PackageData
+    data: PackageData,
+    activity: string,
+    roomId: string,
 }
 
-const Package:React.FC<PackageProps> = ( { data } ) => {
+const Package:React.FC<PackageProps> = ( { data, activity, roomId } ) => {
     // Style
-    const classes = useStyles()    
+    const classes = useStyles()
 
     return (
             <Grid container direction='column' justify='space-between' className={classes.container}>
@@ -67,6 +72,7 @@ const Package:React.FC<PackageProps> = ( { data } ) => {
                                 variant='contained'
                                 color='primary'
                                 className={classes.button}
+                                href={`/${activity}/room/booking?room=${roomId}&package=${data.packageName}#activities`}
                             >
                                 Book Now
                             </Button>

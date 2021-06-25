@@ -20,6 +20,7 @@ const useStyles = makeStyles((theme: Theme) => ({
         paddingTop: 16,
         paddingBottom: 16,
         backgroundColor: theme.palette.primary.light,
+        color: theme.palette.text.primary
     },
     packageContainer: {
         marginTop: 16,
@@ -34,10 +35,12 @@ interface PackageData {
 }
 
 interface PackageListProps {
-    data: PackageData[]
+    data: PackageData[],
+    activity: string,
+    roomId: string,
 }  
 
-const PackageList:React.FC<PackageListProps> = ( { data } ) => {
+const PackageList:React.FC<PackageListProps> = ( { data, activity, roomId } ) => {
 
     // Style
     const classes = useStyles()
@@ -47,10 +50,12 @@ const PackageList:React.FC<PackageListProps> = ( { data } ) => {
             <Typography variant='h6'>
                 Package List
             </Typography>
-            <Grid container alignItems='center' direction='column' className={classes.packageContainer}>
+            <Grid container alignItems='center' spacing={1} className={classes.packageContainer}>
                 {
                     data.map((item, index) => (
-                        <Package key={`${index}=${item.packageName}`} data={item}/>
+                        <Grid item  key={`${index}=${item.packageName}`} xs={12} md={4}>
+                            <Package data={item} activity={activity} roomId={roomId}/>
+                        </Grid>
                     ))
                 }                
             </Grid>            

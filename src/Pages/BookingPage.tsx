@@ -1,9 +1,5 @@
-// TODO
-// Fetch Data
-// React Imports
 import React from 'react'
 // 3rd Party
-import { useParams } from 'react-router-dom'
 // Material UI Imports
 import { 
     Button,
@@ -15,9 +11,9 @@ import {
 } from '@material-ui/core'
 // Local Imports
 import Carousal from '../componets/common/Carousal'
-import Description from '../componets/common/Descrition'
-import List from '../componets/homepage/List'
 import Slide from '../componets/common/Slide'
+import PackageList from '../componets/bookingpage/PackageList'
+import BookingCalender from '../componets/bookingpage/BookingCalender'
 
 // Style
 const useStyles = makeStyles((theme:Theme)=> ({
@@ -31,6 +27,12 @@ const useStyles = makeStyles((theme:Theme)=> ({
     subContainer: {
         height: '100%'
     },    
+    mainContainer: {
+        backgroundImage: "url('https://i.redd.it/lsa3lv6c2r651.png')",
+        backgroundColor: '#499F68',
+        backgroundBlendMode: 'screen',
+        color: theme.palette.text.primary
+    },    
     header: {
         color: 'white',
         fontWeight: 'bold',
@@ -40,61 +42,34 @@ const useStyles = makeStyles((theme:Theme)=> ({
     },
 }))
 
-// const 
-const listDataHome = [
+// Const
+const rooms = [
     {
-        name: 'ACTIVITY ROOM A',
-        link: '/activitiA'
+        name: 'Room1',
+        description: 'Room Short Description1',
+        packages: [
+            {
+                packageName: 'Package11',
+                description: '11 Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quam, illum?',
+                price: '1020.00'
+            },
+            {
+                packageName: 'Package12',
+                description: '12 Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quam, illum?',
+                price: '1023.00'
+            },
+            {
+                packageName: 'Package13',
+                description: '13 Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quam, illum?',
+                price: '1025.00'
+            },                        
+        ]
     },
-    {
-        name: 'ACTIVITY ROOM B',
-        link: '/activitiB'
-    },
-    {
-        name: 'ACTIVITY ROOM C',
-        link: '/activitiC'
-    },
-    {
-        name: 'ACTIVITY ROOM D',
-        link: '/activitiD'
-    },            
 ]
 
-const listDataActivityCenter = {
-    activityRoomTitle: 'ACTIVITY ROOM A',
-    activities: [
-        {
-            name: 'ACTIVITY A',
-            link: '/activitiA/room'
-        },
-        {
-            name: 'ACTIVITY B',
-            link: '/activitiB/room'
-        },
-        {
-            name: 'ACTIVITY C',
-            link: '/activitiC/room'
-        },
-        {
-            name: 'ACTIVITY D',
-            link: '/activitiD/room'
-        }
-    ]
-}
-
-// Interface
-interface ParamsProps {
-    activity?: string,
-    room?: string
-}
-
-const Homepage = () => {
-
+const BookingPage = () => {
     // Style
     const classes = useStyles()
-
-    // Router
-    const params:ParamsProps = useParams()
     
     // Data
     const imgPath = [
@@ -102,11 +77,10 @@ const Homepage = () => {
         'https://images3.alphacoders.com/762/762380.png',
         'https://pro2-bar-s3-cdn-cf.myportfolio.com/f7b51595-7701-42b3-a966-bb0e4baf04df/8c4521a1-4ef2-47b9-89bc-5cca2dee6fc9_rw_1920.jpg?h=60885436fb2cdebd9b2bbf91299ba6e9',
         'https://images3.alphacoders.com/762/762380.png',
-    ]
-
+    ]    
     return (
         <Grid container direction='column'>
-            <Carousal>
+            <Carousal fixed>
                 {
                     imgPath.map((item, index) => (
                             <Slide key={`slide-${index}`} index={index} imgPath={item}>
@@ -114,13 +88,13 @@ const Homepage = () => {
                                     <Grid container alignItems='center' justify='space-evenly' direction='column' className={classes.subContainer}>
                                         <Grid item>
                                             <Typography variant='h1' align='center' className={classes.header}>
-                                                {params.activity ? listDataActivityCenter.activityRoomTitle : 'A Great Service Indeed'}
+                                                {'Bakery'}
                                             </Typography>
                                         </Grid>
                                         <Grid item>
                                             <Button
                                                 variant='contained'
-                                                color='secondary'                                                
+                                                color='primary'                                                
                                                 onClick={(event) => {
                                                     let element = document.getElementById("activities");
                                                     event.preventDefault();  // Stop Page Reloading
@@ -136,10 +110,12 @@ const Homepage = () => {
                     ))                       
                 }
             </Carousal>
-            <Description description={'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Voluptatum architecto asperiores libero qui perferendis! Optio dolor ratione a recusandae molestiae tenetur architecto qui sequi atque ad quia nulla magnam quis, quas illum rerum quae nemo consequatur, officia molestias aliquam minima soluta sit? Voluptas earum accusamus cum? Unde asperiores, soluta cum dolore ipsam fugiat aut exercitationem incidunt vero culpa ad. Suscipit quae adipisci saepe atque quibusdam ipsam magni quod, sed cum minus dolorum, in, mollitia animi! Ullam, placeat numquam assumenda, saepe fuga ad laboriosam sequi voluptatem fugiat quod illum consequatur quidem voluptatum perspiciatis quaerat officiis. Consectetur quasi itaque hic ea inventore?'}/>
-            <List id='activities' data={params.activity ? listDataActivityCenter.activities : listDataHome}/>
+            <div id='activities' className={classes.mainContainer}>
+                <PackageList data={rooms[0].packages}/>
+                <BookingCalender />
+            </div>
         </Grid>
     )
 }
 
-export default Homepage
+export default BookingPage

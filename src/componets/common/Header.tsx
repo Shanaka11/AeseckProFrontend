@@ -8,6 +8,7 @@
 // React Imports
 import React, { useState } from 'react'
 // 3rd Party
+import { useLocation } from 'react-router-dom'
 // Material UI Imports
 import { 
     makeStyles,
@@ -81,6 +82,10 @@ const Header = () => {
     // States
     const [value, setValue] = useState(0)
     const [openDrawer, setOpenDrawer] = useState(false)
+
+    // Routers
+    const location = useLocation()    
+
     // Methods
 
     // Components
@@ -153,6 +158,10 @@ const Header = () => {
         </IconButton>
         </>
     )
+
+    if(location.pathname === '/login'){
+        return (<></>)
+    }
 
     return (
     <AppBar position="static">

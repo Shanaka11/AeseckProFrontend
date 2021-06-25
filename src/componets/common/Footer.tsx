@@ -5,6 +5,7 @@
 // React Imports
 import React from 'react'
 // 3rd Party
+import { useLocation } from 'react-router-dom'
 // Material UI Imports
 import { 
     makeStyles,
@@ -39,23 +40,24 @@ const useStyles = makeStyles((theme: Theme) => ({
         color: theme.palette.text.primary,
     },
     textFieldLabel: {
-        color: theme.palette.primary.dark,
+        color: '#ffffff',//theme.palette.primary.dark,
+        opacity: 0.7
     },
     textFieldUnderline: {
         '&:before':{
-            borderColor: theme.palette.secondary.main,
+            borderColor: '#ffffff'//theme.palette.secondary.main,
         }
     },
     footerButton: {
         marginLeft: 'auto',
-        backgroundColor: '#499F68',
-        color: theme.palette.text.primary,
-        '&:hover':{
-            backgroundColor: '#63d68c',
-        }
+        // backgroundColor: '#499F68',
+        // color: theme.palette.text.primary,
+        // '&:hover':{
+        //     backgroundColor: '#63d68c',
+        // }
     },
     divider:{
-        backgroundColor: theme.palette.secondary.main
+        backgroundColor: '#ffffff'//theme.palette.secondary.main
     },
     address:{
         padding: '8px 0',
@@ -86,10 +88,17 @@ const Footer = () => {
     // Style
     const classes = useStyles()
 
+    // Routers
+    const location = useLocation()
+
     // Methods
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
     }
+
+    if(location.pathname === '/login'){
+        return (<></>)
+    }    
 
     return (
         <div id='footer' className={classes.footerContainer}>
@@ -153,6 +162,7 @@ const Footer = () => {
                                         type='submit'
                                         variant='contained'
                                         disableElevation
+                                        color='secondary'
                                         className={classes.footerButton}
                                     >
                                         Submit

@@ -1,25 +1,60 @@
 // React Imports
 import React, { useState } from 'react'
 // 3rd Party
+import { useParams } from 'react-router-dom'
 // Material UI Imports
 import { 
     Container,
     Grid,
     Theme,
     makeStyles,
+    Accordion,
+    AccordionDetails,
+    AccordionSummary,
+    Typography,
+    Hidden
 } from '@material-ui/core'
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 // Local Imports
-import RoomListItem from './RoomListItem'
 import PackageList from './PackageList'
+
 
 // Style
 const useStyles = makeStyles((theme: Theme) => ({
     container:{
         paddingTop: 32,
         paddingBottom: 32,        
+        backgroundImage: "url('https://i.redd.it/lsa3lv6c2r651.png')",
         backgroundColor: '#499F68',
+        backgroundBlendMode: 'screen',
         color: theme.palette.text.primary
     },
+    accordian: {
+        backgroundColor: theme.palette.primary.main
+    },
+    accordianDetails: {
+        backgroundColor: theme.palette.primary.light
+    },
+    iconButton: {
+        color: theme.palette.text.primary,
+        '&:hover': {
+            backgroundColor: theme.palette.primary.dark
+        }
+    },
+    imageActive: {
+        height: '96px !important',
+        transition: 'height 100ms'
+    },
+    image: {
+        height: 80,
+        objectFit: 'cover',
+        transition: 'height 100ms'
+    },
+    imageContainer: {
+        position: 'absolute',
+        top: -4,
+        left: -4
+    }
   }));
 
 interface RoomListProps {
@@ -93,34 +128,73 @@ const rooms = [
     }
 ]
 
+// Interface
+interface ParamsProps {
+    activity?: string,
+    room?: string
+}
+
 const RoomList:React.FC<RoomListProps> = ({ id }) => {
     // Style
     const classes = useStyles()
 
-    // State
-    const [selectedIndex, setSelectedIndex] = useState(0)
+    // Router
+    const params:ParamsProps = useParams()
 
+    // State
+    const [selectedIndex, setSelectedIndex] = useState(-1)
 
     // Methods
-    const handleOnMouseOver = (id:number) => {
-        setSelectedIndex(id)
+    const handlePanalChange = (id:number) => (event: React.ChangeEvent<{}>, expanded: boolean) => {
+        if(!expanded){
+            setSelectedIndex(-1)
+        }else{
+            setSelectedIndex(id)
+        }        
     }
 
     return (
         <Grid id={id} container className={`${classes.container}`}>
             <Container>
-                <Grid container spacing={2}>
-                    <Grid item xs={5} md={7}>
-                        <div> 
-                            {rooms.map((item, index) => (
-                                <RoomListItem data={item} key={`Room-${item.name}`}id={index} selected={ index === selectedIndex} handleOnMouseOver={handleOnMouseOver}/>
-                            ))}
-                        </div>
+                {rooms.map((item, index) => (
+                <Accordion 
+                    key={`Room-${item.name}`} 
+                    expanded={index === selectedIndex} 
+                    onChange={handlePanalChange(index)} 
+                    className={classes.accordian} 
+                    elevation={0} 
+                    square
+                    TransitionProps={{ unmountOnExit: true }}
+                    >
+                    <AccordionSummary
+                    expandIcon={<ExpandMoreIcon />}
+                    IconButtonProps={{
+                        className: classes.iconButton,
+                        size: 'small'
+                    }}
+                    >
+                    <Grid container spacing={1}>
+                        <Hidden smDown>
+                            <Grid item className={classes.imageContainer}>
+                                <img className={`${index === selectedIndex ? classes.imageActive : undefined} ${classes.image}`} alt='room-img' src='https://media.istockphoto.com/photos/hands-of-bakers-male-knead-dough-picture-id941594062?k=6&m=941594062&s=612x612&w=0&h=SH1aFSfq08E3GbF9vOhHt9luhnuNzg0P-8rL5ygInCU='/>
+                            </Grid>
+                            <Grid item xs={2}></Grid>                            
+                        </Hidden>
+                        <Grid item>
+                            <Grid container direction='column'>
+                                <Grid item>
+                                    <Typography variant='h6'>Room Name</Typography>
+                                    <Typography>Room Description</Typography>
+                                </Grid>
+                            </Grid>
+                        </Grid>
                     </Grid>
-                    <Grid item xs={7} md={5}>
-                        <PackageList data={rooms[selectedIndex].packages}/>
-                    </Grid>
-                </Grid>
+                    </AccordionSummary>
+                    <AccordionDetails className={classes.accordianDetails}>
+                        <PackageList data={rooms[index].packages} activity={params.activity ? params.activity : ''} roomId={rooms[index].name}/>
+                    </AccordionDetails>
+                </Accordion>        
+                ))}   
             </Container>
         </Grid>
     )

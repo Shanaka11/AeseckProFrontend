@@ -8,16 +8,21 @@ import Header from './componets/common/Header'
 import Footer from './componets/common/Footer'
 import Homepage from './Pages/Homepage'
 import RoomPage from './Pages/RoomPage'
+import BookingPage from './Pages/BookingPage'
+import SignInPage from './Pages/SignInPage'
 
 function App() {
+
   return (
     <div>
       <BrowserRouter>
         <Header />
           <Switch>            
             <Route exact path='/' component={ Homepage } />
+            <Route exact path='/login' component={ SignInPage }/>
             <Route exact path='/:activity' component={ Homepage }/>
             <Route exact path='/:activity/:room' component={ RoomPage }/>
+            <Route exact path='/:activity/:room/booking' component={ BookingPage }/>            
           </Switch>          
         <Footer />
       </BrowserRouter>

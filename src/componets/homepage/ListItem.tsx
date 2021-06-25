@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme: Theme) => ({
         color: theme.palette.text.primary
     },
     layout1: {
-        backgroundColor: theme.palette.secondary.main,
+        backgroundColor: '#77B28C'
     },
     layout2: {
         backgroundColor: '#499F68',
@@ -69,7 +69,7 @@ const ListItem:React.FC<listItemProps> = ( { item, layout } ) => {
         <Grid item>
             <Button                
                 variant='contained'
-                color='primary'
+                color='secondary'
                 href={item.link}
             >
                 Learn More
