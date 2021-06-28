@@ -11,6 +11,7 @@ import RoomPage from './Pages/RoomPage'
 import BookingPage from './Pages/BookingPage'
 import SignInPage from './Pages/SignInPage'
 import CheckinOut from './Pages/CheckinOut'
+import Profile from './Pages/Profile'
 
 function App() {
 
@@ -21,6 +22,7 @@ function App() {
           <Switch>            
             <Route exact path='/' component={ Homepage } />
             <Route exact path='/login' component={ SignInPage }/>
+            <Route exact path='/profile' component={ Profile }/>
             <Route exact path='/checkinout' component={ CheckinOut }/>
             <Route exact path='/:activity' component={ Homepage }/>
             <Route exact path='/:activity/:room' component={ RoomPage }/>
