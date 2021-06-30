@@ -12,6 +12,8 @@ import BookingPage from './Pages/BookingPage'
 import SignInPage from './Pages/SignInPage'
 import CheckinOut from './Pages/CheckinOut'
 import Profile from './Pages/Profile'
+import BoBookingsPage from './Pages/backoffice/BookingsPage'
+import BoUserList from './Pages/backoffice/UserListPage'
 
 function App() {
 
@@ -24,6 +26,8 @@ function App() {
             <Route exact path='/login' component={ SignInPage }/>
             <Route exact path='/profile' component={ Profile }/>
             <Route exact path='/checkinout' component={ CheckinOut }/>
+            <Route exact path='/backoffice/bookings' component={ BoBookingsPage } />
+            <Route exact path='/backoffice/users' component={ BoUserList } />
             <Route exact path='/:activity' component={ Homepage }/>
             <Route exact path='/:activity/:room' component={ RoomPage }/>
             <Route exact path='/:activity/:room/booking' component={ BookingPage }/>            
