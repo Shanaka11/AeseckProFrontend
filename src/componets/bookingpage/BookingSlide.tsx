@@ -3,6 +3,7 @@ import React from 'react'
 // 3rd Party
 // Material UI Imports
 import { 
+    Container,
     makeStyles,
     Theme,
 } from '@material-ui/core'
@@ -10,17 +11,27 @@ import {
 
 // Style
 const useStyles = makeStyles((theme:Theme)=> ({
+    mainContainer: {
+        paddingLeft: 0,
+        paddingRight: 0
+    },
+    imgContainer: {
+        position: 'relative'
+    },
     image:{
-        height: 910,
+        height: 400,
         width: '100%',
         verticalAlign: 'bottom',
-        objectFit: 'cover'
+        objectFit: 'cover'    
     },
     details:{
-        position: 'absolute',
-        top: 64,
-        height: 846,
+        height: 400,
         width: '100%',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        position: 'absolute',
+        top: 0
     },
 }))
 
@@ -31,27 +42,24 @@ interface SlideProps {
     children?: React.ReactNode
 }
 
-const Slide:React.FC<SlideProps> = ({ index, imgPath, children }) => {
-
+const BookingSlide:React.FC<SlideProps> = ({ index, imgPath, children }) => {
     // Style
     const classes = useStyles()
     
     return (
-        <>
-            <div>
+        <Container className={classes.mainContainer}>
+            <div className={classes.imgContainer}>
             <img
                 className={classes.image} 
-                // height='910'
-                // width='1920'            
                 src={imgPath}
                 alt={`carousal-${index}`}
             />
+                <div className={classes.details}>
+                    {children}
+                </div>
             </div>
-            <div className={classes.details}>
-                {children}
-            </div>
-        </>
+        </Container>
     )
 }
 
-export default Slide
+export default BookingSlide

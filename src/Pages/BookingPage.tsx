@@ -10,22 +10,22 @@ import {
     Typography,
 } from '@material-ui/core'
 // Local Imports
-import Carousal from '../componets/common/Carousal'
-import Slide from '../componets/common/Slide'
+import Carousal from '../componets/bookingpage/BookingCarousal'
+import Slide from '../componets/bookingpage/BookingSlide'
 import PackageList from '../componets/bookingpage/PackageList'
 import BookingCalender from '../componets/bookingpage/BookingCalender'
 
 // Style
 const useStyles = makeStyles((theme:Theme)=> ({
     container:{
-        height: '80%',
-        zIndex: 300,
-        [theme.breakpoints.down('xs')]:{
-            height: '60%'
-        }        
+        // height: '80%',
+        // zIndex: 300,
+        // [theme.breakpoints.down('xs')]:{
+        //     height: '60%'
+        // }        
     },
     subContainer: {
-        height: '100%'
+        // height: '100%'
     },    
     mainContainer: {
         backgroundImage: "url('https://i.redd.it/lsa3lv6c2r651.png')",
@@ -80,37 +80,18 @@ const BookingPage = () => {
     ]    
     return (
         <Grid container direction='column'>
-            <Carousal fixed>
-                {
-                    imgPath.map((item, index) => (
-                            <Slide key={`slide-${index}`} index={index} imgPath={item}>
-                                <Container className={classes.container}>
-                                    <Grid container alignItems='center' justify='space-evenly' direction='column' className={classes.subContainer}>
-                                        <Grid item>
-                                            <Typography variant='h1' align='center' className={classes.header}>
-                                                {'Bakery'}
-                                            </Typography>
-                                        </Grid>
-                                        <Grid item>
-                                            <Button
-                                                variant='contained'
-                                                color='primary'                                                
-                                                onClick={(event) => {
-                                                    let element = document.getElementById("activities");
-                                                    event.preventDefault();  // Stop Page Reloading
-                                                    element && element.scrollIntoView({ behavior: "smooth", block: "start" });                                                    
-                                                }}
-                                            >
-                                                Learn More
-                                            </Button>
-                                        </Grid>
-                                    </Grid>
-                                </Container>
-                            </Slide>
-                    ))                       
-                }
-            </Carousal>
             <div id='activities' className={classes.mainContainer}>
+                <Carousal fixed>
+                    {
+                        imgPath.map((item, index) => (
+                                <Slide key={`slide-${index}`} index={index} imgPath={item}>
+                                    <Typography variant='h1' align='center' className={classes.header}>
+                                        {'Bakery'}
+                                    </Typography>
+                                </Slide>
+                        ))                       
+                    }
+                </Carousal>                
                 <PackageList data={rooms[0].packages}/>
                 <BookingCalender />
             </div>

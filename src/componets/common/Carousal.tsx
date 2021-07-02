@@ -97,10 +97,6 @@ const Carousal:React.FC<CarousalProps> = ( { children, fixed } ) => {
         )
     }
 
-    // TODO
-    // Have an alternate nav Botton to make them more prominant depending on situations i.e RoomBooking Window
-    // Have an alternate height if needed as well
-
     return (
         <div>
         {/* Controls */}
