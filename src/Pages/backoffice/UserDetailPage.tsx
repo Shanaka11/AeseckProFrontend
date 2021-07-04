@@ -2,8 +2,6 @@
 import React, { useEffect, useState } from 'react'
 // 3rd Party
 import { useQuery } from 'react-query'
-import axios from 'axios'
-import { AxiosResponse } from 'axios'
 // Material UI Imports
 import { 
     Button,
@@ -28,7 +26,7 @@ const UserDetailPage = () => {
 
     // Query
     const { data, error, isLoading, isError } = useQuery('UserInfo', () => getUserById(5))
-
+    console.log(data)
     return (
         <>
         {
