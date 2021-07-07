@@ -119,7 +119,7 @@ const UserListPage = () => {
                 </Grid>                
             </Grid>
             {isLoading ? <CircularProgress />:
-                <Table columns={columns} rows={data?.data} />
+                <Table columns={columns} rows={data?.data} card={<></>}/>
             }
         </Container>
     )

@@ -5,10 +5,11 @@ import React, { useEffect, useState } from 'react'
 import { DataGrid, GridColDef, GridRowParams } from '@material-ui/data-grid';
 import { 
     makeStyles,
-    Theme,
-    Popover
+    Theme,    
 } from '@material-ui/core'
 // Local Imports
+import Popover from './TablePopover'
+import UserPopup from '../user/UserPopup'
 
 
 // Style
@@ -43,9 +44,10 @@ const useStyles = makeStyles((theme:Theme)=> ({
 interface TableProps {
     columns: GridColDef[],
     rows: any,
+    card: React.ReactNode
 }
 
-const Table:React.FC<TableProps> = ( { columns, rows } ) => {
+const Table:React.FC<TableProps> = ( { columns, rows, card } ) => {
     //  Style
     const classes = useStyles()
 
@@ -62,28 +64,25 @@ const Table:React.FC<TableProps> = ( { columns, rows } ) => {
         setMouseY(event.clientY)
         setRowHover(true)
         setTimeout( () => {
-            console.log(rowHover)
             if(rowHover){
                 setShowCard(true)
             }            
-        }, 2000)
-        // console.log(event.clientX , event.clientY)
-        console.log('enter')
+        }, 500)        
     }
 
     const handleOnRowLeave = (param: GridRowParams, event: React.MouseEvent<Element, MouseEvent>) => {
-        setShowCard(false)
+        if(showCard){
+            setShowCard(false)
+        }
         setRowHover(false)
-        console.log('leave')
     }
 
     return (
         <>
-        {showCard &&
-            <div className={classes.card} style={{top: mouseY, left: mouseX}}>
-
-            </div>
-        }
+        <Popover x={mouseX} y={mouseY} show={showCard} hover={rowHover}>
+            {/* <UserPopup /> */}
+            { card }
+        </Popover>
         <DataGrid
             autoHeight
             pageSize={20}                
