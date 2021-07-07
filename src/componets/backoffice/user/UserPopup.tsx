@@ -19,19 +19,28 @@ const useStyles = makeStyles((theme:Theme)=> ({
     }
 }))
 
-const UserPopup = () => {
+// Interface
+interface Props {
+    data: any
+}
+
+const UserPopup:React.FC<Props> = ( { data } ) => {
     // Classes
     const classes = useStyles()
 
     return (        
         <Grid container>
             <Grid item xs={6}>
-                <GridItem label="First Name" value='Shanaka'/>
-                <GridItem label="First Name" value='Shanaka'/>
-                <GridItem label="First Name" value='Shanaka'/>
+                <GridItem label="First Name" value={data.firstName}/>
+                <GridItem label="Surename" value={data.surename}/>
+                <GridItem label="Email" value={data.email}/>                
+                <GridItem label="Subscribed" value={data.subscribed}/>
             </Grid>
             <Grid item xs={6}>
-                <GridItem label="Last Name" value='Bandara'/>
+                <GridItem label="Middle Name" value={data.middleName}/>
+                <GridItem label="Date of Birth" value={data.dateofbirth}/>
+                <GridItem label="" value=""/>
+                <GridItem label="Primary User" value={data.primaryUser}/>
             </Grid>            
         </Grid>
     )

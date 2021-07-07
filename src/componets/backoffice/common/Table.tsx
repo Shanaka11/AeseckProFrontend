@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme:Theme)=> ({
 interface TableProps {
     columns: GridColDef[],
     rows: any,
-    card: React.ReactNode
+    card: (data: any) => any
 }
 
 const Table:React.FC<TableProps> = ( { columns, rows, card } ) => {
@@ -56,6 +56,7 @@ const Table:React.FC<TableProps> = ( { columns, rows, card } ) => {
     const [mouseY, setMouseY] = useState(500)
     const [showCard, setShowCard] = useState(false)
     const [rowHover, setRowHover] = useState(false)
+    const [rowData, setRowData] = useState<any>()
 
 
     // Methods
@@ -66,8 +67,9 @@ const Table:React.FC<TableProps> = ( { columns, rows, card } ) => {
         setTimeout( () => {
             if(rowHover){
                 setShowCard(true)
-            }            
-        }, 500)        
+            }
+        }, 500)
+        setRowData(param.row)
     }
 
     const handleOnRowLeave = (param: GridRowParams, event: React.MouseEvent<Element, MouseEvent>) => {
@@ -76,12 +78,12 @@ const Table:React.FC<TableProps> = ( { columns, rows, card } ) => {
         }
         setRowHover(false)
     }
-
+    
     return (
         <>
         <Popover x={mouseX} y={mouseY} show={showCard} hover={rowHover}>
-            {/* <UserPopup /> */}
-            { card }
+            {/* <UserPopup /> */}     
+            { card(rowData) }       
         </Popover>
         <DataGrid
             autoHeight
@@ -91,10 +93,8 @@ const Table:React.FC<TableProps> = ( { columns, rows, card } ) => {
             classes={{
                 root: classes.fontColorBlack
             }}
-            // onRowOver={(param: GridRowParams, event: React.MouseEvent<Element, MouseEvent>) => {setMouseX(event.clientX); setMouseY(event.clientY); setShowCard(true)}}
             onRowLeave={ handleOnRowLeave }
             onRowEnter={ handleOnRowEnter }
-            // onMouseLeave={handlePopoverClose}
         />
         </>
     )

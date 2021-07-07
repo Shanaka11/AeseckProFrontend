@@ -23,6 +23,7 @@ import {
 import Table from '../../componets/backoffice/common/Table'
 import errorHandler from '../../utils/errorHandler'
 import { getUserList } from '../../api/userApi'
+import UserPopup from '../../componets/backoffice/user/UserPopup'
 
 // Style
 const useStyles = makeStyles((theme:Theme)=> ({
@@ -119,7 +120,7 @@ const UserListPage = () => {
                 </Grid>                
             </Grid>
             {isLoading ? <CircularProgress />:
-                <Table columns={columns} rows={data?.data} card={<></>}/>
+                <Table columns={columns} rows={data?.data} card={(data: any) => <UserPopup data={data}/>}/>
             }
         </Container>
     )

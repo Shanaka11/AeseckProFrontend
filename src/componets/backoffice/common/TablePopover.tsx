@@ -6,7 +6,7 @@ import { DataGrid, GridColDef, GridRowParams } from '@material-ui/data-grid';
 import { 
     makeStyles,
     Theme,
-    Popover
+    Fade
 } from '@material-ui/core'
 // Local Imports
 
@@ -35,18 +35,13 @@ const TablePopover:React.FC<Props> = ( { x, y, show, children } ) => {
     //  Style
     const classes = useStyles()
 
-    if( show ) {
-        return (
+    return (
+        <Fade in={show} unmountOnExit>
             <div className={classes.card} style={{top: y - 10, left: x}}>
                 { children }
             </div>
-        )
-    } else {
-        return (
-            <>
-            </>
-        )
-    }
+        </Fade>
+    )
 }
 
 export default TablePopover

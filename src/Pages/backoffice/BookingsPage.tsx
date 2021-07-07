@@ -310,7 +310,7 @@ const BookingsPage = () => {
                     </Grid>   
                 </Grid>
             </Grid>
-            <Table columns={columns} rows={rows ? rows : []} card={<></>}/>
+            <Table columns={columns} rows={rows ? rows : []} card={() => {<></>}}/>
         </Container>
     )
 }

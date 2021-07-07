@@ -18,6 +18,9 @@ const useStyles = makeStyles((theme:Theme)=> ({
     title: {
         color: '#b7b6b6',
         fontSize: '0.8em'
+    },
+    hiddenFont: {
+        color: 'white'
     }
 }))
 
@@ -34,13 +37,13 @@ const PopoverGridItem:React.FC<Props> = ( { label, value } ) => {
     return (
         <Grid container direction='column' className={classes.container}>
             <Grid item>
-                <Typography variant='subtitle2' className={classes.title}>
-                    {label}
+                <Typography variant='subtitle2' className={`${classes.title} ${label ? undefined : classes.hiddenFont}`}>
+                    {label ? label : '1'}
                 </Typography>
             </Grid>
             <Grid item>
-                <Typography variant='body1'>
-                    {value}
+                <Typography variant='body1' className={value ? undefined : classes.hiddenFont }>
+                    {value ? value : '1'}
                 </Typography>
             </Grid>                    
         </Grid>
