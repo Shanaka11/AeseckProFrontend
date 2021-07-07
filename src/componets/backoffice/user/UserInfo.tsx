@@ -11,9 +11,12 @@ import {
     Theme,
     Typography,
 } from '@material-ui/core'
+import Skeleton from '@material-ui/lab/Skeleton';
 // Local Imports
 import avatar from '../../../assets/avatar.jpg'
 // import UserTabs from './UserTabs'
+import Alert from '../../common/Alert'
+import { errorHandlerResp } from '../../../utils/errorHandler'
 
 // Style
 const useStyles = makeStyles((theme:Theme)=> ({
@@ -63,7 +66,24 @@ interface TextFieldState {
     originalValue: string
 }
 
-const UserInfo = () => {
+interface UserInfoProps {
+    data: {
+        address?: string[],
+        dateofBirth? : Date,
+        emails?: string[],
+        firstName?: string,
+        id?: number,
+        middleName?: string,
+        phoneNumbers?: string[],
+        primaryUser?: string,
+        subscribed?: boolean,
+        surename?: string
+    },
+    error?: errorHandlerResp,
+    loading: boolean
+}
+
+const UserInfo:React.FC<UserInfoProps> = ( { data, error } ) => {
 // Style
 const classes = useStyles()
 
@@ -71,12 +91,12 @@ const classes = useStyles()
 const [showUpButton, setShowUpButton] = useState(false)
 const [edited, setEdited] = useState(false)
 const [firstName, setFirstName] = useState<TextFieldState>({
-    value: 'Shanaka',
-    originalValue: 'Shanaka',        
+    value: data ? data.firstName ? data.firstName : '' : '',
+    originalValue: data ? data.firstName ? data.firstName : '' : '',
 })
 const [lastName, setLastName] = useState<TextFieldState>({
-    value: 'Bandara',
-    originalValue: 'Bandara',        
+    value: data ? data.surename ? data.surename : '' : '',
+    originalValue: data ? data.surename ? data.surename : '' : '',
 })
 const [email, setEmail] = useState<TextFieldState>({
     value: 'Bandara@shanala.com',
@@ -126,10 +146,11 @@ const handleFieldCahnge = (event: React.ChangeEvent<HTMLTextAreaElement | HTMLIn
 
 return (
     <Container>
+    {error?.isError && <Alert message={error.message} severity='error'/>}
     <Grid container className={classes.container}>
         <Grid item xs={12} className={classes.gridItem}>
             <Typography variant='h6' >
-                User Profile - (Username)
+                User Profile - {firstName.originalValue}
             </Typography>
         </Grid>
         <Grid item xs={12} md={6} className={classes.subContainer}>
@@ -140,7 +161,7 @@ return (
                 className={classes.uploadButtonContainer}
                 onMouseEnter={ () => setShowUpButton(true)}
                 onMouseLeave={ () => setShowUpButton(false)}
-            >
+            >                
                 <img alt='img-avatar' src={avatar} />
                 { showUpButton &&
                     <Button
@@ -151,7 +172,7 @@ return (
                     >
                         Upload Image
                     </Button>
-                }
+                }   
             </Grid>                
         </Grid>
         <Grid item xs={12} md={6} className={classes.subContainer}>
