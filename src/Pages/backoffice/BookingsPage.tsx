@@ -18,6 +18,7 @@ import {
 } from '@material-ui/lab';
 // Local Imports
 import Table from '../../componets/backoffice/common/Table'
+import BreadCrumbs from '../../componets/backoffice/common/BreadCrumbs'
 
 
 // Style
@@ -155,8 +156,21 @@ const BookingsPage = () => {
               )             
         },    
     ];        
+
+    const path = [
+        {
+            name: 'Dasboard',
+            href: '/backoffice'
+        },
+        {
+            name: 'Bookings',
+            href: '/backoffice/bookings'
+        },                
+    ]
+
     return (
         <Container className={classes.container}>
+            <BreadCrumbs data={path}/>
             <Typography variant='h6' className={classes.textContainer}>
                 BookingsPage - BackOffice
             </Typography>

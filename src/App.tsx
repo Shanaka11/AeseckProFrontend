@@ -16,6 +16,7 @@ import Profile from './Pages/Profile'
 import BoBookingsPage from './Pages/backoffice/BookingsPage'
 import BoUserList from './Pages/backoffice/UserListPage'
 import BoUserDetail from './Pages/backoffice/UserDetailPage'
+import BoDashboard from './Pages/backoffice/Dashboard'
 
 function App() {
 
@@ -31,6 +32,7 @@ function App() {
               <Route exact path='/login' component={ SignInPage }/>
               <Route exact path='/profile' component={ Profile }/>
               <Route exact path='/checkinout' component={ CheckinOut }/>
+              <Route exact path='/backoffice' component={ BoDashboard } />
               <Route exact path='/backoffice/bookings' component={ BoBookingsPage } />
               <Route exact path='/backoffice/users' component={ BoUserList } />
               <Route exact path='/backoffice/users/:id' component={ BoUserDetail } />

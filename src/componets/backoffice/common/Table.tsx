@@ -44,10 +44,11 @@ const useStyles = makeStyles((theme:Theme)=> ({
 interface TableProps {
     columns: GridColDef[],
     rows: any,
-    card: (data: any) => any
+    card: (data: any) => any,
+    handleOnRowClick?: (param: GridRowParams, event: React.MouseEvent<Element, MouseEvent>) => void
 }
 
-const Table:React.FC<TableProps> = ( { columns, rows, card } ) => {
+const Table:React.FC<TableProps> = ( { columns, rows, card, handleOnRowClick } ) => {
     //  Style
     const classes = useStyles()
 
@@ -69,7 +70,7 @@ const Table:React.FC<TableProps> = ( { columns, rows, card } ) => {
                 setShowCard(true)
             }
         }, 500)
-        setRowData(param.row)
+        setRowData(param.row)        
     }
 
     const handleOnRowLeave = (param: GridRowParams, event: React.MouseEvent<Element, MouseEvent>) => {
@@ -83,7 +84,7 @@ const Table:React.FC<TableProps> = ( { columns, rows, card } ) => {
         <>
         <Popover x={mouseX} y={mouseY} show={showCard} hover={rowHover}>
             {/* <UserPopup /> */}     
-            { card(rowData) }       
+            { card(rowData) }  
         </Popover>
         <DataGrid
             autoHeight
@@ -95,6 +96,7 @@ const Table:React.FC<TableProps> = ( { columns, rows, card } ) => {
             }}
             onRowLeave={ handleOnRowLeave }
             onRowEnter={ handleOnRowEnter }
+            onRowClick={ handleOnRowClick }
         />
         </>
     )

@@ -41,9 +41,9 @@ const UserDetailPage = () => {
     const params = useParams<Params>()
 
     // Query
-    const { data, error, isLoading, isError } = useQuery('UserInfo', () => getUserById(params.id))    
-    
-    if(isLoading){
+    const { data, error, isLoading, isError, isFetching } = useQuery('UserInfo', () => getUserById(params.id))    
+        
+    if(isLoading || isFetching){
         return (
             <div className={classes.loaderContainer}>
                 <CircularProgress />

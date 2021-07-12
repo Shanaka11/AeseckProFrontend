@@ -17,7 +17,7 @@ import avatar from '../../../assets/avatar.jpg'
 // import UserTabs from './UserTabs'
 import Alert from '../../common/Alert'
 import { errorHandlerResp } from '../../../utils/errorHandler'
-
+import BreadCrumbs from '../common/BreadCrumbs'
 // Style
 const useStyles = makeStyles((theme:Theme)=> ({
     container:{        
@@ -103,6 +103,22 @@ const [email, setEmail] = useState<TextFieldState>({
     originalValue: 'Bandara@shanala.com',        
 })    
 
+// Const
+const path = [
+    {
+        name: 'Dasboard',
+        href: '/backoffice'
+    },
+    {
+        name: 'Users',
+        href: '/backoffice/users'
+    },
+    {
+        name: data.firstName!,
+        href: `/backoffice/users/${data.id}`
+    },    
+]
+
 // useEffect
 useEffect(() => {
     if(
@@ -147,6 +163,7 @@ const handleFieldCahnge = (event: React.ChangeEvent<HTMLTextAreaElement | HTMLIn
 return (
     <Container>
     {error?.isError && <Alert message={error.message} severity='error'/>}
+    <BreadCrumbs data={path}/>
     <Grid container className={classes.container}>
         <Grid item xs={12} className={classes.gridItem}>
             <Typography variant='h6' >

@@ -2,8 +2,9 @@
 import React, { useState } from 'react'
 // 3rd Party
 import { useQuery } from 'react-query'
+import { useHistory } from 'react-router-dom'
 // Material UI Imports
-import { GridColDef, GridCellParams } from '@material-ui/data-grid';
+import { GridColDef, GridRowParams } from '@material-ui/data-grid';
 import { 
     Button,
     CircularProgress,
@@ -24,6 +25,7 @@ import Table from '../../componets/backoffice/common/Table'
 import errorHandler from '../../utils/errorHandler'
 import { getUserList } from '../../api/userApi'
 import UserPopup from '../../componets/backoffice/user/UserPopup'
+import BreadCrumbs from '../../componets/backoffice/common/BreadCrumbs'
 
 // Style
 const useStyles = makeStyles((theme:Theme)=> ({
@@ -64,10 +66,11 @@ const UserListPage = () => {
     //  Style
     const classes = useStyles()
     
-    // Query
-    const { data, error, isLoading, isError } = useQuery('UserInfo', () => getUserList())
+    // Routing 
+    const history = useHistory()
 
-    console.log(data?.data)
+    // Query
+    const { data, error, isLoading, isError, isFetching } = useQuery('UserInfo', () => getUserList())
 
     // Const
     const columns: GridColDef[] = [
@@ -92,8 +95,25 @@ const UserListPage = () => {
         },
     ]
 
+    const path = [
+        {
+            name: 'Dasboard',
+            href: '/backoffice'
+        },
+        {
+            name: 'Users',
+            href: '/backoffice/users'
+        },                
+    ]
+
+    // Methods
+    const handleOnRowClick = (param: GridRowParams, event: React.MouseEvent<Element, MouseEvent>) => {
+        history.push(`/backoffice/users/${param.id}`)
+    }
+
     return (
         <Container className={classes.container}>
+            <BreadCrumbs data={path}/>
             <Typography variant='h6' className={classes.textContainer}>
                 User List - BackOffice
             </Typography>
@@ -119,8 +139,8 @@ const UserListPage = () => {
                     </Grid>                                    
                 </Grid>                
             </Grid>
-            {isLoading ? <CircularProgress />:
-                <Table columns={columns} rows={data?.data} card={(data: any) => <UserPopup data={data}/>}/>
+            {(isLoading || isFetching) ? <CircularProgress />:
+                <Table columns={columns} rows={data?.data} card={(data: any) => <UserPopup data={data}/>} handleOnRowClick={handleOnRowClick}/>
             }
         </Container>
     )
