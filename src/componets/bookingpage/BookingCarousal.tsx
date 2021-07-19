@@ -1,5 +1,5 @@
 // React Imports
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 // 3rd Party
 import SwipeableViews from 'react-swipeable-views';
 import { autoPlay } from 'react-swipeable-views-utils';
@@ -83,12 +83,13 @@ const useStyles = makeStyles((theme: Theme)=>({
 interface CarousalProps {
     children:  React.ReactNode[],
     fixed?: boolean,
+    handleStepChangeParent?: (id:number) => void
 }
 
 // Consts
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
-const BookingCarousal:React.FC<CarousalProps> = ( { children, fixed} ) => {
+const BookingCarousal:React.FC<CarousalProps> = ( { children, fixed, handleStepChangeParent} ) => {
 
     // Style
     const classes = useStyles()
@@ -100,6 +101,13 @@ const BookingCarousal:React.FC<CarousalProps> = ( { children, fixed} ) => {
     const handleStepChange = (step: number) => {
         setActiveIndex(step)
     }
+
+    // UseEffect
+    useEffect(() => {
+        if(handleStepChangeParent) {
+            handleStepChangeParent(activeIndex)
+        }
+    }, [activeIndex])
 
     // Components
     const stepIcons = []    

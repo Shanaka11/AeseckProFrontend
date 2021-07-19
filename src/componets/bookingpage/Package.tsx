@@ -44,9 +44,39 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 // Interface
 interface PackageData {
-    packageName: string,
+    id: number,
+    code: string,
+    categoryId: number,
+    displayName: string,
     description: string,
-    price: string
+    activeFrom: string,
+    activeUntill: string,
+    activeStatus: boolean,
+    financeGenericRateId: number,
+    overrideChildRates: boolean,
+    category: string,
+    tags: string,
+    genericFinanceRate: {
+      id: number,
+      code: string,
+      grossAmountBeforeDiscount: number,
+      grossAmount: number,
+      netAmount: number,
+      uoM: string,
+      discountDetails: number,
+      taxDetails: number
+    },
+    packageConsumables: any,
+    packageResources: [
+      {
+        packageId: number,
+        resourceId: number,
+        volume: number,
+        capacity: number
+      }
+    ],
+    packageServices: any,
+    packageTimeSlots: any
 }
 
 interface PackageListProps {
@@ -68,7 +98,7 @@ const Package:React.FC<PackageListProps> = ({ id, handleOnClick, data, selected 
             <Grid container direction='column' justify='space-between' className={classes.gridContainer}>
                 <Grid item>
                     <Typography variant='h6' align='center'>
-                        {data.packageName}
+                        {data.displayName}
                     </Typography>
                 </Grid>
                 <Grid item>
@@ -80,7 +110,7 @@ const Package:React.FC<PackageListProps> = ({ id, handleOnClick, data, selected 
                     <Grid container justify='space-between'>
                         <Grid item>
                             <Typography variant='h6'>
-                                {`${data.price} AUD`}
+                                {`${data.genericFinanceRate.netAmount} AUD`}
                             </Typography>                            
                         </Grid>
                         <Grid item>

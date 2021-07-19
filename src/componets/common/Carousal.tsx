@@ -69,7 +69,7 @@ const useStyles = makeStyles((theme: Theme)=>({
 // Interfaces
 interface CarousalProps {
     children:  React.ReactNode[],
-    fixed?: boolean,
+    fixed?: boolean,    
 }
 
 // Consts

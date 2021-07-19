@@ -8,10 +8,11 @@ import {
     Theme,
     makeStyles,
     Typography,
+    Slide
 } from '@material-ui/core'
 // Local Imports
 import Package from './Package'
-import { useQuery } from '../../utils/hooks/useQueryHook'
+import { useGetQueryParams } from '../../utils/hooks/useQueryHook'
 
 // Style
 const useStyles = makeStyles((theme: Theme) => ({
@@ -19,7 +20,8 @@ const useStyles = makeStyles((theme: Theme) => ({
         paddingTop: 16,
         paddingBottom: 16,
         backgroundColor: theme.palette.primary.light,
-        color: theme.palette.text.primary
+        color: theme.palette.text.primary,
+        overflow: 'hidden'
     },
     packageContainer: {
         marginTop: 16,
@@ -28,21 +30,52 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 // Interface
 interface PackageData {
-    packageName: string,
+    id: number,
+    code: string,
+    categoryId: number,
+    displayName: string,
     description: string,
-    price: string
+    activeFrom: string,
+    activeUntill: string,
+    activeStatus: boolean,
+    financeGenericRateId: number,
+    overrideChildRates: boolean,
+    category: string,
+    tags: string,
+    genericFinanceRate: {
+      id: number,
+      code: string,
+      grossAmountBeforeDiscount: number,
+      grossAmount: number,
+      netAmount: number,
+      uoM: string,
+      discountDetails: number,
+      taxDetails: number
+    },
+    packageConsumables: any,
+    packageResources: [
+      {
+        packageId: number,
+        resourceId: number,
+        volume: number,
+        capacity: number
+      }
+    ],
+    packageServices: any,
+    packageTimeSlots: any
 }
 
 interface PackageListProps {
     data: PackageData[],
+    show: boolean
 }  
 
-const PackageList:React.FC<PackageListProps> = ({ data }) => {
+const PackageList:React.FC<PackageListProps> = ({ data, show }) => {
     // Style
     const classes = useStyles()
 
     // Router
-    const queryParams:URLSearchParams = useQuery()
+    const queryParams:URLSearchParams = useGetQueryParams()
 
     // States
     const [selectedIndex, setSelectedIndex] = useState(1)
@@ -50,32 +83,36 @@ const PackageList:React.FC<PackageListProps> = ({ data }) => {
     // UseEffect
     useEffect(() => {
         data.map((item, index) => {
-            if(item.packageName === queryParams.get("package")){
+            if(item.displayName === queryParams.get("package")){
                 setSelectedIndex(index)
             }
             return item
         })
     }, [])
+
     // Methods
     const handleOnClick = (id:number) => {
         setSelectedIndex(id)
     }
 
-    return (
-        <Container className={classes.container}>
-            <Typography variant='h6' align='center'>
-                Packages
-            </Typography>
-            <Grid container alignItems='center' className={classes.packageContainer}>
-                {                                    
-                    data.map((item, index) => (
-                        <Grid key={`${index}=${item.packageName}`} item xs={12} md={4}>
-                            <Package key={index} id={index} handleOnClick={handleOnClick} data={item} selected={selectedIndex === index}/>
-                        </Grid>
-                    ))
-                }
-            </Grid>
-        </Container>
+
+    return (        
+            <Container className={classes.container}>
+                <Typography variant='h6' align='center'>
+                    Packages
+                </Typography>
+                <Slide in={show} direction='down' mountOnEnter unmountOnExit>
+                    <Grid container alignItems='center' className={show ? classes.packageContainer : undefined}>
+                        {                                    
+                            data.map((item, index) => (
+                                <Grid key={`${index}=${item.displayName}`} item xs={12} md={4}>
+                                    <Package key={index} id={index} handleOnClick={handleOnClick} data={item} selected={selectedIndex === index}/>
+                                </Grid>
+                            ))
+                        }
+                    </Grid>
+                </Slide>
+            </Container>        
     )
 }
 
