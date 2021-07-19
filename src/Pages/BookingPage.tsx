@@ -16,17 +16,7 @@ import PackageList from '../componets/bookingpage/PackageList'
 import BookingCalender from '../componets/bookingpage/BookingCalender'
 
 // Style
-const useStyles = makeStyles((theme:Theme)=> ({
-    container:{
-        // height: '80%',
-        // zIndex: 300,
-        // [theme.breakpoints.down('xs')]:{
-        //     height: '60%'
-        // }        
-    },
-    subContainer: {
-        // height: '100%'
-    },    
+const useStyles = makeStyles((theme:Theme)=> ({   
     mainContainer: {
         backgroundImage: "url('https://i.redd.it/lsa3lv6c2r651.png')",
         backgroundColor: '#499F68',

@@ -39,40 +39,52 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 // Interfaces
 interface ItemProps{
-    name: string,
-    link: string
+    id: number,
+    title: string,
+    description: string,
+    images: imageType[],
+    activities?: string[],
 }
 
 interface listItemProps {
     item: ItemProps,
-    layout: number
+    layout: number,
+    activityCenter?: string
 }
 
-const ListItem:React.FC<listItemProps> = ( { item, layout } ) => {
+interface imageType {
+    imageId: number,
+    imageCategory: string,
+    imageTitle: string,
+    imageDescription: string,
+    imageUrl: string    
+}
+
+const ListItem:React.FC<listItemProps> = ( { item, layout, activityCenter } ) => {
     // Style
     const classes = useStyles()
     const theme:Theme = useTheme()
     const small = useMediaQuery(theme.breakpoints.down("md"))    
-    
+
     const listItemContent = (
         <>
         <Grid item>
             <Typography variant='h6'>
-                { item.name }
+                { item.title }
             </Typography>                            
         </Grid>
         <Grid item>
             <Typography variant='body1' align={small ? 'center' : layout === 0 ? 'left' : 'right'}>
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Praesentium ad harum quae quod illo illum repudiandae in at, nihil rerum dolorum asperiores, molestiae, officia sint dolorem vitae. Quis, repellat ipsam?
+                {item.description}
             </Typography>   
         </Grid>
         <Grid item>
             <Button                
                 variant='contained'
                 color='secondary'
-                href={item.link}
+                href={activityCenter ? `/${activityCenter}/booking?activity=${item.id}` : `/${item.id}`}
             >
-                Learn More
+                { activityCenter ? 'Make A Booking' : 'Learn More'}
             </Button>
         </Grid>    
         </>    
@@ -94,7 +106,7 @@ const ListItem:React.FC<listItemProps> = ( { item, layout } ) => {
         <Grid item sm={12} lg={6}>
             <Grid container alignItems='center' justify='center'>
                 <Grid item>
-                    <img className={classes.image} alt='image1' src='https://media.timeout.com/images/105188692/750/422/image.jpg'/>
+                    <img className={classes.image} alt='image1' src={item.images.filter((image:any) => image.imageCategory === 'TileImage')[0] && item.images.filter((image:any) => image.imageCategory === 'TileImage')[0].imageUrl}/>
                 </Grid>
             </Grid> 
         </Grid>
@@ -112,7 +124,7 @@ const ListItem:React.FC<listItemProps> = ( { item, layout } ) => {
         <Grid item sm={12} lg={6}>
             <Grid container alignItems='center' justify='center'>
                 <Grid item>
-                    <img className={classes.image} alt='image1' src='https://media.timeout.com/images/105188692/750/422/image.jpg'/>
+                    <img className={classes.image} alt='image1' src={item.images.filter((image:any) => image.imageCategory === 'TileImage')[0] && item.images.filter((image:any) => image.imageCategory === 'TileImage')[0].imageUrl}/>
                 </Grid>
             </Grid> 
         </Grid>    

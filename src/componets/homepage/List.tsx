@@ -7,26 +7,36 @@ import ListItem from './ListItem'
 
 // Interfaces
 interface ListDataProps {
-    name: string,
-    link: string
+    id: number,
+    title: string,
+    description: string,
+    images: imageType[],
+    activities?: string[],
 }
 interface ListProps {
     id: string,
-    data: ListDataProps[]
+    data: ListDataProps[],
+    activityCenter?: string
 }
 
-const List:React.FC<ListProps> = ( { id, data } ) => {
+interface imageType {
+    imageId: number,
+    imageCategory: string,
+    imageTitle: string,
+    imageDescription: string,
+    imageUrl: string    
+}
 
+const List:React.FC<ListProps> = ( { id, data, activityCenter } ) => {
+
+    // console.log(data)
     return (
         <div id={id}>
             {
                 data.map((item, index) => (
-                    <ListItem key={`ListItem-${item.name}`} item={item} layout={index % 2} />
+                    <ListItem key={`ListItem-${item.title}`} item={item} layout={index % 2} activityCenter={activityCenter}/>
                 ))
             }            
-            {/* <ListItem layout={1} />
-            <ListItem layout={0} />
-            <ListItem layout={1} /> */}
         </div>
     )
 }

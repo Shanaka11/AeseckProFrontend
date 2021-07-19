@@ -37,8 +37,8 @@ function App() {
               <Route exact path='/backoffice/users' component={ BoUserList } />
               <Route exact path='/backoffice/users/:id' component={ BoUserDetail } />
               <Route exact path='/:activity' component={ Homepage }/>
-              <Route exact path='/:activity/:room' component={ RoomPage }/>
-              <Route exact path='/:activity/:room/booking' component={ BookingPage }/>            
+              {/* <Route exact path='/:activity/:room' component={ RoomPage }/> */}
+              <Route exact path='/:activity/booking' component={ BookingPage }/>            
             </Switch>          
           <Footer />
         </BrowserRouter>
