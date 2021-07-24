@@ -1,12 +1,13 @@
 // React Imports
 import React, { useState } from 'react'
+// 3rd Party
 // Material UI Imports
 import { makeStyles } from '@material-ui/styles'
 import { 
     Grid, 
     Typography, 
     IconButton,
-    Theme
+    Theme,
 } from '@material-ui/core'
 import KeyboardArrowLeftIcon from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
@@ -29,20 +30,25 @@ const useStyles = makeStyles((theme:Theme) => ({
 
 // Interface
 interface SelectedDate {
+    initial?: boolean
     day: number,
     month: number,
     year: number
 }
 
+interface Props {
+    data: any,
+    handleDateSelectParent: (dayIndex: SelectedDate) => void    
+}
 
-const Calender = () => {
+const Calender:React.FC<Props> = ( { data, handleDateSelectParent } ) => {
         // Style
         const classes = useStyles()
 
         // States
         const [offset, setOffset] = useState(0)
-        const [selectedDate, setSelectedDate] = useState<SelectedDate|1>(1)
-    
+        const [selectedDate, setSelectedDate] = useState<SelectedDate|1>(1)       
+
         const date = new Date();
         date.setMonth(date.getMonth() + offset);
     
@@ -98,8 +104,13 @@ const Calender = () => {
                 year: date.getFullYear()
             })
             // Selected Date
-            //const tempDate = new Date(date.getFullYear(), date.getMonth(), day)
             // Additional Date Selected options can be added here
+            handleDateSelectParent({
+                initial: false,
+                day,
+                month: date.getMonth() + 1,
+                year: date.getFullYear()
+            })
         }
         // Last Month Dates
         for (let x = firstDayIndex; x > 0; x--) {
@@ -107,6 +118,7 @@ const Calender = () => {
                 <Day key={`P${x}`} date={prevLastDay - x + 1} handleDateClick={handleDateClick}/>
             );
         }
+        
     
         // Current Month Dates
         for (let i = 1; i <= lastDay; i++) {
@@ -119,7 +131,7 @@ const Calender = () => {
                 <Day 
                     key={`C${i}`} 
                     date={i} 
-                    currMonth 
+                    currMonth={data[i - 1].availabilityStatus !== 0 }
                     currDate 
                     handleDateClick={handleDateClick}
                     selected={selectedDate !== 1 ? i === selectedDate.day && date.getMonth() === selectedDate.month && date.getFullYear() === selectedDate.year : false}
@@ -130,7 +142,7 @@ const Calender = () => {
                 <Day 
                     key={`C${i}`} 
                     date={i} 
-                    currMonth 
+                    currMonth={data[i - 1].availabilityStatus !== 0 }
                     handleDateClick={handleDateClick}
                     selected={selectedDate !== 1 && (i === selectedDate.day && date.getMonth() === selectedDate.month && date.getFullYear() === selectedDate.year)}
                 />
@@ -141,7 +153,7 @@ const Calender = () => {
             dateMatrix.push(dateMatrixRow.splice(0, 7));
             }
         }
-    
+
         // Next Month Dates
         for (let j = 1; j <= nextDays; j++) {
             dateMatrixRow.push(

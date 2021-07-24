@@ -1,6 +1,7 @@
 // React Imports
 import React, { useState } from 'react'
 // 3rd Party
+import { useQuery } from 'react-query'
 // Material UI Imports
 import { 
     Container,
@@ -11,7 +12,8 @@ import {
     useMediaQuery,
     Button,
     Fade,
-    TextField
+    TextField,
+    CircularProgress
 } from '@material-ui/core'
 import { 
     useTheme
@@ -20,6 +22,7 @@ import {
 import Calender from './Calender'
 import TimeList from './TimeList'
 import { ReactComponent as Success } from '../../assets/checked.svg';
+import { getBookingCalenderDetails } from '../../api/bookingApi'
 
 // Style
 const useStyles = makeStyles((theme: Theme) => ({
@@ -84,11 +87,24 @@ const useStyles = makeStyles((theme: Theme) => ({
 // Interface
 
 interface BookingCalenderProps {
+    activityName: string,
+    activePackage: {
+        id: number,
+        name: string,
+        price: number
+    }
+}
 
-}  
+interface SelectedDate {
+    initial?: boolean
+    day: number,
+    month: number,
+    year: number
+}
 
-const BookingCalender:React.FC<BookingCalenderProps> = () => {
-    //Styles
+const BookingCalender:React.FC<BookingCalenderProps> = ( { activityName, activePackage } ) => {
+    console.log(activePackage)
+    // Styles
     const classes = useStyles()
     const theme:Theme = useTheme()
 
@@ -96,12 +112,58 @@ const BookingCalender:React.FC<BookingCalenderProps> = () => {
 
     // State
     const [page, setPage] = useState(1)
+    const [selectedDateIndex, setSelectedDateIndex] = useState<SelectedDate>({
+        initial: true,
+        day: new Date().getDay(),
+        month: new Date().getMonth() + 1,
+        year: new Date().getFullYear()
+    })
+    const [selectedTimeslot, setSelectedTimeslot] = useState<string>('')
+
+    // Query
+    // Do a refetch if the selected date is outside the current year
+    const { 
+        data: calenderData, 
+        error: calenderError, 
+        isLoading: calenderIsLoading, 
+        isError: calenderIsError, 
+        isFetching: calenderIsFetching,
+    } = useQuery(
+        'GetBookingCalenderDetails', 
+        () => getBookingCalenderDetails({
+            "packageId": activePackage.id,
+            "packageCategory": 'BackeryPartyRoom',
+            "monthOfTheYear": selectedDateIndex.month,
+            "year": selectedDateIndex.year,
+            "requestUpfrontMonths": 6
+        })
+    )
+    
+    if(calenderIsLoading){
+        return (
+                <CircularProgress />
+            )
+    }    
+
+    // Const
+    const calenderResponse = calenderData?.data.response
+    console.log(calenderResponse)
 
     // Methods
     const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
         console.log('Submit')
         setPage(3)
+    }
+
+    const handleDateSelect = (dayIndex: SelectedDate) => {
+        setSelectedDateIndex(dayIndex)
+    }
+
+    const handleTimeSelect = (timeslot: string|undefined) => {
+        if(timeslot){
+            setSelectedTimeslot(timeslot)
+        }        
     }
 
     return (
@@ -115,21 +177,32 @@ const BookingCalender:React.FC<BookingCalenderProps> = () => {
                             <Grid item xs={12} md={6}>
                             { matches ?
                                 <Grid container alignItems='center' justify='center'>
-                                    <Calender />
+                                    <Calender 
+                                        data={calenderResponse ? calenderResponse.filter((item:any) => item.year === selectedDateIndex.year && item.monthOfTheYear === selectedDateIndex.month)[0].bookingDays : []}
+                                        handleDateSelectParent={handleDateSelect}
+                                    />
                                 </Grid>
                                 :
                                 <Grid container>
-                                    <Calender />
+                                    <Calender 
+                                        data={calenderResponse ? calenderResponse.filter((item:any) => item.year === selectedDateIndex.year && item.monthOfTheYear === selectedDateIndex.month)[0].bookingDays : []}                                    
+                                        handleDateSelectParent={handleDateSelect}
+                                    />
                                 </Grid>
                             }
                             </Grid>
-                            <Grid item xs={12} md={6}>
-                                <Grid container>
-                                    <Grid item xs={12}>
-                                        <TimeList />
-                                    </Grid>                        
-                                </Grid>                    
-                            </Grid>  
+                            { calenderResponse.filter((item:any) => item.year === selectedDateIndex.year && item.monthOfTheYear === selectedDateIndex.month)[0].bookingDays[selectedDateIndex.day - 1].availabilityStatus > 0 &&
+                                <Grid item xs={12} md={6}>
+                                    <Grid container>
+                                        <Grid item xs={12}>
+                                            <TimeList 
+                                                list={calenderResponse ? calenderResponse.filter((item:any) => item.year === selectedDateIndex.year && item.monthOfTheYear === selectedDateIndex.month)[0].bookingDays[selectedDateIndex.day - 1].timeSlots : []}
+                                                handleTimeSelect={handleTimeSelect}                                            
+                                            />
+                                        </Grid>                        
+                                    </Grid>                    
+                                </Grid>  
+                            }
                         </Grid>              
                     ) 
                     :
@@ -150,7 +223,7 @@ const BookingCalender:React.FC<BookingCalenderProps> = () => {
                                         </Grid>
                                         <Grid item xs={6}>
                                             <Typography variant='body2' align='left'>
-                                                Activity Center A
+                                                Party Room
                                             </Typography>
                                         </Grid>
                                         <Grid item xs={6}>
@@ -160,19 +233,9 @@ const BookingCalender:React.FC<BookingCalenderProps> = () => {
                                         </Grid>
                                         <Grid item xs={6}>
                                             <Typography variant='body2' align='left'>
-                                                Activity A
+                                                {activityName}
                                             </Typography>
                                         </Grid>
-                                        <Grid item xs={6}>
-                                            <Typography variant='body2' align='left'>
-                                                Room
-                                            </Typography>
-                                        </Grid>
-                                        <Grid item xs={6}>
-                                            <Typography variant='body2' align='left'>
-                                                Room A
-                                            </Typography>
-                                        </Grid> 
                                         <Grid item xs={6}>
                                             <Typography variant='body2' align='left'>
                                                 Package
@@ -180,7 +243,7 @@ const BookingCalender:React.FC<BookingCalenderProps> = () => {
                                         </Grid>
                                         <Grid item xs={6}>
                                             <Typography variant='body2' align='left'>
-                                                Package A
+                                                { activePackage.name }
                                             </Typography>
                                         </Grid>
                                         <Grid item xs={6}>
@@ -200,7 +263,7 @@ const BookingCalender:React.FC<BookingCalenderProps> = () => {
                                         </Grid>
                                         <Grid item xs={6}>
                                             <Typography variant='body2' align='left'>
-                                                Time A
+                                                { selectedTimeslot }
                                             </Typography>
                                         </Grid> 
                                         <Grid item xs={6}>
@@ -365,6 +428,7 @@ const BookingCalender:React.FC<BookingCalenderProps> = () => {
                         disableElevation
                         className={classes.button}
                         onClick={() => setPage(2)}
+                        disabled={ page === 1 && selectedTimeslot === ''}
                         type={page === 2 ? 'submit' : undefined}
                         form='contact-form'
                     >

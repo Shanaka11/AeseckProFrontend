@@ -4,3 +4,10 @@ export const config = {
         'x-Api-key': process.env.REACT_APP_API_KEY
     }    
 }
+
+export const postConfigJson = {
+    headers: {
+        ...config.headers,
+        'Content-Type': 'application/json'
+    }
+}

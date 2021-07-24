@@ -3,14 +3,12 @@ import React, { useState } from 'react'
 // 3rd Party
 // Material UI Imports
 import { 
-    Container,
     Grid,
     Theme,
     makeStyles,
     Typography,
     List,
     ListItem,    
-    ListItemText
 } from '@material-ui/core'
 // Local Imports
 
@@ -27,8 +25,16 @@ const useStyles = makeStyles((theme: Theme) => ({
   }));
 
 // Interface
+interface Props {
+    list: {
+        startDateTime?:string,
+        endDateTime?:string,
+        availabilityStatus?: number
+    }[],
+    handleTimeSelect: (timeslot: string|undefined) => void
+}
 
-const TimeList = () => {
+const TimeList:React.FC<Props> = ( { list, handleTimeSelect } ) => {
     // Styles
     const classes = useStyles()
     // States
@@ -37,48 +43,25 @@ const TimeList = () => {
     return (
         <div className={classes.mainContainer}>
         <List className={classes.container} disablePadding>
-            <ListItem 
-                divider 
-                button 
-                selected = {0 === selectedIndex }
-                onClick = {() => setSelectedIndex(0)}
-            >
-                <Grid container>
-                    <Grid item>
-                        <Typography variant='h6'>
-                            9:00 a.m - 10:00 a.m
-                        </Typography>
-                    </Grid>
-                </Grid>
-            </ListItem>
-            <ListItem 
-                divider 
-                button
-                selected = {1 === selectedIndex }    
-                onClick = {() => setSelectedIndex(1)}                            
-            >
-                <Grid container>
-                    <Grid item>
-                        <Typography variant='h6'>
-                            9:00 a.m - 10:00 a.m
-                        </Typography>
-                    </Grid>
-                </Grid>
-            </ListItem>
-            <ListItem 
-                divider 
-                button
-                selected = {2 === selectedIndex }    
-                onClick = {() => setSelectedIndex(2)}                
-            >
-                <Grid container>
-                    <Grid item>
-                        <Typography variant='h6'>
-                            9:00 a.m - 10:00 a.m
-                        </Typography>
-                    </Grid>
-                </Grid>
-            </ListItem>
+            {
+                list.map((item, index) => (
+                    <ListItem 
+                        key={`${item.startDateTime}`}
+                        divider 
+                        button                     
+                        selected = {index === selectedIndex }
+                        onClick = {() => { setSelectedIndex(index); handleTimeSelect(item.startDateTime?.split('T')[1]) }}
+                    >
+                        <Grid container>
+                            <Grid item>
+                                <Typography variant='h6'>
+                                    {`${item.startDateTime?.split('T')[1]} - ${item.endDateTime?.split('T')[1]} - ${item.availabilityStatus}`}
+                                </Typography>
+                            </Grid>
+                        </Grid>
+                    </ListItem>                    
+                ))
+            }           
         </List>
         </div>
     )

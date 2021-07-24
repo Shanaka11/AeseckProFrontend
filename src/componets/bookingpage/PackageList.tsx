@@ -67,10 +67,11 @@ interface PackageData {
 
 interface PackageListProps {
     data: PackageData[],
-    show: boolean
+    show: boolean,
+    handlePackageChangeParent: (selectedPackage: { id:number, name:string }) => void
 }  
 
-const PackageList:React.FC<PackageListProps> = ({ data, show }) => {
+const PackageList:React.FC<PackageListProps> = ({ data, show, handlePackageChangeParent }) => {
     // Style
     const classes = useStyles()
 
@@ -78,7 +79,7 @@ const PackageList:React.FC<PackageListProps> = ({ data, show }) => {
     const queryParams:URLSearchParams = useGetQueryParams()
 
     // States
-    const [selectedIndex, setSelectedIndex] = useState(1)
+    const [selectedIndex, setSelectedIndex] = useState(0)
     
     // UseEffect
     useEffect(() => {
@@ -93,6 +94,10 @@ const PackageList:React.FC<PackageListProps> = ({ data, show }) => {
     // Methods
     const handleOnClick = (id:number) => {
         setSelectedIndex(id)
+        handlePackageChangeParent({
+            id: id,
+            name: 'Gold'
+        })
     }
 
 

@@ -83,19 +83,20 @@ const useStyles = makeStyles((theme: Theme)=>({
 interface CarousalProps {
     children:  React.ReactNode[],
     fixed?: boolean,
-    handleStepChangeParent?: (id:number) => void
+    handleStepChangeParent?: (id:number) => void,
+    startStep: number
 }
 
 // Consts
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
-const BookingCarousal:React.FC<CarousalProps> = ( { children, fixed, handleStepChangeParent} ) => {
+const BookingCarousal:React.FC<CarousalProps> = ( { children, fixed, handleStepChangeParent, startStep} ) => {
 
     // Style
     const classes = useStyles()
 
     // States
-    const [activeIndex, setActiveIndex] = useState(0)
+    const [activeIndex, setActiveIndex] = useState(startStep)
 
     // Methods
     const handleStepChange = (step: number) => {
