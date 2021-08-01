@@ -40,7 +40,8 @@ const useStyles = makeStyles((theme:Theme)=> ({
 // Interface
 interface Package {
     id: number,
-    name: string
+    name: string,
+    price: number
 }
 
 const BookingPage = () => {
@@ -109,6 +110,7 @@ const BookingPage = () => {
                 <PackageList 
                     data={response.filter((item:any) => item.id === activeActivityId)[0].packages} show={show} handlePackageChangeParent={handlePackageChange}
                 />
+                {console.log(activePackage)}
                 { response.filter((item:any) => item.id === activeActivityId)[0].packages[0] &&
                     <BookingCalender 
                         activityName={response.filter((item:any) => item.id === activeActivityId)[0].title} 

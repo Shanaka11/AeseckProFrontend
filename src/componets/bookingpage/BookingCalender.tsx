@@ -103,7 +103,6 @@ interface SelectedDate {
 }
 
 const BookingCalender:React.FC<BookingCalenderProps> = ( { activityName, activePackage } ) => {
-    console.log(activePackage)
     // Styles
     const classes = useStyles()
     const theme:Theme = useTheme()
@@ -114,7 +113,7 @@ const BookingCalender:React.FC<BookingCalenderProps> = ( { activityName, activeP
     const [page, setPage] = useState(1)
     const [selectedDateIndex, setSelectedDateIndex] = useState<SelectedDate>({
         initial: true,
-        day: new Date().getDay(),
+        day: new Date().getDay() + 1,
         month: new Date().getMonth() + 1,
         year: new Date().getFullYear()
     })
@@ -135,7 +134,7 @@ const BookingCalender:React.FC<BookingCalenderProps> = ( { activityName, activeP
             "packageCategory": 'BackeryPartyRoom',
             "monthOfTheYear": selectedDateIndex.month,
             "year": selectedDateIndex.year,
-            "requestUpfrontMonths": 6
+            "requestUpfrontMonths": 3
         })
     )
     
@@ -191,7 +190,7 @@ const BookingCalender:React.FC<BookingCalenderProps> = ( { activityName, activeP
                                 </Grid>
                             }
                             </Grid>
-                            { calenderResponse.filter((item:any) => item.year === selectedDateIndex.year && item.monthOfTheYear === selectedDateIndex.month)[0].bookingDays[selectedDateIndex.day - 1].availabilityStatus > 0 &&
+                            {/* { calenderResponse.filter((item:any) => item.year === selectedDateIndex.year && item.monthOfTheYear === selectedDateIndex.month)[0].bookingDays[selectedDateIndex.day - 1].availabilityStatus > 0 &&
                                 <Grid item xs={12} md={6}>
                                     <Grid container>
                                         <Grid item xs={12}>
@@ -202,7 +201,7 @@ const BookingCalender:React.FC<BookingCalenderProps> = ( { activityName, activeP
                                         </Grid>                        
                                     </Grid>                    
                                 </Grid>  
-                            }
+                            } */}
                         </Grid>              
                     ) 
                     :
@@ -253,7 +252,7 @@ const BookingCalender:React.FC<BookingCalenderProps> = ( { activityName, activeP
                                         </Grid>
                                         <Grid item xs={6}>
                                             <Typography variant='body2' align='left'>
-                                                Date A
+                                                {`${selectedDateIndex.day}/${selectedDateIndex.month}/${selectedDateIndex.year}`}
                                             </Typography>
                                         </Grid>
                                         <Grid item xs={6}>
@@ -273,7 +272,7 @@ const BookingCalender:React.FC<BookingCalenderProps> = ( { activityName, activeP
                                         </Grid>
                                         <Grid item xs={6}>
                                             <Typography variant='h6' align='left'>
-                                                1023.00
+                                                {`${activePackage.price} AUD`}
                                             </Typography>
                                         </Grid>                                     
                                     </Grid>

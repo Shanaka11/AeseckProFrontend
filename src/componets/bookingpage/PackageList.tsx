@@ -68,7 +68,7 @@ interface PackageData {
 interface PackageListProps {
     data: PackageData[],
     show: boolean,
-    handlePackageChangeParent: (selectedPackage: { id:number, name:string }) => void
+    handlePackageChangeParent: (selectedPackage: { id:number, name:string, price:number }) => void
 }  
 
 const PackageList:React.FC<PackageListProps> = ({ data, show, handlePackageChangeParent }) => {
@@ -92,11 +92,12 @@ const PackageList:React.FC<PackageListProps> = ({ data, show, handlePackageChang
     }, [])
 
     // Methods
-    const handleOnClick = (id:number) => {
+    const handleOnClick = (id:number, name:string, price:number) => {
         setSelectedIndex(id)
         handlePackageChangeParent({
             id: id,
-            name: 'Gold'
+            name: name,
+            price: price
         })
     }
 

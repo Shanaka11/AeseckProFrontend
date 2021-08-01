@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme: Theme) => ({
         paddingBottom: 16,
         backgroundColor: theme.palette.primary.main,
         color: theme.palette.text.primary,        
-        maxWidth: 400,
+        maxWidth: 400,                
         cursor: 'pointer',
         '&:hover': {
             backgroundColor: theme.palette.primary.dark,
@@ -32,6 +32,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
     gridContainer: {
         minHeight: 200,
+    },
+    textContainer: {
+        height: 150,
+        overflow: 'hidden'
     },
     button: {
         backgroundColor: '#499F68',
@@ -81,7 +85,7 @@ interface PackageData {
 
 interface PackageListProps {
     id: number,
-    handleOnClick: (id:number) => void
+    handleOnClick: (id:number, name:string, price:number) => void
     data: PackageData,
     selected: boolean
 }  
@@ -92,8 +96,9 @@ const Package:React.FC<PackageListProps> = ({ id, handleOnClick, data, selected 
 
     return (
         <Container 
+            title={data.description}        
             className={`${classes.container} ${selected ? classes.containerSelected : undefined}`}
-            onClick={() => handleOnClick(id)}
+            onClick={() => handleOnClick(data.id, data.displayName, data.genericFinanceRate.netAmount)}
         >
             <Grid container direction='column' justify='space-between' className={classes.gridContainer}>
                 <Grid item>
@@ -102,7 +107,7 @@ const Package:React.FC<PackageListProps> = ({ id, handleOnClick, data, selected 
                     </Typography>
                 </Grid>
                 <Grid item>
-                    <Typography variant='subtitle1'>
+                    <Typography variant='subtitle1' className={classes.textContainer}>
                         {data.description}
                     </Typography>                    
                 </Grid>          
@@ -118,7 +123,7 @@ const Package:React.FC<PackageListProps> = ({ id, handleOnClick, data, selected 
                                 variant='contained'
                                 color='primary'
                                 className={classes.button}
-                                onClick={ () => handleOnClick(id) }
+                                onClick={ () => handleOnClick(data.id, data.displayName, data.genericFinanceRate.netAmount)}
                             >
                                 {selected ? 'Selected' : 'Select'}
                             </Button>

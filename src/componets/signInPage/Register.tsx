@@ -63,7 +63,6 @@ const Register:React.FC<RegisterProps> = ( { handlePageChange } ) => {
     // Methods
     const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
-        console.log('Submot')
     }
 
     return (

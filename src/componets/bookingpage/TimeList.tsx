@@ -53,9 +53,35 @@ const TimeList:React.FC<Props> = ( { list, handleTimeSelect } ) => {
                         onClick = {() => { setSelectedIndex(index); handleTimeSelect(item.startDateTime?.split('T')[1]) }}
                     >
                         <Grid container>
-                            <Grid item>
-                                <Typography variant='h6'>
-                                    {`${item.startDateTime?.split('T')[1]} - ${item.endDateTime?.split('T')[1]} - ${item.availabilityStatus}`}
+                            <Grid item xs={8}>
+                                <Grid container direction='column'>
+                                    <Grid item>
+                                        <Typography variant='h6' align='left'>
+                                            {
+                                                index === 0 ?
+                                                'Morning Session' :
+                                                index === 1 ?
+                                                'Afternoon Session' :
+                                                'Evening Session'
+                                            }
+                                        </Typography>
+                                    </Grid>
+                                    <Grid item>
+                                        <Typography variant='body1' align='left'>
+                                            {
+                                                index === 0 ?
+                                                'Morning Session Description' :
+                                                index === 1 ?
+                                                'Evening Session Description' :
+                                                'Afternoon Session Description'
+                                            }
+                                        </Typography>
+                                    </Grid>
+                                </Grid>
+                            </Grid>
+                            <Grid item xs={4}>
+                                <Typography variant='body1' align='right'>
+                                    {`${item.startDateTime?.split('T')[1]} - ${item.endDateTime?.split('T')[1]}`}
                                 </Typography>
                             </Grid>
                         </Grid>

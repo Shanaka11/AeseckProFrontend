@@ -78,8 +78,6 @@ const Homepage = () => {
     const response = data?.data.response    
     const activityCenterResponse = activityCenterData?.data.response
 
-    console.log(activityCenterResponse)
-
     return (
         <Grid container direction='column'>
             <Carousal>
