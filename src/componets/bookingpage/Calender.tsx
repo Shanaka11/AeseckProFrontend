@@ -25,6 +25,9 @@ const useStyles = makeStyles((theme:Theme) => ({
     },
     headerContainer :{
         marginBottom: 16
+    },
+    dayContainer: {
+        flexWrap: 'nowrap'
     }
 }))
 
@@ -201,7 +204,7 @@ const Calender:React.FC<Props> = ( { data, handleDateSelectParent } ) => {
                 </div>
                 {/* Body */}
                 <div>
-                    <Grid container spacing={1}>
+                    <Grid container spacing={1} className={classes.dayContainer}>
                         {
                         dateMatrixTrans.map((week, index) => (
                             <Grid key={`M1 - ${index}`} item>

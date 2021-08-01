@@ -54,7 +54,7 @@ const BookingPage = () => {
 
     // States
     const [activeActivityId, setActiveActivityId] = useState(-1)
-    const [activePackage, setActivePackage] = useState<Package|boolean>(false)
+    const [activePackage, setActivePackage] = useState<Package>()
     const [show, setShow] = useState(true)
 
     // Query
@@ -84,6 +84,13 @@ const BookingPage = () => {
         setActivePackage(selectedPackage)
     }
 
+    const decodePackage = (packageRaw:any) => {
+        return {
+            id: packageRaw.id,
+            name: packageRaw.displayName,
+            price: packageRaw.genericFinanceRate.netAmount            
+        }
+    }
 
     if(isLoading || activeActivityId === -1){
         return (
@@ -114,7 +121,7 @@ const BookingPage = () => {
                 { response.filter((item:any) => item.id === activeActivityId)[0].packages[0] &&
                     <BookingCalender 
                         activityName={response.filter((item:any) => item.id === activeActivityId)[0].title} 
-                        activePackage={activePackage ? activePackage : response.filter((item:any) => item.id === activeActivityId)[0].packages[0]}/>
+                        activePackage={activePackage ? activePackage : decodePackage(response.filter((item:any) => item.id === activeActivityId)[0].packages[0])}/>
                 }
             </div>
         </Grid>

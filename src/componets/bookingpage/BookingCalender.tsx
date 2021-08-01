@@ -165,6 +165,8 @@ const BookingCalender:React.FC<BookingCalenderProps> = ( { activityName, activeP
         }        
     }
 
+    console.log(activePackage)
+
     return (
         <Container className={classes.container}>
             <Typography variant='h6' align='center'>
@@ -190,7 +192,7 @@ const BookingCalender:React.FC<BookingCalenderProps> = ( { activityName, activeP
                                 </Grid>
                             }
                             </Grid>
-                            {/* { calenderResponse.filter((item:any) => item.year === selectedDateIndex.year && item.monthOfTheYear === selectedDateIndex.month)[0].bookingDays[selectedDateIndex.day - 1].availabilityStatus > 0 &&
+                            { calenderResponse.filter((item:any) => item.year === selectedDateIndex.year && item.monthOfTheYear === selectedDateIndex.month)[0].bookingDays[selectedDateIndex.day - 1].availabilityStatus > 0 &&
                                 <Grid item xs={12} md={6}>
                                     <Grid container>
                                         <Grid item xs={12}>
@@ -201,7 +203,7 @@ const BookingCalender:React.FC<BookingCalenderProps> = ( { activityName, activeP
                                         </Grid>                        
                                     </Grid>                    
                                 </Grid>  
-                            } */}
+                            }
                         </Grid>              
                     ) 
                     :
