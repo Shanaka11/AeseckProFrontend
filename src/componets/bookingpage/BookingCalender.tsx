@@ -153,7 +153,8 @@ const BookingCalender:React.FC<BookingCalenderProps> = ( { activityName, activeP
         isLoading: bookingIsloading,
         isSuccess: bookingIsSuccess,
         isError: bookingIsError,
-        mutate: makeABooking
+        mutate: makeABooking,
+        reset: bookingReset,
     } = useMutation(makeBooking)
     
     if(calenderIsLoading){
@@ -193,6 +194,19 @@ const BookingCalender:React.FC<BookingCalenderProps> = ( { activityName, activeP
             setSelectedTimeslot(timeslot)
         }        
     }
+
+    const resetBooking = () => {
+        // Reset State for a new Booking
+        bookingReset()
+        setPage(1)
+        setFirstName('')
+        setMiddleName('')
+        setSureName('')
+        setEmail('')
+        setPhoneNumber('')
+    }
+
+    console.log(page)
 
     return (
         <Container className={classes.container}>
@@ -388,6 +402,7 @@ const BookingCalender:React.FC<BookingCalenderProps> = ( { activityName, activeP
                                                         variant='standard'
                                                         label='Email'
                                                         type='email'
+                                                        required
                                                         value={email}
                                                         onChange={(e) => setEmail(e.target.value)}
                                                         fullWidth
@@ -409,6 +424,7 @@ const BookingCalender:React.FC<BookingCalenderProps> = ( { activityName, activeP
                                                         variant='standard'
                                                         label='Phone Number'
                                                         type='text'
+                                                        required
                                                         value={phoneNumber}
                                                         onChange={(e) => setPhoneNumber(e.target.value)}
                                                         fullWidth
@@ -475,6 +491,7 @@ const BookingCalender:React.FC<BookingCalenderProps> = ( { activityName, activeP
                                                     <Button
                                                         variant='contained'
                                                         color='secondary'
+                                                        onClick={resetBooking}
                                                     >
                                                         Create A New Booking
                                                     </Button>
