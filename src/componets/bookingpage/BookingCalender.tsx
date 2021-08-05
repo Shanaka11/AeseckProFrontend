@@ -453,7 +453,7 @@ const BookingCalender:React.FC<BookingCalenderProps> = ( { activityName, activeP
                                                 <CircularProgress />
                                             :
                                                 <>
-                                                { bookingData!.data.status! === 'Failed'
+                                                { bookingData!.data.status! === 'Failed' 
                                             ?
                                                 <Grid item>
                                                     <Typography variant='h6' align='center'>
