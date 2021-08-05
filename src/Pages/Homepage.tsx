@@ -74,6 +74,10 @@ const Homepage = () => {
                 <CircularProgress />
             )
     }
+
+    if(isError || activityCenterIsError){
+        console.log('There have been a server Error if the issue persists please contact support')
+    }
     
     const response = data?.data.response    
     const activityCenterResponse = activityCenterData?.data.response

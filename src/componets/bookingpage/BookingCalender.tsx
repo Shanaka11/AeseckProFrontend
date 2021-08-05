@@ -1,7 +1,10 @@
 // React Imports
 import React, { useState } from 'react'
 // 3rd Party
-import { useQuery } from 'react-query'
+import { 
+    useQuery,
+    useMutation
+} from 'react-query'
 // Material UI Imports
 import { 
     Container,
@@ -22,7 +25,7 @@ import {
 import Calender from './Calender'
 import TimeList from './TimeList'
 import { ReactComponent as Success } from '../../assets/checked.svg';
-import { getBookingCalenderDetails } from '../../api/bookingApi'
+import { getBookingCalenderDetails, makeBooking } from '../../api/bookingApi'
 
 // Style
 const useStyles = makeStyles((theme: Theme) => ({
@@ -117,7 +120,13 @@ const BookingCalender:React.FC<BookingCalenderProps> = ( { activityName, activeP
         month: new Date().getMonth() + 1,
         year: new Date().getFullYear()
     })
-    const [selectedTimeslot, setSelectedTimeslot] = useState<string>('')
+    const [selectedTimeslot, setSelectedTimeslot] = useState<any>('')
+
+    const [firstName, setFirstName] = useState('')
+    const [middleName, setMiddleName] = useState('')
+    const [sureName, setSureName] = useState('')
+    const [email, setEmail] = useState('')
+    const [phoneNumber, setPhoneNumber] = useState('')
 
     // Query
     // Do a refetch if the selected date is outside the current year
@@ -137,6 +146,15 @@ const BookingCalender:React.FC<BookingCalenderProps> = ( { activityName, activeP
             "requestUpfrontMonths": 3
         })
     )
+
+    const {
+        data: bookingData,
+        error: bookingError,
+        isLoading: bookingIsloading,
+        isSuccess: bookingIsSuccess,
+        isError: bookingIsError,
+        mutate: makeABooking
+    } = useMutation(makeBooking)
     
     if(calenderIsLoading){
         return (
@@ -151,6 +169,16 @@ const BookingCalender:React.FC<BookingCalenderProps> = ( { activityName, activeP
     // Methods
     const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
+        makeABooking({
+            'packageId': activePackage.id,
+            'timeSlotId': selectedTimeslot.label,
+            firstName,
+            middleName,
+            sureName,
+            phoneNumber,
+            'emailAddress': email,
+            'countryCode': 'AU'
+        })
         console.log('Submit')
         setPage(3)
     }
@@ -159,13 +187,12 @@ const BookingCalender:React.FC<BookingCalenderProps> = ( { activityName, activeP
         setSelectedDateIndex(dayIndex)
     }
 
-    const handleTimeSelect = (timeslot: string|undefined) => {
+    const handleTimeSelect = (timeslot: any|undefined) => {
+        console.log(timeslot)
         if(timeslot){
             setSelectedTimeslot(timeslot)
         }        
     }
-
-    console.log(activePackage)
 
     return (
         <Container className={classes.container}>
@@ -264,7 +291,7 @@ const BookingCalender:React.FC<BookingCalenderProps> = ( { activityName, activeP
                                         </Grid>
                                         <Grid item xs={6}>
                                             <Typography variant='body2' align='left'>
-                                                { selectedTimeslot }
+                                                { selectedTimeslot.label }
                                             </Typography>
                                         </Grid> 
                                         <Grid item xs={6}>
@@ -295,6 +322,8 @@ const BookingCalender:React.FC<BookingCalenderProps> = ( { activityName, activeP
                                                     <TextField
                                                         variant='standard'
                                                         label='First Name'
+                                                        value={firstName}
+                                                        onChange={(e) => setFirstName(e.target.value)}
                                                         fullWidth
                                                         color='secondary'
                                                         required
@@ -315,7 +344,30 @@ const BookingCalender:React.FC<BookingCalenderProps> = ( { activityName, activeP
                                                 <Grid item xs={12}>
                                                     <TextField
                                                         variant='standard'
-                                                        label='Last Name'
+                                                        label='Middle Name'
+                                                        value={middleName}
+                                                        onChange={(e) => setMiddleName(e.target.value)}                                                        
+                                                        fullWidth
+                                                        color='secondary'
+                                                        InputProps={{
+                                                            classes:{
+                                                            underline: classes.textFieldUnderLine,
+
+                                                            }
+                                                        }}
+                                                        InputLabelProps={{
+                                                            className:classes.textFieldLabel,
+                                                            shrink: true,
+                                                        }}
+                                                        autoComplete='no'
+                                                    />
+                                                </Grid>
+                                                <Grid item xs={12}>
+                                                    <TextField
+                                                        variant='standard'
+                                                        label='Surename'
+                                                        value={sureName}
+                                                        onChange={(e) => setSureName(e.target.value)}
                                                         fullWidth
                                                         color='secondary'
                                                         InputProps={{
@@ -336,6 +388,8 @@ const BookingCalender:React.FC<BookingCalenderProps> = ( { activityName, activeP
                                                         variant='standard'
                                                         label='Email'
                                                         type='email'
+                                                        value={email}
+                                                        onChange={(e) => setEmail(e.target.value)}
                                                         fullWidth
                                                         color='secondary'
                                                         InputProps={{
@@ -349,13 +403,14 @@ const BookingCalender:React.FC<BookingCalenderProps> = ( { activityName, activeP
                                                         }}
                                                         autoComplete='no'
                                                     />
-                                                </Grid>
+                                                </Grid>   
                                                 <Grid item xs={12}>
                                                     <TextField
                                                         variant='standard'
-                                                        label='Notes'
-                                                        rows={4}                                                
-                                                        multiline
+                                                        label='Phone Number'
+                                                        type='text'
+                                                        value={phoneNumber}
+                                                        onChange={(e) => setPhoneNumber(e.target.value)}
                                                         fullWidth
                                                         color='secondary'
                                                         InputProps={{
@@ -369,35 +424,57 @@ const BookingCalender:React.FC<BookingCalenderProps> = ( { activityName, activeP
                                                         }}
                                                         autoComplete='no'
                                                     />
-                                                </Grid>                                                                                                            
+                                                </Grid>                                                                                                
                                             </Grid>
                                         </form>
                                     </Fade>
                                 ):
                                 (
-                                    <Fade in={page === 3}>
+                                    <Fade in={page === 3} mountOnEnter unmountOnExit>
                                         <Grid container alignItems='center' justify='center' direction='column' spacing={1} className={classes.confirmBooking}>
-                                            <Grid item>
-                                                <Typography variant='h6' align='center'>
-                                                    Booking Request Confirmed
-                                                </Typography>                                            
-                                            </Grid>
-                                            <Grid item>
-                                                <Typography variant='body1' align='center'>
-                                                    A tentative booking was made, It will be confirmed upon payment
-                                                </Typography>                                            
-                                            </Grid>
-                                            <Grid item>
-                                                <Success className={classes.success} />
-                                            </Grid>
-                                            <Grid item>
-                                                <Button
-                                                    variant='contained'
-                                                    color='secondary'
-                                                >
-                                                    Create A New Booking
-                                                </Button>
-                                            </Grid>
+                                            { bookingIsloading 
+                                            ?
+                                                <CircularProgress />
+                                            :
+                                                <>
+                                                { bookingData!.data.status! === 'Failed'
+                                            ?
+                                                <Grid item>
+                                                    <Typography variant='h6' align='center'>
+                                                        {
+                                                            bookingData?.data.msg || 'Something went wrong, Please Try Again'
+                                                        }
+                                                    </Typography>
+                                                </Grid>
+                                                :
+                                                <>
+                                                    <Grid item>
+                                                        <Typography variant='h6' align='center'>
+                                                            Booking Request Confirmed
+                                                        </Typography>                                            
+                                                    </Grid>
+                                                    <Grid item>
+                                                        <Typography variant='body1' align='center'>
+                                                            A tentative booking was made, It will be confirmed upon payment
+                                                        </Typography>                                            
+                                                    </Grid>
+                                                    <Grid item>
+                                                        <Success className={classes.success} />
+                                                    </Grid>
+                                                </>
+                                                }
+                                                </>
+                                            }
+                                            { !bookingIsloading &&
+                                                <Grid item>
+                                                    <Button
+                                                        variant='contained'
+                                                        color='secondary'
+                                                    >
+                                                        Create A New Booking
+                                                    </Button>
+                                                </Grid>
+                                            }
                                         </Grid>
                                     </Fade>
                                 )

@@ -27,11 +27,12 @@ const useStyles = makeStyles((theme: Theme) => ({
 // Interface
 interface Props {
     list: {
+        id?:number,
         startDateTime?:string,
         endDateTime?:string,
         availabilityStatus?: number
     }[],
-    handleTimeSelect: (timeslot: string|undefined) => void
+    handleTimeSelect: (timeslot: any|undefined) => void
 }
 
 const TimeList:React.FC<Props> = ( { list, handleTimeSelect } ) => {
@@ -50,9 +51,18 @@ const TimeList:React.FC<Props> = ( { list, handleTimeSelect } ) => {
                         divider 
                         button                     
                         selected = {index === selectedIndex }
-                        onClick = {() => { setSelectedIndex(index); handleTimeSelect(item.startDateTime?.split('T')[1]) }}
+                        onClick = {
+                            () => { 
+                                setSelectedIndex(index); 
+                                handleTimeSelect({
+                                    id: item.id,
+                                    label: item.startDateTime?.split('T')[1]
+                                }) 
+                            }
+                        }
                     >
                         <Grid container>
+                            {console.log(item)}
                             <Grid item xs={8}>
                                 <Grid container direction='column'>
                                     <Grid item>
