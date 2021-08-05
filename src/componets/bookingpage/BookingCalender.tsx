@@ -171,7 +171,7 @@ const BookingCalender:React.FC<BookingCalenderProps> = ( { activityName, activeP
         event.preventDefault()
         makeABooking({
             'packageId': activePackage.id,
-            'timeSlotId': selectedTimeslot.label,
+            'timeSlotId': selectedTimeslot.id,
             firstName,
             middleName,
             sureName,
@@ -456,6 +456,11 @@ const BookingCalender:React.FC<BookingCalenderProps> = ( { activityName, activeP
                                                     <Grid item>
                                                         <Typography variant='body1' align='center'>
                                                             A tentative booking was made, It will be confirmed upon payment
+                                                        </Typography>                                            
+                                                    </Grid>
+                                                    <Grid item>
+                                                        <Typography variant='body2' align='center'>
+                                                            {  `Booking Referance - ${bookingData?.data.response.id}` }
                                                         </Typography>                                            
                                                     </Grid>
                                                     <Grid item>
