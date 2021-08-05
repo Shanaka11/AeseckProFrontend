@@ -182,7 +182,7 @@ const Footer = () => {
                         <Grid item className={classes.gridItem}>
                             <iframe 
                                 title='com-center-location-main'
-                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3961.031846452363!2d79.91649541537942!3d6.886788895023588!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae25a082ec13591%3A0xae5d7cec4c69ff3f!2sParliament%20of%20Sri%20Lanka!5e0!3m2!1sen!2slk!4v1623210498327!5m2!1sen!2slk" 
+                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3143.252675498999!2d145.30271891532468!3d-38.017888479715914!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad617523f6c64ad%3A0xc551c70f2b93c4b6!2s25-55%20Overland%20Dr%2C%20Narre%20Warren%20VIC%203805%2C%20Australia!5e0!3m2!1sen!2slk!4v1628152467720!5m2!1sen!2slk" 
                                 width="100%" 
                                 height="237" 
                                 frameBorder='0px'
@@ -196,7 +196,7 @@ const Footer = () => {
         <Grid container alignItems='center' justify='center'>
             <Grid item>
                 <Typography variant='subtitle1' className={classes.address}>
-                    2 Elizabeth Street, MUNNA CREEK, Queensland, 4570 | (07) 5309 9583
+                    25-55 Overland Dr, Narre Warren VIC 3805
                 </Typography>
             </Grid>
         </Grid>
