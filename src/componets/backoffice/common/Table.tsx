@@ -2,7 +2,13 @@
 import React, { useEffect, useState } from 'react'
 // 3rd Party
 // Material UI Imports
-import { DataGrid, GridColDef, GridRowParams } from '@material-ui/data-grid';
+import { 
+    DataGrid, 
+    GridColDef, 
+    GridRowParams, 
+    GridPageChangeParams 
+} from '@material-ui/data-grid';
+
 import { 
     makeStyles,
     Theme,    
@@ -45,10 +51,12 @@ interface TableProps {
     columns: GridColDef[],
     rows: any,
     card: (data: any) => any,
-    handleOnRowClick?: (param: GridRowParams, event: React.MouseEvent<Element, MouseEvent>) => void
+    handleOnRowClick?: (param: GridRowParams, event: React.MouseEvent<Element, MouseEvent>) => void,
+    handlePageChange: (newPage:number) => void,
+    loading: boolean
 }
 
-const Table:React.FC<TableProps> = ( { columns, rows, card, handleOnRowClick } ) => {
+const Table:React.FC<TableProps> = ( { columns, rows, card, handleOnRowClick, handlePageChange, loading } ) => {
     //  Style
     const classes = useStyles()
 
@@ -88,7 +96,12 @@ const Table:React.FC<TableProps> = ( { columns, rows, card, handleOnRowClick } )
         </Popover>
         <DataGrid
             autoHeight
-            pageSize={20}                
+            pagination
+            pageSize={5}
+            rowCount={11}
+            paginationMode='server'
+            onPageChange={(newPage) => handlePageChange(newPage.page + 1)}
+            loading={loading}             
             columns={columns}
             rows={rows}
             classes={{

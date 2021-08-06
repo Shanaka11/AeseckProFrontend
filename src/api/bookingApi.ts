@@ -15,3 +15,7 @@ export const getBookingCalenderDetails = async (data: any) => {
 export const makeBooking = async (data:any) => {
     return axios.post(`${process.env.REACT_APP_SERVER}/bookings/save`, data, postConfigJson)
 }
+
+export const getBookingList = async (data:any) => {
+    return axios.post(`${process.env.REACT_APP_SERVER}/bookings/list`, data, postConfigJson)
+}

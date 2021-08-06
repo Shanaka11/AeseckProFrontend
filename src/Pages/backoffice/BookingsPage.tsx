@@ -1,8 +1,12 @@
 // React Imports
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 // 3rd Party
+import { useQuery } from 'react-query'
 // Material UI Imports
-import { GridColDef, GridCellParams } from '@material-ui/data-grid';
+import { 
+    GridColDef, 
+    GridCellParams
+} from '@material-ui/data-grid';
 import { 
     Button,
     Container,
@@ -11,7 +15,8 @@ import {
     TextField,
     Theme,
     Typography,
-    Divider    
+    Divider,
+    CircularProgress    
 } from '@material-ui/core'
 import { 
     ToggleButton 
@@ -19,6 +24,7 @@ import {
 // Local Imports
 import Table from '../../componets/backoffice/common/Table'
 import BreadCrumbs from '../../componets/backoffice/common/BreadCrumbs'
+import { getBookingList } from '../../api/bookingApi'
 
 
 // Style
@@ -54,22 +60,11 @@ const useStyles = makeStyles((theme:Theme)=> ({
 }))
 
 
-
-const rows = [
-    { id: 1, bookingNo: 1, date: '12/10/2021', time: '12:00', age: 35 },
-    { id: 2, bookingNo: 2, date: '12/10/2021', time: '11:00', age: 42 },
-    { id: 3, bookingNo: 3, date: '12/10/2021', time: '10:30', age: 45 },
-    { id: 4, bookingNo: 4, date: '12/10/2021', time: '9:30', age: 16 },
-    { id: 5, bookingNo: 5, date: '12/10/2021', time: '8:30', age: null },
-    { id: 6, bookingNo: 6, date: '12/10/2021', time: '12:30', age: 150 },
-    { id: 7, bookingNo: 7, date: '12/10/2021', time: '13:30', age: 44 },
-    { id: 8, bookingNo: 8, date: '12/10/2021', time: '14:30', age: 36 },
-    { id: 9, bookingNo: 9, date: '12/10/2021', time: '15:30', age: 65 },
-];  
-
 const BookingsPage = () => {
     //  Style
     const classes = useStyles()
+
+    // States
     const [confirmed, setConfirmed] = useState(false)
     const [pending, setPending] = useState(false)
     const [cancelled, setCancelled] = useState(false)
@@ -79,15 +74,43 @@ const BookingsPage = () => {
     const [partyRoom, setPartyRoom] = useState(false)
     const [other, setOther] = useState(false)
 
+    const [page, setPage] = useState(1)
+    // Query
+    const {
+        data,
+        isLoading,
+        isError,
+        error,
+        refetch
+    } = useQuery(['BookingList', page], () => getBookingList({        
+        "statusFilters": "1,3",
+    "fromDate": "2021-07-01",
+    "toDate": "2021-09-01",
+    "page": page,
+    "pageSize": 5}))
+
+    console.log(page)
+    if(isLoading){
+        return <CircularProgress />
+    }
+
+    console.log(data?.data.response)
+    
+    const dataRows = data?.data.response
+
     // Methods
     const handleConfirmOnClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>)=> {
         console.log('Confirm')
     }
 
+    const handlePageChange = (page:any) => {
+        setPage(page)
+    }
+
     // Const
     const columns: GridColDef[] = [
         {
-          field: "bookingNo",
+          field: "id",
           headerName: "Booking No",
           flex: 1,
           align: "center",
@@ -96,7 +119,7 @@ const BookingsPage = () => {
           disableColumnMenu: true,
         },
         { 
-            field: "date", 
+            field: "requestDateTime", 
             headerName: "Date", 
             flex: 0.7,
         },
@@ -324,7 +347,7 @@ const BookingsPage = () => {
                     </Grid>   
                 </Grid>
             </Grid>
-            <Table columns={columns} rows={rows ? rows : []} card={() => {<></>}}/>
+            <Table columns={columns} rows={dataRows ? dataRows : []} card={() => {<></>}} loading={isLoading} handlePageChange={(newPage:any) => setPage(newPage)}/>
         </Container>
     )
 }

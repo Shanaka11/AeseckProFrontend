@@ -458,7 +458,7 @@ const BookingCalender:React.FC<BookingCalenderProps> = ( { activityName, activeP
                                                 <Grid item>
                                                     <Typography variant='h6' align='center'>
                                                         {
-                                                            bookingData?.data.msg || 'Something went wrong, Please Try Again'
+                                                            `Booking Failed - ${bookingData?.data.msg}` || 'Something went wrong, Please Try Again'
                                                         }
                                                     </Typography>
                                                 </Grid>
