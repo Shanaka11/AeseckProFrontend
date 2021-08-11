@@ -1,12 +1,11 @@
 // React Imports
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 // 3rd Party
 // Material UI Imports
 import { 
     DataGrid, 
     GridColDef, 
-    GridRowParams, 
-    GridPageChangeParams 
+    GridRowParams,
 } from '@material-ui/data-grid';
 
 import { 
@@ -15,7 +14,6 @@ import {
 } from '@material-ui/core'
 // Local Imports
 import Popover from './TablePopover'
-import UserPopup from '../user/UserPopup'
 
 
 // Style
@@ -53,10 +51,11 @@ interface TableProps {
     card: (data: any) => any,
     handleOnRowClick?: (param: GridRowParams, event: React.MouseEvent<Element, MouseEvent>) => void,
     handlePageChange: (newPage:number) => void,
-    loading: boolean
+    loading: boolean,
+    pageCount: number,
 }
 
-const Table:React.FC<TableProps> = ( { columns, rows, card, handleOnRowClick, handlePageChange, loading } ) => {
+const Table:React.FC<TableProps> = ( { columns, rows, card, handleOnRowClick, handlePageChange, loading, pageCount } ) => {
     //  Style
     const classes = useStyles()
 
@@ -66,6 +65,7 @@ const Table:React.FC<TableProps> = ( { columns, rows, card, handleOnRowClick, ha
     const [showCard, setShowCard] = useState(false)
     const [rowHover, setRowHover] = useState(false)
     const [rowData, setRowData] = useState<any>()
+    const [page, setPage] = useState(0)
 
 
     // Methods
@@ -98,9 +98,10 @@ const Table:React.FC<TableProps> = ( { columns, rows, card, handleOnRowClick, ha
             autoHeight
             pagination
             pageSize={5}
-            rowCount={11}
+            page={page}
+            rowCount={pageCount}
             paginationMode='server'
-            onPageChange={(newPage) => handlePageChange(newPage.page + 1)}
+            onPageChange={(newPage) => {setPage(newPage.page); handlePageChange(newPage.page + 1);}}
             loading={loading}             
             columns={columns}
             rows={rows}

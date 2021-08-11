@@ -140,7 +140,13 @@ const UserListPage = () => {
                 </Grid>                
             </Grid>
             {(isLoading || isFetching) ? <CircularProgress />:
-                <Table columns={columns} rows={data?.data} card={(data: any) => <UserPopup data={data}/>} handleOnRowClick={handleOnRowClick} loading={isLoading} handlePageChange={(newPage:any) => console.log(newPage)}/>
+                <Table 
+                    columns={columns} 
+                    rows={data?.data} 
+                    card={(data: any) => <UserPopup data={data}/>} 
+                    handleOnRowClick={handleOnRowClick} loading={isLoading} handlePageChange={(newPage:any) => console.log(newPage)}
+                    pageCount={0}
+                />
             }
         </Container>
     )

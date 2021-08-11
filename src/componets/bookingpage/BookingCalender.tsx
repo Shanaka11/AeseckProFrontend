@@ -178,7 +178,8 @@ const BookingCalender:React.FC<BookingCalenderProps> = ( { activityName, activeP
             sureName,
             phoneNumber,
             'emailAddress': email,
-            'countryCode': 'AU'
+            'countryCode': 'AU',
+            'dateTime': `${selectedDateIndex.day}/${selectedDateIndex.month}/${selectedDateIndex.year} `
         })
         console.log('Submit')
         setPage(3)

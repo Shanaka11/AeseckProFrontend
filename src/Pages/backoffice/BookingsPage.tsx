@@ -1,7 +1,8 @@
 // React Imports
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 // 3rd Party
 import { useQuery } from 'react-query'
+import moment from 'moment';
 // Material UI Imports
 import { 
     GridColDef, 
@@ -18,13 +19,11 @@ import {
     Divider,
     CircularProgress    
 } from '@material-ui/core'
-import { 
-    ToggleButton 
-} from '@material-ui/lab';
 // Local Imports
 import Table from '../../componets/backoffice/common/Table'
 import BreadCrumbs from '../../componets/backoffice/common/BreadCrumbs'
-import { getBookingList } from '../../api/bookingApi'
+import Filter from '../../componets/backoffice/common/Filter'
+import { getBookingList, getBookingFilter } from '../../api/bookingApi'
 
 
 // Style
@@ -35,8 +34,8 @@ const useStyles = makeStyles((theme:Theme)=> ({
     textContainer: {
         marginTop: 12,
     },
-    filterItem:{
-        marginBottom: 12
+    dateItem:{
+        marginBottom: 8
     },
     fontColorBlack: {        
         color: 'black',
@@ -65,46 +64,33 @@ const BookingsPage = () => {
     const classes = useStyles()
 
     // States
-    const [confirmed, setConfirmed] = useState(false)
-    const [pending, setPending] = useState(false)
-    const [cancelled, setCancelled] = useState(false)
-
-    const [bakery, setBakery] = useState(false)
-    const [science, setScience] = useState(false)
-    const [partyRoom, setPartyRoom] = useState(false)
-    const [other, setOther] = useState(false)
-
     const [page, setPage] = useState(1)
+    const [stateFilterString, setStateFilterString] = useState('')
+    const [roomFilterString, setRoomFilterString] = useState('')
+    const [fromDate, setFromDate] = useState(moment().startOf('month').format('YYYY-MM-DD'))
+    const [toDate, setToDate] = useState(moment().endOf('month').format('YYYY-MM-DD'))
+
     // Query
     const {
         data,
         isLoading,
-        isError,
-        error,
-        refetch
-    } = useQuery(['BookingList', page], () => getBookingList({        
-        "statusFilters": "1,3",
-    "fromDate": "2021-07-01",
-    "toDate": "2021-09-01",
-    "page": page,
-    "pageSize": 5}))
+    } = useQuery(['BookingList', page, stateFilterString, roomFilterString, fromDate, toDate], () => getBookingList({        
+        "statusFilters": stateFilterString,
+        "resourceFilters": roomFilterString,
+        "fromDate": fromDate,
+        "toDate": toDate,
+        "page": page,
+        "pageSize": 5
+    }))
 
-    console.log(page)
-    if(isLoading){
-        return <CircularProgress />
-    }
-
-    console.log(data?.data.response)
-    
-    const dataRows = data?.data.response
+    const {
+        data: filterData,
+        isLoading: filterDataIsLoading,
+    } = useQuery(['BookingFilter'], () => getBookingFilter(3))
 
     // Methods
     const handleConfirmOnClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>)=> {
         console.log('Confirm')
-    }
-
-    const handlePageChange = (page:any) => {
-        setPage(page)
     }
 
     // Const
@@ -119,34 +105,46 @@ const BookingsPage = () => {
           disableColumnMenu: true,
         },
         { 
-            field: "requestDateTime", 
+            field: "bookingDate", 
             headerName: "Date", 
-            flex: 0.7,
+            flex: 0.6,
+            sortable: false,
+            disableColumnMenu: true,
         },
         { 
-            field: "time", 
+            field: "timeSlot", 
             headerName: "Time", 
-            flex: 0.7,
+            flex: 0.9,
+            sortable: false,
+            disableColumnMenu: true,
         },
         { 
             field: "room", 
             headerName: "Room", 
             flex: 1,
+            sortable: false,
+            disableColumnMenu: true,
         },
         { 
-            field: "package", 
+            field: "packageCodes", 
             headerName: "Package",
-            flex: 0.7,
+            flex: 1,
+            sortable: false,
+            disableColumnMenu: true,
         },
         { 
             field: "numberOfPeople", 
             headerName: "No of Guests", 
-            flex: 1,
+            flex: 0.9,
+            sortable: false,
+            disableColumnMenu: true,
         },    
         { 
             field: "phone", 
             headerName: "Phone",
             flex: 1,
+            sortable: false,
+            disableColumnMenu: true,
         },
         { 
             field: "actions", 
@@ -199,12 +197,12 @@ const BookingsPage = () => {
             </Typography>
             <Divider />
             <Grid container spacing={1}>
-                <Grid item xs={4}>
-                    <Typography variant='body1' className={classes.textContainer}>
+                <Grid item xs={2}>
+                    <Typography variant='body1' className={classes.textContainer} align='center'>
                         Date Range
                     </Typography>
-                    <Grid container spacing={2}>
-                        <Grid item xs={6}>
+                    <Grid container spacing={1} direction='column' justify='center' className={classes.dateItem}>
+                        <Grid item>
                             <TextField 
                                 type='date'
                                 variant='standard'
@@ -217,9 +215,12 @@ const BookingsPage = () => {
                                 classes={{
                                     root: classes.fontColorBlack
                                 }}
+                                fullWidth
+                                value={fromDate}
+                                onChange={(event) => setFromDate(event.target.value)}
                             />
                         </Grid>
-                        <Grid item xs={6}>
+                        <Grid item>
                             <TextField 
                                 type='date'
                                 variant='standard'
@@ -232,122 +233,65 @@ const BookingsPage = () => {
                                 classes={{
                                     root: classes.fontColorBlack
                                 }}
+                                fullWidth
+                                value={toDate}
+                                onChange={(event) => setToDate(event.target.value)}
                             />
                         </Grid>
                     </Grid>                                    
                 </Grid>
-                <Grid item xs={3}>
+                <Grid item xs={5}>
                     <Grid container className={`${classes.fill}`} direction='column'>
                         <Grid item>
-                            <Typography variant='body1' className={classes.textContainer}>
+                            <Typography variant='body1' className={classes.textContainer} align='center'>
                                 Booking State
                             </Typography>                        
                         </Grid>
                         <Grid item>
-                            <Grid container spacing={1} className={classes.buttonContainer}>
-                                <Grid item xs={4}>
-                                    <ToggleButton
-                                        selected={confirmed}
-                                        onChange={() => {
-                                            setConfirmed(!confirmed);
-                                        }}
-                                        size='small'
-                                        className={classes.toggleButton}
-                                    >
-                                        Confirmed
-                                    </ToggleButton>                                    
-                                </Grid>
-                                <Grid item xs={4}>
-                                    <ToggleButton
-                                        selected={pending}
-                                        onChange={() => {
-                                            setPending(!pending);
-                                        }}
-                                        size='small'
-                                        className={classes.toggleButton}
-                                    >
-                                        Pending
-                                    </ToggleButton>                                    
-                                </Grid>
-                                <Grid item xs={4}>
-                                    <ToggleButton
-                                        selected={cancelled}
-                                        onChange={() => {
-                                            setCancelled(!cancelled);
-                                        }}
-                                        size='small'
-                                        className={classes.toggleButton}
-                                    >
-                                        Cancelled
-                                    </ToggleButton>                                    
-                                </Grid>                                                                
-                            </Grid>
+                            {
+                                filterDataIsLoading ?
+                                <CircularProgress />
+                                :
+                                <Filter 
+                                    data={filterData?.data.response.bookingStatusFilters} 
+                                    filterString={stateFilterString} 
+                                    setFilterString={setStateFilterString}
+                                />
+                            }
                         </Grid>
                     </Grid>    
                 </Grid>
                 <Grid item xs={5}>
                 <Grid container className={`${classes.fill}`} direction='column'>
                         <Grid item>
-                            <Typography variant='body1' className={classes.textContainer}>
+                            <Typography variant='body1' className={classes.textContainer} align='center'>
                                 Room
                             </Typography>                        
                         </Grid>
                         <Grid item>
                             <Grid container spacing={1} className={classes.buttonContainer}>
-                                <Grid item xs={3}>
-                                    <ToggleButton
-                                        selected={bakery}
-                                        onChange={() => {
-                                            setBakery(!bakery);
-                                        }}
-                                        size='small'
-                                        className={classes.toggleButton}
-                                    >
-                                        Bakery
-                                    </ToggleButton>                                    
-                                </Grid>
-                                <Grid item xs={3}>
-                                    <ToggleButton
-                                        selected={science}
-                                        onChange={() => {
-                                            setScience(!science);
-                                        }}
-                                        size='small'
-                                        className={classes.toggleButton}
-                                    >
-                                        Science
-                                    </ToggleButton>                                    
-                                </Grid>
-                                <Grid item xs={3}>
-                                    <ToggleButton
-                                        selected={partyRoom}
-                                        onChange={() => {
-                                            setPartyRoom(!partyRoom);
-                                        }}
-                                        size='small'
-                                        className={classes.toggleButton}
-                                    >
-                                        Party Room
-                                    </ToggleButton>                                    
-                                </Grid>            
-                                <Grid item xs={3}>
-                                    <ToggleButton
-                                        selected={other}
-                                        onChange={() => {
-                                            setOther(!other);
-                                        }}
-                                        size='small'
-                                        className={classes.toggleButton}
-                                    >
-                                        Other Room
-                                    </ToggleButton>                                    
-                                </Grid>                                                                                     
+                                {
+                                    filterDataIsLoading ?
+                                    <CircularProgress />
+                                    :
+                                    <Filter 
+                                        data={filterData?.data.response.resourceFilters}
+                                        filterString={roomFilterString}
+                                        setFilterString={setRoomFilterString}
+                                    /> 
+                                }                                                                     
                             </Grid>
                         </Grid>
                     </Grid>   
                 </Grid>
             </Grid>
-            <Table columns={columns} rows={dataRows ? dataRows : []} card={() => {<></>}} loading={isLoading} handlePageChange={(newPage:any) => setPage(newPage)}/>
+            <Table 
+                columns={columns} 
+                rows={data?.data.pagedBookingList ? data?.data.pagedBookingList : []} card={() => {<></>}} 
+                loading={isLoading} 
+                handlePageChange={(newPage:any) => setPage(newPage)}
+                pageCount={data?.data.totalCount || 0}
+            />
         </Container>
     )
 }
