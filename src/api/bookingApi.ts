@@ -23,3 +23,7 @@ export const getBookingList = async (data:any) => {
 export const getBookingFilter = async (id:number) => {
     return axios.get(`${process.env.REACT_APP_SERVER}/bookings/bookingfilters?ActivityCenterId=${id}`, config)
 }
+
+export const changeStatus = async (data:any) => {
+    return axios.post(`${process.env.REACT_APP_SERVER}/bookings/updatestatus`, data, postConfigJson)
+}

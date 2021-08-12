@@ -9,7 +9,6 @@ import {
     GridCellParams
 } from '@material-ui/data-grid';
 import { 
-    Button,
     Container,
     Grid, 
     makeStyles,
@@ -23,6 +22,8 @@ import {
 import Table from '../../componets/backoffice/common/Table'
 import BreadCrumbs from '../../componets/backoffice/common/BreadCrumbs'
 import Filter from '../../componets/backoffice/common/Filter'
+import BookingPopup from '../../componets/backoffice/booking/BookingPopup'
+import BookingActions from '../../componets/backoffice/booking/BookingActions'
 import { getBookingList, getBookingFilter } from '../../api/bookingApi'
 
 
@@ -74,6 +75,7 @@ const BookingsPage = () => {
     const {
         data,
         isLoading,
+        refetch
     } = useQuery(['BookingList', page, stateFilterString, roomFilterString, fromDate, toDate], () => getBookingList({        
         "statusFilters": stateFilterString,
         "resourceFilters": roomFilterString,
@@ -87,11 +89,6 @@ const BookingsPage = () => {
         data: filterData,
         isLoading: filterDataIsLoading,
     } = useQuery(['BookingFilter'], () => getBookingFilter(3))
-
-    // Methods
-    const handleConfirmOnClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>)=> {
-        console.log('Confirm')
-    }
 
     // Const
     const columns: GridColDef[] = [
@@ -119,61 +116,37 @@ const BookingsPage = () => {
             disableColumnMenu: true,
         },
         { 
-            field: "room", 
-            headerName: "Room", 
-            flex: 1,
-            sortable: false,
-            disableColumnMenu: true,
-        },
-        { 
             field: "packageCodes", 
             headerName: "Package",
-            flex: 1,
+            flex: 0.9,
             sortable: false,
             disableColumnMenu: true,
         },
         { 
-            field: "numberOfPeople", 
+            field: "capacity", 
             headerName: "No of Guests", 
             flex: 0.9,
+            headerAlign: 'center',
+            align: 'center',
             sortable: false,
             disableColumnMenu: true,
         },    
         { 
-            field: "phone", 
-            headerName: "Phone",
-            flex: 1,
+            field: "statusLabel", 
+            headerName: "Status",
+            flex: 0.8,
             sortable: false,
             disableColumnMenu: true,
         },
         { 
-            field: "actions", 
+            field: "status", 
             headerName: "Actions",            
             flex: 1,
             headerAlign: "center",
+            sortable: false,
+            disableColumnMenu: true,            
             renderCell: (params: GridCellParams) => (
-                <Grid container spacing={2}>
-                    <Grid item xs={6}>
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            size="small"
-                            onClick={handleConfirmOnClick}
-                        >
-                            Confirm
-                        </Button>
-                    </Grid>
-                    <Grid item xs={6}>
-                        <Button
-                            variant="contained"
-                            color="secondary"
-                            size="small"
-                            // style={{ marginLeft: 16 }}
-                        >
-                            Cancel
-                        </Button>
-                    </Grid>                    
-                </Grid>
+                <BookingActions status={params} refetch={refetch}/>
               )             
         },    
     ];        
@@ -287,7 +260,8 @@ const BookingsPage = () => {
             </Grid>
             <Table 
                 columns={columns} 
-                rows={data?.data.pagedBookingList ? data?.data.pagedBookingList : []} card={() => {<></>}} 
+                rows={data?.data.pagedBookingList ? data?.data.pagedBookingList : []} 
+                card={(data: any) => <BookingPopup data={data}/>} 
                 loading={isLoading} 
                 handlePageChange={(newPage:any) => setPage(newPage)}
                 pageCount={data?.data.totalCount || 0}

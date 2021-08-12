@@ -77,7 +77,7 @@ const Table:React.FC<TableProps> = ( { columns, rows, card, handleOnRowClick, ha
             if(rowHover){
                 setShowCard(true)
             }
-        }, 500)
+        }, 1000)
         setRowData(param.row)        
     }
 
@@ -87,31 +87,32 @@ const Table:React.FC<TableProps> = ( { columns, rows, card, handleOnRowClick, ha
         }
         setRowHover(false)
     }
-    
+
     return (
         <>
-        <Popover x={mouseX} y={mouseY} show={showCard} hover={rowHover}>
+        <Popover x={mouseX} y={mouseY} show={showCard && rowData} hover={rowHover}>
             {/* <UserPopup /> */}     
             { card(rowData) }  
         </Popover>
-        <DataGrid
-            autoHeight
-            pagination
-            pageSize={5}
-            page={page}
-            rowCount={pageCount}
-            paginationMode='server'
-            onPageChange={(newPage) => {setPage(newPage.page); handlePageChange(newPage.page + 1);}}
-            loading={loading}             
-            columns={columns}
-            rows={rows}
-            classes={{
-                root: classes.fontColorBlack
-            }}
-            onRowLeave={ handleOnRowLeave }
-            onRowEnter={ handleOnRowEnter }
-            onRowClick={ handleOnRowClick }
-        />
+        <div style={{ height: 400, width: '100%' }}>
+            <DataGrid
+                pagination
+                pageSize={5}
+                page={page}
+                rowCount={pageCount}
+                paginationMode='server'
+                onPageChange={(newPage) => {setPage(newPage.page); handlePageChange(newPage.page + 1);}}
+                loading={loading}             
+                columns={columns}
+                rows={rows}
+                classes={{
+                    root: classes.fontColorBlack
+                }}
+                onRowLeave={ handleOnRowLeave }
+                onRowEnter={ handleOnRowEnter }
+                onRowClick={ handleOnRowClick }
+            />
+        </div>
         </>
     )
 }

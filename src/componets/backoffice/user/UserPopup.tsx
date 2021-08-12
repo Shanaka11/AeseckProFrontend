@@ -3,21 +3,10 @@ import React from 'react'
 // 3rd Party
 // Material UI Imports
 import { 
-    makeStyles,
-    Theme,
     Grid,
-    Typography
 } from '@material-ui/core'
 // Local Imports
 import GridItem from '../common/PopoverGridItem'
-
-// Style
-const useStyles = makeStyles((theme:Theme)=> ({
-    title: {
-        color: '#b7b6b6',
-        fontSize: '0.8em'
-    }
-}))
 
 // Interface
 interface Props {
@@ -25,8 +14,6 @@ interface Props {
 }
 
 const UserPopup:React.FC<Props> = ( { data } ) => {
-    // Classes
-    const classes = useStyles()
 
     return (        
         <Grid container>             
