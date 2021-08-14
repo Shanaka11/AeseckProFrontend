@@ -1,5 +1,5 @@
 // React Imports
-import React, { useState } from 'react'
+import React from 'react'
 // 3rd Party
 // Material UI Imports
 import { 
@@ -8,7 +8,7 @@ import {
     makeStyles,
     Typography,
     List,
-    ListItem,    
+    ListItem,
 } from '@material-ui/core'
 // Local Imports
 
@@ -20,8 +20,12 @@ const useStyles = makeStyles((theme: Theme) => ({
         height: 'calc(100% - 32px)'
     },
     container: {        
-        backgroundColor: theme.palette.primary.main
+        backgroundColor: theme.palette.primary.main,
+        width:400
     },
+    listItemSelected: {
+        backgroundColor: `${theme.palette.secondary.light} !important`
+    }
   }));
 
 // Interface
@@ -32,14 +36,17 @@ interface Props {
         endDateTime?:string,
         availabilityStatus?: number
     }[],
-    handleTimeSelect: (timeslot: any|undefined) => void
+    handleTimeSelect: (timeslot: any|undefined) => void,
+    selectedTime?: {
+        id: number,
+        label: string,
+        date: string
+    }
 }
 
-const TimeList:React.FC<Props> = ( { list, handleTimeSelect } ) => {
+const TimeList:React.FC<Props> = ( { list, handleTimeSelect, selectedTime } ) => {
     // Styles
     const classes = useStyles()
-    // States
-    const [selectedIndex, setSelectedIndex] = useState(-1)
 
     return (
         <div className={classes.mainContainer}>
@@ -48,25 +55,26 @@ const TimeList:React.FC<Props> = ( { list, handleTimeSelect } ) => {
                 list.map((item, index) => (
                     <ListItem 
                         key={`${item.startDateTime}`}
+                        classes={{
+                            selected: classes.listItemSelected
+                        }}
                         divider 
                         button                     
-                        selected = {index === selectedIndex }
+                        selected = {item.startDateTime?.split('T')[0] === selectedTime?.date && item.startDateTime?.split('T')[1]  === selectedTime?.label}
                         onClick = {
-                            () => { 
-                                setSelectedIndex(index); 
-                                handleTimeSelect({
-                                    id: item.id,
-                                    label: item.startDateTime?.split('T')[1]
-                                }) 
-                            }
+                            () => handleTimeSelect({
+                                id: item.id,
+                                label: item.startDateTime?.split('T')[1],
+                                date: item.startDateTime?.split('T')[0],
+                                availability: item.availabilityStatus
+                            })
                         }
                     >
                         <Grid container>
-                            {console.log(item)}
-                            <Grid item xs={8}>
-                                <Grid container direction='column'>
+                            <Grid item xs={12}>
+                                <Grid container direction='column' spacing={1} justify='space-between'>
                                     <Grid item>
-                                        <Typography variant='h6' align='left'>
+                                        <Typography variant='h4' component='h4' align='center'>
                                             {
                                                 index === 0 ?
                                                 'Morning Session' :
@@ -77,7 +85,7 @@ const TimeList:React.FC<Props> = ( { list, handleTimeSelect } ) => {
                                         </Typography>
                                     </Grid>
                                     <Grid item>
-                                        <Typography variant='body1' align='left'>
+                                        <Typography variant='body1' align='center'>
                                             {
                                                 index === 0 ?
                                                 'Morning Session Description' :
@@ -87,12 +95,12 @@ const TimeList:React.FC<Props> = ( { list, handleTimeSelect } ) => {
                                             }
                                         </Typography>
                                     </Grid>
+                                    <Grid>
+                                        <Typography variant='h5' component='h5' align='center'>
+                                            {`${item.startDateTime?.split('T')[1]} - ${item.endDateTime?.split('T')[1]}`}
+                                        </Typography>
+                                    </Grid>
                                 </Grid>
-                            </Grid>
-                            <Grid item xs={4}>
-                                <Typography variant='body1' align='right'>
-                                    {`${item.startDateTime?.split('T')[1]} - ${item.endDateTime?.split('T')[1]}`}
-                                </Typography>
                             </Grid>
                         </Grid>
                     </ListItem>                    

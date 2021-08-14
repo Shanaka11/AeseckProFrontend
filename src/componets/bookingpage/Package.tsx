@@ -3,10 +3,9 @@ import React from 'react'
 // 3rd Party
 // Material UI Imports
 import { 
-    Container,
-    Grid,
-    Theme,
+    Grid, 
     makeStyles,
+    Theme,
     Typography,
     Button
 } from '@material-ui/core'
@@ -15,123 +14,70 @@ import {
 // Style
 const useStyles = makeStyles((theme: Theme) => ({
     container:{
-        marginBottom: 8,
         paddingTop: 16,
         paddingBottom: 16,
-        backgroundColor: theme.palette.primary.main,
-        color: theme.palette.text.primary,        
-        maxWidth: 400,                
+        backgroundColor: theme.palette.primary.light,
+        height: 400,
+        width: 300,
         cursor: 'pointer',
+        transition: '0.3s background-color',
         '&:hover': {
-            backgroundColor: theme.palette.primary.dark,
+            backgroundColor: theme.palette.primary.main, 
         }
     },
-    containerSelected: {
-        transition: 'background_color 1500ms',
-        backgroundColor: theme.palette.primary.dark,
-    },
-    gridContainer: {
-        minHeight: 200,
-    },
-    textContainer: {
-        height: 150,
-        overflow: 'hidden'
-    },
-    button: {
-        backgroundColor: '#499F68',
-        color: theme.palette.text.primary,
-        '&:hover':{
-            backgroundColor: '#63d68c',            
-        }
-    },    
   }));
 
 // Interface
-interface PackageData {
-    id: number,
-    code: string,
-    categoryId: number,
-    displayName: string,
-    description: string,
-    activeFrom: string,
-    activeUntill: string,
-    activeStatus: boolean,
-    financeGenericRateId: number,
-    overrideChildRates: boolean,
-    category: string,
-    tags: string,
-    genericFinanceRate: {
-      id: number,
-      code: string,
-      grossAmountBeforeDiscount: number,
-      grossAmount: number,
-      netAmount: number,
-      uoM: string,
-      discountDetails: number,
-      taxDetails: number
-    },
-    packageConsumables: any,
-    packageResources: [
-      {
-        packageId: number,
-        resourceId: number,
-        volume: number,
-        capacity: number
-      }
-    ],
-    packageServices: any,
-    packageTimeSlots: any
+interface Props {
+    data: any,
+    handlePackageSelect: (selectedPackage: {id: number, name: string, price: number}) => void
 }
 
-interface PackageListProps {
-    id: number,
-    handleOnClick: (id:number, name:string, price:number) => void
-    data: PackageData,
-    selected: boolean
-}  
-
-const Package:React.FC<PackageListProps> = ({ id, handleOnClick, data, selected }) => {
-    //Styles
+const Package:React.FC<Props> = ( { data, handlePackageSelect } ) => {
+    // Style
     const classes = useStyles()
 
     return (
-        <Container 
-            title={data.description}        
-            className={`${classes.container} ${selected ? classes.containerSelected : undefined}`}
-            onClick={() => handleOnClick(data.id, data.displayName, data.genericFinanceRate.netAmount)}
+        <Grid 
+            container 
+            className={classes.container} 
+            direction='column'
+            justify='space-between'
+            alignItems='center'
+            onClick={(event) => handlePackageSelect({
+                id: data.id,
+                name: data.displayName,
+                price: data.genericFinanceRate.netAmount
+            })}
         >
-            <Grid container direction='column' justify='space-between' className={classes.gridContainer}>
-                <Grid item>
-                    <Typography variant='h6' align='center'>
-                        {data.displayName}
-                    </Typography>
-                </Grid>
-                <Grid item>
-                    <Typography variant='subtitle1' className={classes.textContainer}>
-                        {data.description}
-                    </Typography>                    
-                </Grid>          
-                <Grid item>
-                    <Grid container justify='space-between'>
-                        <Grid item>
-                            <Typography variant='h6'>
-                                {`${data.genericFinanceRate.netAmount} AUD`}
-                            </Typography>                            
-                        </Grid>
-                        <Grid item>
-                            <Button
-                                variant='contained'
-                                color='primary'
-                                className={classes.button}
-                                onClick={ () => handleOnClick(data.id, data.displayName, data.genericFinanceRate.netAmount)}
-                            >
-                                {selected ? 'Selected' : 'Select'}
-                            </Button>
-                        </Grid>
-                    </Grid>                
-                </Grid>      
+            <Typography
+                variant='h4'
+                component='h4'
+                align='center'
+            >
+                {data.displayName}
+            </Typography>
+            <Typography
+                variant='body1'
+                align='center'
+            >
+                {data.description}
+            </Typography>
+            <Grid item>
+                <Button
+                    variant='contained'
+                    color='secondary'
+                    disableElevation
+                    onClick={(event) => handlePackageSelect({
+                        id: data.id,
+                        name: data.displayName,
+                        price: data.genericFinanceRate.netAmount
+                    })}
+                >
+                    Select
+                </Button>
             </Grid>
-        </Container>
+        </Grid>
     )
 }
 

@@ -8,6 +8,7 @@ import {
     Typography, 
     IconButton,
     Theme,
+    LinearProgress
 } from '@material-ui/core'
 import KeyboardArrowLeftIcon from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
@@ -28,6 +29,10 @@ const useStyles = makeStyles((theme:Theme) => ({
     },
     dayContainer: {
         flexWrap: 'nowrap'
+    },
+    progressContainer: {
+        marginTop: theme.spacing(1),
+        marginBottom: theme.spacing(1)
     }
 }))
 
@@ -41,16 +46,21 @@ interface SelectedDate {
 
 interface Props {
     data: any,
-    handleDateSelectParent: (dayIndex: SelectedDate) => void    
+    handleDateSelectParent: (dayIndex: SelectedDate) => void,
+    loading? :boolean   
 }
 
-const Calender:React.FC<Props> = ( { data, handleDateSelectParent } ) => {
+const Calender:React.FC<Props> = ( { data, handleDateSelectParent, loading } ) => {
         // Style
         const classes = useStyles()
 
         // States
         const [offset, setOffset] = useState(0)
-        const [selectedDate, setSelectedDate] = useState<SelectedDate|1>(1)       
+        const [selectedDate, setSelectedDate] = useState<SelectedDate>({
+            day: new Date().getDate(),
+            month: new Date().getMonth(),
+            year: new Date().getFullYear()
+        })       
 
         const date = new Date();
         date.setMonth(date.getMonth() + offset);
@@ -121,7 +131,6 @@ const Calender:React.FC<Props> = ( { data, handleDateSelectParent } ) => {
                 <Day key={`P${x}`} date={prevLastDay - x + 1} handleDateClick={handleDateClick}/>
             );
         }
-        
     
         // Current Month Dates
         for (let i = 1; i <= lastDay; i++) {
@@ -131,13 +140,13 @@ const Calender:React.FC<Props> = ( { data, handleDateSelectParent } ) => {
             date.getFullYear() === new Date().getFullYear()
             ) {
             dateMatrixRow.push(
-                <Day 
+                <Day
                     key={`C${i}`} 
                     date={i} 
-                    currMonth={data[i - 1].availabilityStatus !== 0 }
+                    currMonth={loading ? false : true }
                     currDate 
                     handleDateClick={handleDateClick}
-                    selected={selectedDate !== 1 ? i === selectedDate.day && date.getMonth() === selectedDate.month && date.getFullYear() === selectedDate.year : false}
+                    selected={i === selectedDate.day && date.getMonth() === selectedDate.month && date.getFullYear() === selectedDate.year}
                 />
             );
             } else {
@@ -145,9 +154,9 @@ const Calender:React.FC<Props> = ( { data, handleDateSelectParent } ) => {
                 <Day 
                     key={`C${i}`} 
                     date={i} 
-                    currMonth={data[i - 1].availabilityStatus !== 0 }
+                    currMonth={loading ? false : true }
                     handleDateClick={handleDateClick}
-                    selected={selectedDate !== 1 && (i === selectedDate.day && date.getMonth() === selectedDate.month && date.getFullYear() === selectedDate.year)}
+                    selected={i === selectedDate.day && date.getMonth() === selectedDate.month && date.getFullYear() === selectedDate.year}
                 />
             );
             }
@@ -202,6 +211,11 @@ const Calender:React.FC<Props> = ( { data, handleDateSelectParent } ) => {
                         </Grid>
                     </Grid>
                 </div>
+                { loading &&
+                    <div className={classes.progressContainer}>
+                        <LinearProgress />
+                    </div>
+                }
                 {/* Body */}
                 <div>
                     <Grid container spacing={1} className={classes.dayContainer}>

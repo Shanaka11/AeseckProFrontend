@@ -16,8 +16,6 @@ interface Props {
 
 const BookingPopup:React.FC<Props> = ( { data } ) => {
 
-    console.log(data.primaryContact)
-
     if(!data){
         return <CircularProgress />
     }

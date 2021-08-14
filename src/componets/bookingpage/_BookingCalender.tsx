@@ -165,7 +165,6 @@ const BookingCalender:React.FC<BookingCalenderProps> = ( { activityName, activeP
 
     // Const
     const calenderResponse = calenderData?.data.response
-    console.log(calenderResponse)
 
     // Methods
     const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -181,7 +180,6 @@ const BookingCalender:React.FC<BookingCalenderProps> = ( { activityName, activeP
             'countryCode': 'AU',
             'dateTime': `${selectedDateIndex.day}/${selectedDateIndex.month}/${selectedDateIndex.year} `
         })
-        console.log('Submit')
         setPage(3)
     }
 
@@ -190,7 +188,6 @@ const BookingCalender:React.FC<BookingCalenderProps> = ( { activityName, activeP
     }
 
     const handleTimeSelect = (timeslot: any|undefined) => {
-        console.log(timeslot)
         if(timeslot){
             setSelectedTimeslot(timeslot)
         }        
@@ -206,8 +203,6 @@ const BookingCalender:React.FC<BookingCalenderProps> = ( { activityName, activeP
         setEmail('')
         setPhoneNumber('')
     }
-
-    console.log(page)
 
     return (
         <Container className={classes.container}>

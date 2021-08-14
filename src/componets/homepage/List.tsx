@@ -29,7 +29,6 @@ interface imageType {
 
 const List:React.FC<ListProps> = ( { id, data, activityCenter } ) => {
 
-    // console.log(data)
     return (
         <div id={id}>
             {

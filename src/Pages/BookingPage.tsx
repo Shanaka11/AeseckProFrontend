@@ -15,8 +15,9 @@ import {
 // Local Imports
 import Carousal from '../componets/bookingpage/BookingCarousal'
 import Slide from '../componets/bookingpage/BookingSlide'
-import PackageList from '../componets/bookingpage/PackageList'
-import BookingCalender from '../componets/bookingpage/BookingCalender'
+import PackageList from '../componets/bookingpage/_PackageList'
+import BookingCalender from '../componets/bookingpage/_BookingCalender'
+import Booking from '../componets/bookingpage/Booking'
 import { getPackages } from '../api/bookingApi'
 import { useGetQueryParams } from '../utils/hooks/useQueryHook'
 
@@ -64,7 +65,7 @@ const BookingPage = () => {
         isLoading, 
         isError, 
         isFetching
-    } = useQuery('OrganizationSummery', () => getPackages(params.activity))    
+    } = useQuery('PackageSummery', () => getPackages(params.activity))    
 
     // UseEffect
     useEffect(() => {
@@ -113,8 +114,10 @@ const BookingPage = () => {
                             </Slide>
                         ))                       
                     }
-                </Carousal>        
-                <PackageList 
+                </Carousal>    
+                {/* Replace Package List and the Booking Calender with the new Booking Component */}
+                <Booking data={response.filter((item:any) => item.id === activeActivityId)[0]}/>
+                {/* <PackageList 
                     data={response.filter((item:any) => item.id === activeActivityId)[0].packages} show={show} handlePackageChangeParent={handlePackageChange}
                 />
                 {console.log(activePackage)}
@@ -122,7 +125,7 @@ const BookingPage = () => {
                     <BookingCalender 
                         activityName={response.filter((item:any) => item.id === activeActivityId)[0].title} 
                         activePackage={activePackage ? activePackage : decodePackage(response.filter((item:any) => item.id === activeActivityId)[0].packages[0])}/>
-                }
+                } */}
             </div>
         </Grid>
     )

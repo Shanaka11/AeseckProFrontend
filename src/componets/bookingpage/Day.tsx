@@ -25,15 +25,15 @@ const useStyles = makeStyles((theme:Theme) => ({
         },        
     },
     selected: {
-        backgroundColor: 'blue',
+        backgroundColor: theme.palette.secondary.main,
         color: 'white',
         '&:hover': {
-            backgroundColor: 'blue',
+            backgroundColor: theme.palette.secondary.main,
             opacity: 0.7
         }
     },
     currentDate: {
-        backgroundColor: 'green',
+        backgroundColor: theme.palette.secondary.main,
         color: 'white',
     },
     notCurrentDate:{
@@ -62,9 +62,9 @@ const Day:React.FC<DayProps> = ( { date, currMonth, currDate, selected, handleDa
                 disabled={!currMonth}
                 className={`
                     ${classes.container}
-                    ${(currDate && !selected) ? classes.currentDate : undefined} 
                     ${currMonth ? undefined : classes.notCurrentDate}
-                    ${selected ? classes.selected : undefined}`}
+                    ${selected ? classes.selected : undefined}`
+                }
                 color='primary'
                 variant='contained'
                 size='small'
