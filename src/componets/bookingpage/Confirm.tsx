@@ -74,7 +74,6 @@ const Confirm:React.FC<Props> = ({activity, dateTime, packageSelected, contacts,
     // Query
     const {
         data: bookingData,
-        error: bookingError,
         isLoading: bookingIsloading,
         isSuccess: bookingIsSuccess,
         isError: bookingIsError,
@@ -89,7 +88,7 @@ const Confirm:React.FC<Props> = ({activity, dateTime, packageSelected, contacts,
                 handleBookingSuccess()
             }
         }
-    },[bookingIsSuccess, bookingData])
+    },[bookingIsSuccess, bookingData, handleBookingSuccess])
 
     // Method
     const onConfirmClick = () => {
@@ -102,7 +101,7 @@ const Confirm:React.FC<Props> = ({activity, dateTime, packageSelected, contacts,
             'phoneNumber': contacts.phoneNumber,
             'emailAddress': contacts.email,
             'countryCode': 'AU',
-            'dateTime': `${dateTime.date.day}/${dateTime.date.month}/${dateTime.date.year}`,
+            'dateTime': `${dateTime.date.year}-${dateTime.date.month}-${dateTime.date.day}`,
             'requestType': dateTime.time.availability === 1 ? `request` : `booking` 
         })
     }
