@@ -1,5 +1,5 @@
 // Reacr Imports
-import React from 'react'
+import React, { useEffect } from 'react'
 // 3rd Party
 import { useMutation } from 'react-query'
 // Material UI Imports
@@ -63,11 +63,11 @@ interface Props {
         price: number
     },
     contacts: any
-    handleDateSelectConfirm: (data: any) => void
+    handleBookingSuccess: () => void
     handleBackOnClick: () => void
 }
 
-const Confirm:React.FC<Props> = ({activity, dateTime, packageSelected, contacts, handleDateSelectConfirm, handleBackOnClick}) => {
+const Confirm:React.FC<Props> = ({activity, dateTime, packageSelected, contacts, handleBookingSuccess, handleBackOnClick}) => {
     // Styels
     const classes = useStyles()
 
@@ -81,6 +81,15 @@ const Confirm:React.FC<Props> = ({activity, dateTime, packageSelected, contacts,
         mutate: makeBookingMutation,
         reset: bookingReset,
     } = useMutation(makeBooking)
+
+    // useEffect
+    useEffect(() => {
+        if(bookingIsSuccess){
+            if(bookingData!.data.status! !== 'Failed'){
+                handleBookingSuccess()
+            }
+        }
+    },[bookingIsSuccess, bookingData])
 
     // Method
     const onConfirmClick = () => {
@@ -102,7 +111,7 @@ const Confirm:React.FC<Props> = ({activity, dateTime, packageSelected, contacts,
         <Slide in={true} direction='left' mountOnEnter unmountOnExit>
             <Container className={classes.container}>
                 <Grid container spacing={2} className={classes.header}>
-                    <Grid item>
+                    <Grid item xs={12} md={8}>
                         <Grid container justify='space-evenly' spacing={2}>
                             <Grid item xs={12} className={classes.header}>
                                 <Typography variant='h4' component='h4' align='center'>
@@ -130,7 +139,7 @@ const Confirm:React.FC<Props> = ({activity, dateTime, packageSelected, contacts,
                             </Grid>
                         </Grid>
                     </Grid>
-                    <Grid item>
+                    <Grid item xs={12} md={4}>
                         <Grid 
                             container 
                             justify='center' 
@@ -140,7 +149,7 @@ const Confirm:React.FC<Props> = ({activity, dateTime, packageSelected, contacts,
                         >
                             {
                                 bookingIsSuccess ?
-                                    (bookingData!.data.status! === 'Failed' || bookingIsError) ?
+                                    (bookingData!.data.status! === 'Failed') ?
                                         <Grid item>
                                             <Typography variant='h6' align='center'>
                                                 {
@@ -180,6 +189,15 @@ const Confirm:React.FC<Props> = ({activity, dateTime, packageSelected, contacts,
                                         </Grid>
                                     </>
                                 :
+                                    bookingIsError ? 
+                                    <Grid item>
+                                        <Typography variant='h6' align='center'>
+                                            {
+                                                `Booking Failed due to internal issues, Please try again if the issue persists please contact our hotline`
+                                            }
+                                        </Typography>
+                                    </Grid>
+                                    :
                                     <>
                                     <Grid item>
                                         <EventAvailableIcon className={classes.icon}/>

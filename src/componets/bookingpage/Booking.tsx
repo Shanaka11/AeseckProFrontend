@@ -68,6 +68,9 @@ const Booking:React.FC<Props> = ( { data } ) => {
         setPage(3)
     }
 
+    const handleBookingSuccess = () => {
+        setPage(4)
+    }
     const handleBackOnClick = () => {
         setPage(page - 1)
     }
@@ -121,7 +124,7 @@ const Booking:React.FC<Props> = ( { data } ) => {
                                 dateTime={selectedDate} 
                                 packageSelected={selectedPackage}
                                 contacts={contacts}
-                                handleDateSelectConfirm={handleContactsConfirm}
+                                handleBookingSuccess={handleBookingSuccess}
                                 handleBackOnClick={handleBackOnClick}                            
                             />
                         }
