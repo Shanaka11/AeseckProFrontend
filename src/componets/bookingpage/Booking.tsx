@@ -117,7 +117,7 @@ const Booking:React.FC<Props> = ( { data } ) => {
                             />
                         }
                         {
-                            (page === 3 && selectedPackage) &&
+                            ((page === 3 || page === 4) && selectedPackage) &&
                             <Confirm
                                 activity={data.title} 
                                 dateTime={selectedDate} 

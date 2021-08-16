@@ -14,7 +14,7 @@ import Package from './Package'
 // Style
 const useStyles = makeStyles((theme: Theme) => ({
     container:{
-        height: 450
+        minHeight: 450
     },
   }));
 

@@ -94,7 +94,7 @@ const DateTimePicker:React.FC<Props> = ( { activePackageId, handleDateSelectConf
     }
 
     const handleDateTimeConfirm = () => {
-        if(selectedTime!.availability === 1){
+        if(selectedTime!.availability === 0){
             setConfirm(true)
         }else{
             // Move to the next step

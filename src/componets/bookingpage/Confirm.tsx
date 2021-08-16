@@ -10,13 +10,15 @@ import {
     Slide,
     Theme,
     Typography,
-    Button
+    Button,
+    CircularProgress
 } from '@material-ui/core'
 import EventAvailableIcon from '@material-ui/icons/EventAvailable';
 // Local Imports
 import Item from './Item'
 import { makeBooking } from '../../api/bookingApi'
 import { ReactComponent as Success } from '../../assets/checked.svg';
+import Alert from '../common/Alert'
 
 // Style
 const useStyles = makeStyles((theme: Theme) => ({
@@ -34,6 +36,9 @@ const useStyles = makeStyles((theme: Theme) => ({
         height: 200,
         width: 200,
         fill: theme.palette.secondary.main
+    },
+    button: {
+        minWidth: 200
     }
   }));
 
@@ -100,15 +105,21 @@ const Confirm:React.FC<Props> = ({activity, dateTime, packageSelected, contacts,
             'sureName': contacts.sureName,
             'phoneNumber': contacts.phoneNumber,
             'emailAddress': contacts.email,
-            'countryCode': 'AU',
-            'dateTime': `${dateTime.date.year}-${dateTime.date.month}-${dateTime.date.day}`,
-            'requestType': dateTime.time.availability === 1 ? `request` : `booking` 
+            'countryCode': null,
+            'bookingDate': `${dateTime.date.year}-${`${dateTime.date.month}`.padStart(2, '0')}-${`${dateTime.date.day}`.padStart(2, '0')}`,
+            'requestType': dateTime.time.availability === 0 ? `request` : `booking` 
         })
     }
+
 
     return (
         <Slide in={true} direction='left' mountOnEnter unmountOnExit>
             <Container className={classes.container}>
+                {    console.log(bookingIsSuccess )}
+                { console.log(bookingData)}
+                {console.log(bookingData ? bookingData!.data.status : '')}
+                {bookingIsError && <Alert message={'Booking Failed due to internal issues, Please try again if the issue persists please contact our hotline'} severity='error'/>}
+                {bookingIsSuccess && (bookingData!.data.status! === 'Failed') && <Alert message={`Booking Failed - ${bookingData?.data.msg}, Please try again`} severity='error' />}
                 <Grid container spacing={2} className={classes.header}>
                     <Grid item xs={12} md={8}>
                         <Grid container justify='space-evenly' spacing={2}>
@@ -141,22 +152,13 @@ const Confirm:React.FC<Props> = ({activity, dateTime, packageSelected, contacts,
                     <Grid item xs={12} md={4}>
                         <Grid 
                             container 
-                            justify='center' 
+                            justify={(bookingIsSuccess && (bookingData && bookingData!.data.status! !== 'Failed')) ? 'space-evenly' : 'center'}
                             alignItems='center' 
                             direction='column' 
                             className={classes.subContainer}
                         >
                             {
-                                bookingIsSuccess ?
-                                    (bookingData!.data.status! === 'Failed') ?
-                                        <Grid item>
-                                            <Typography variant='h6' align='center'>
-                                                {
-                                                    `Booking Failed - ${bookingData?.data.msg}, Please try again` || 'Something went wrong, Please Try Again'
-                                                }
-                                            </Typography>
-                                        </Grid>
-                                    :
+                                (bookingIsSuccess && (bookingData && bookingData!.data.status! !== 'Failed')) ?
                                     <>
                                         <Grid item>
                                             <Typography variant='h6' align='center'>
@@ -176,27 +178,19 @@ const Confirm:React.FC<Props> = ({activity, dateTime, packageSelected, contacts,
                                         <Grid item>
                                             <Success className={classes.icon} />
                                         </Grid>
-                                        <Grid item>
+                                        {/* <Grid item>
                                             <Button
                                                 variant='contained'
                                                 color='secondary'
                                                 onClick={bookingReset}
                                                 disabled={bookingIsloading}
+                                                className={classes.button}
                                             >
                                                 Create A New Booking
                                             </Button>
-                                        </Grid>
+                                        </Grid> */}
                                     </>
                                 :
-                                    bookingIsError ? 
-                                    <Grid item>
-                                        <Typography variant='h6' align='center'>
-                                            {
-                                                `Booking Failed due to internal issues, Please try again if the issue persists please contact our hotline`
-                                            }
-                                        </Typography>
-                                    </Grid>
-                                    :
                                     <>
                                     <Grid item>
                                         <EventAvailableIcon className={classes.icon}/>
@@ -208,6 +202,8 @@ const Confirm:React.FC<Props> = ({activity, dateTime, packageSelected, contacts,
                                             disableElevation
                                             onClick={() => onConfirmClick()}
                                             disabled={bookingIsloading}
+                                            startIcon={bookingIsloading && <CircularProgress size={20}/>}
+                                            className={classes.button}
                                         >
                                             Confirm Booking
                                         </Button>
