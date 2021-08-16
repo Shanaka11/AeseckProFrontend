@@ -13,7 +13,8 @@ import {
     DialogActions,
     DialogTitle,
     DialogContent,
-    DialogContentText
+    DialogContentText,
+    Hidden
 } from '@material-ui/core'
 // Local Imports
 import Calender from './Calender'
@@ -23,7 +24,7 @@ import { getBookingCalenderDetails } from '../../api/bookingApi'
 // Style
 const useStyles = makeStyles((theme: Theme) => ({
     container:{
-        minHeight: 450
+        minHeight: 450,
     },
     dialogContainer: {
         backgroundColor: theme.palette.primary.main
@@ -158,22 +159,46 @@ const DateTimePicker:React.FC<Props> = ( { activePackageId, handleDateSelectConf
         </Dialog>
         <Slide in={true} direction='left' mountOnEnter unmountOnExit >
             <Container className={classes.container}>
-                <Grid container justify='space-evenly'>
-                    <Grid item>
-                        <Calender 
-                            data={calenderResponse ? calenderResponse.filter((item:any) => item.year === selectedDate.year && item.monthOfTheYear === selectedDate.month)[0].bookingDays : []}                                    
-                            handleDateSelectParent={handleDateSelect}
-                            loading={calenderIsLoading}
-                        />
+                <Hidden smDown>
+                    <Grid container justify='space-evenly'>
+                        <Grid item>
+                            <Calender 
+                                data={calenderResponse ? calenderResponse.filter((item:any) => item.year === selectedDate.year && item.monthOfTheYear === selectedDate.month)[0].bookingDays : []}                                    
+                                handleDateSelectParent={handleDateSelect}
+                                loading={calenderIsLoading}
+                            />
+                        </Grid>
+                        <Grid item>
+                            <TimeList 
+                                list={calenderResponse ? calenderResponse.filter((item:any) => item.year === selectedDate.year && item.monthOfTheYear === selectedDate.month)[0].bookingDays[selectedDate.day - 1].timeSlots : []}
+                                handleTimeSelect={handleTimeSelect}   
+                                selectedTime={selectedTime}                                         
+                            />
+                        </Grid>
                     </Grid>
-                    <Grid item>
-                        <TimeList 
-                            list={calenderResponse ? calenderResponse.filter((item:any) => item.year === selectedDate.year && item.monthOfTheYear === selectedDate.month)[0].bookingDays[selectedDate.day - 1].timeSlots : []}
-                            handleTimeSelect={handleTimeSelect}   
-                            selectedTime={selectedTime}                                         
-                        />
+                </Hidden>
+                <Hidden mdUp>
+                    <Grid container>
+                        <Grid item xs={12}>
+                            <Grid container justify='center' alignItems='center'>
+                                <Calender 
+                                    data={calenderResponse ? calenderResponse.filter((item:any) => item.year === selectedDate.year && item.monthOfTheYear === selectedDate.month)[0].bookingDays : []}                                    
+                                    handleDateSelectParent={handleDateSelect}
+                                    loading={calenderIsLoading}
+                                />
+                            </Grid>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <Grid container justify='center' alignItems='center'>
+                                <TimeList 
+                                    list={calenderResponse ? calenderResponse.filter((item:any) => item.year === selectedDate.year && item.monthOfTheYear === selectedDate.month)[0].bookingDays[selectedDate.day - 1].timeSlots : []}
+                                    handleTimeSelect={handleTimeSelect}   
+                                    selectedTime={selectedTime}                                         
+                                />
+                            </Grid>
+                        </Grid>
                     </Grid>
-                </Grid>
+                </Hidden>
                 <Grid container justify='space-between'>
                     <Button
                         variant='text'

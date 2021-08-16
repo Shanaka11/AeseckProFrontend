@@ -4,8 +4,6 @@ import { useParams } from 'react-router-dom'
 import { useQuery } from 'react-query'
 // Material UI Imports
 import { 
-    Button,
-    Container,
     Grid, 
     makeStyles,
     Theme,
@@ -15,8 +13,6 @@ import {
 // Local Imports
 import Carousal from '../componets/bookingpage/BookingCarousal'
 import Slide from '../componets/bookingpage/BookingSlide'
-import PackageList from '../componets/bookingpage/_PackageList'
-import BookingCalender from '../componets/bookingpage/_BookingCalender'
 import Booking from '../componets/bookingpage/Booking'
 import { getPackages } from '../api/bookingApi'
 import { useGetQueryParams } from '../utils/hooks/useQueryHook'
@@ -36,6 +32,9 @@ const useStyles = makeStyles((theme:Theme)=> ({
             fontSize: '3em'
         }
     },
+    container: {
+        overflow: 'hidden'
+    }
 }))
 
 // Interface
@@ -81,18 +80,6 @@ const BookingPage = () => {
         setTimeout(() => setShow(true), 500)
     }
 
-    const handlePackageChange = (selectedPackage: Package) => {
-        setActivePackage(selectedPackage)
-    }
-
-    const decodePackage = (packageRaw:any) => {
-        return {
-            id: packageRaw.id,
-            name: packageRaw.displayName,
-            price: packageRaw.genericFinanceRate.netAmount            
-        }
-    }
-
     if(isLoading || activeActivityId === -1){
         return (
                 <CircularProgress />
@@ -102,7 +89,7 @@ const BookingPage = () => {
     const response = data?.data.response  
 
     return (
-        <Grid container direction='column'>
+        <Grid container direction='column' className={classes.container}>
             <div id='activities' className={classes.mainContainer}>
                 <Carousal fixed handleStepChangeParent={handleStepChange} startStep={response.map((item:any, index:number) => { return item.id }).indexOf(activeActivityId)}>
                     {

@@ -21,7 +21,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
     container: {        
         backgroundColor: theme.palette.primary.main,
-        width:400
+        width:400,
+        [theme.breakpoints.down('xs')]:{
+            width: '250px'
+        }
     },
     listItemSelected: {
         backgroundColor: `${theme.palette.secondary.light} !important`

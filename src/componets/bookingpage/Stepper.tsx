@@ -6,8 +6,12 @@ import {
     StepConnector,
     StepIconProps,
     Step,
-    StepLabel
+    StepLabel,
+    useMediaQuery
 } from '@material-ui/core'
+import { 
+  useTheme
+} from '@material-ui/styles'
 import CoreStepper from '@material-ui/core/Stepper'
 import { makeStyles, Theme, createStyles, withStyles } from '@material-ui/core/styles';
 import Check from '@material-ui/icons/Check';
@@ -111,7 +115,10 @@ interface Props {
 const Stepper:React.FC<Props> = ( { activeStep } ) => {
     // Styles
     const classes = useStyles();
-    
+    const theme:Theme = useTheme()
+
+    const matches = useMediaQuery(theme.breakpoints.down("sm"))
+
     const steps = getSteps();
 
     return (
@@ -127,7 +134,7 @@ const Stepper:React.FC<Props> = ( { activeStep } ) => {
                         completed: classes.labelActive
                     }}
                     >
-                        {label}
+                        {!matches && label}
                 </StepLabel>
               </Step>
             ))}

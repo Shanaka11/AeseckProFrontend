@@ -10,7 +10,8 @@ import {
     TextField,
     Theme,
     Typography,
-    Button
+    Button,
+    Hidden
 } from '@material-ui/core'
 // Local Imports
 import Item from './Item'
@@ -138,26 +139,40 @@ const Contact:React.FC<Props> = ({ activity, dateTime, packageSelected, contact,
             <Container className={classes.container}>
                 <Grid container justify='space-evenly' className={classes.header} spacing={2}>
                     <Grid item>
-                        <Grid container justify='space-evenly' spacing={2}>
+                        <Grid container justify='space-evenly' spacing={1}>
                             <Grid item xs={12} className={classes.header}>
                                 <Typography variant='h4' component='h4' align='center'>
                                     Booking Summery
                                 </Typography>
                             </Grid>
-                            <Grid item>
-                                <Grid container direction='column' spacing={3}>
-                                    <Item label='Activity Center' value='Party Room'/>
-                                    <Item label='Date' value={ dateTime.time.date }/>
-                                    <Item label='Package' value={ packageSelected.name }/>
+                            <Hidden smDown>
+                                <Grid item>
+                                    <Grid container direction='column' spacing={3}>
+                                        <Item label='Activity Center' value='Party Room'/>
+                                        <Item label='Date' value={ dateTime.time.date }/>
+                                        <Item label='Package' value={ packageSelected.name }/>
+                                    </Grid>
                                 </Grid>
-                            </Grid>
-                            <Grid item>
-                                <Grid container direction='column' spacing={3}>
-                                    <Item label='Activity' value={activity}/>
-                                    <Item label='Time' value={ dateTime.time.label }/>
-                                    <Item label='Price' value={ `${packageSelected.price} AUD` }/>
+                                <Grid item>
+                                    <Grid container direction='column' spacing={3}>
+                                        <Item label='Activity' value={activity}/>
+                                        <Item label='Time' value={ dateTime.time.label }/>
+                                        <Item label='Price' value={ `${packageSelected.price} AUD` }/>
+                                    </Grid>
                                 </Grid>
-                            </Grid>
+                            </Hidden>
+                            <Hidden mdUp>
+                                <Grid item>
+                                    <Grid container direction='column' spacing={1}>
+                                        <Item label='Activity Center' value='Party Room'/>
+                                        <Item label='Activity' value={activity}/>
+                                        <Item label='Date' value={ dateTime.time.date }/>
+                                        <Item label='Time' value={ dateTime.time.label }/>
+                                        <Item label='Package' value={ packageSelected.name }/>
+                                        <Item label='Price' value={ `${packageSelected.price} AUD` }/>
+                                    </Grid>
+                                </Grid>
+                            </Hidden>
                         </Grid>
                     </Grid>
                     <Grid item>
