@@ -83,7 +83,6 @@ const Confirm:React.FC<Props> = ({activity, dateTime, packageSelected, contacts,
         isSuccess: bookingIsSuccess,
         isError: bookingIsError,
         mutate: makeBookingMutation,
-        reset: bookingReset,
     } = useMutation(makeBooking)
 
     // useEffect
@@ -213,16 +212,18 @@ const Confirm:React.FC<Props> = ({activity, dateTime, packageSelected, contacts,
                         </Grid>
                     </Grid>
                 </Grid>
-                <Grid container justify='flex-start'>
-                    <Button
-                        variant='text'
-                        color='secondary'
-                        disableElevation
-                        onClick={() => handleBackOnClick()}
-                    >
-                        Back
-                    </Button>
-                </Grid>
+                {!(bookingIsSuccess && (bookingData && bookingData!.data.status! !== 'Failed')) &&
+                    <Grid container justify='flex-start'>
+                        <Button
+                            variant='text'
+                            color='secondary'
+                            disableElevation
+                            onClick={() => handleBackOnClick()}
+                        >
+                            Back
+                        </Button>
+                    </Grid>
+                }
             </Container>
         </Slide>
     )

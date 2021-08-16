@@ -135,9 +135,9 @@ const Calender:React.FC<Props> = ( { data, handleDateSelectParent, loading } ) =
         // Current Month Dates
         for (let i = 1; i <= lastDay; i++) {
             if (
-            i === new Date().getDate() &&
-            date.getMonth() === new Date().getMonth() &&
-            date.getFullYear() === new Date().getFullYear()
+            i < new Date().getDate() &&
+            date.getMonth() <= new Date().getMonth() &&
+            date.getFullYear() <= new Date().getFullYear()
             ) {
             dateMatrixRow.push(
                 <Day
@@ -147,6 +147,7 @@ const Calender:React.FC<Props> = ( { data, handleDateSelectParent, loading } ) =
                     currDate 
                     handleDateClick={handleDateClick}
                     selected={i === selectedDate.day && date.getMonth() === selectedDate.month && date.getFullYear() === selectedDate.year}
+                    availability={data.length > 0 ? data[i - 1].availabilityStatus !== 1 : false}
                 />
             );
             } else {
@@ -157,6 +158,7 @@ const Calender:React.FC<Props> = ( { data, handleDateSelectParent, loading } ) =
                     currMonth={loading ? false : true }
                     handleDateClick={handleDateClick}
                     selected={i === selectedDate.day && date.getMonth() === selectedDate.month && date.getFullYear() === selectedDate.year}
+                    availability={data.length > 0 ? data[i - 1].availabilityStatus !== 1 : false}
                 />
             );
             }
@@ -186,7 +188,10 @@ const Calender:React.FC<Props> = ( { data, handleDateSelectParent, loading } ) =
                 <div className={classes.headerContainer}>
                     <Grid container justify='space-between' alignItems='center'>
                         <Grid item>
-                            <IconButton onClick={() => {setOffset(offset - 1)}}>
+                            <IconButton 
+                                disabled={date.getMonth() === new Date().getMonth()}
+                                onClick={() => {setOffset(offset - 1)}}
+                            >
                                 <KeyboardArrowLeftIcon style={{ color : 'white'}}/>
                             </IconButton>
                         </Grid>

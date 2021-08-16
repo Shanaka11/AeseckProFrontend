@@ -28,6 +28,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
     listItemSelected: {
         backgroundColor: `${theme.palette.secondary.light} !important`
+    },
+    listItemNotAvailable: {
+        backgroundColor: theme.palette.secondary.dark
     }
   }));
 
@@ -61,6 +64,9 @@ const TimeList:React.FC<Props> = ( { list, handleTimeSelect, selectedTime } ) =>
                         classes={{
                             selected: classes.listItemSelected
                         }}
+                        className={`
+                            ${item.availabilityStatus !== 1 ? classes.listItemNotAvailable : undefined}
+                        `}
                         divider 
                         button                     
                         selected = {item.startDateTime?.split('T')[0] === selectedTime?.date && item.startDateTime?.split('T')[1]  === selectedTime?.label}

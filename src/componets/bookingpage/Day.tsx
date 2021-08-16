@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme:Theme) => ({
         },        
     },
     selected: {
-        backgroundColor: theme.palette.secondary.main,
+        backgroundColor: `${theme.palette.secondary.main} !important`,
         color: 'white',
         '&:hover': {
             backgroundColor: theme.palette.secondary.main,
@@ -38,6 +38,9 @@ const useStyles = makeStyles((theme:Theme) => ({
     },
     notCurrentDate:{
         backgroundColor: 'lightgrey',
+    },
+    alreadyBooked: {
+        backgroundColor: theme.palette.secondary.dark
     }
 }))
 
@@ -47,10 +50,11 @@ interface DayProps {
     currMonth?:boolean, 
     currDate?:boolean, 
     selected?: boolean, 
+    availability?:boolean
     handleDateClick: (date: number) => void
 }
 
-const Day:React.FC<DayProps> = ( { date, currMonth, currDate, selected, handleDateClick } ) => {
+const Day:React.FC<DayProps> = ( { date, currMonth, currDate, selected, availability, handleDateClick } ) => {
 
     // Styles
     const classes = useStyles()
@@ -59,11 +63,12 @@ const Day:React.FC<DayProps> = ( { date, currMonth, currDate, selected, handleDa
         <Grid item>
             <Button
                 onClick={() => handleDateClick(date)}
-                disabled={!currMonth}
+                disabled={!currMonth || currDate}
                 className={`
                     ${classes.container}
                     ${currMonth ? undefined : classes.notCurrentDate}
-                    ${selected ? classes.selected : undefined}`
+                    ${selected ? classes.selected : undefined}
+                    ${availability ? classes.alreadyBooked : undefined}`
                 }
                 color='primary'
                 variant='contained'
