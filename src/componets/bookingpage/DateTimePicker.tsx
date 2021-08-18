@@ -73,7 +73,6 @@ const DateTimePicker:React.FC<Props> = ( { activePackageId, handleDateSelectConf
         error: calenderError, 
         isLoading: calenderIsLoading, 
         isError: calenderIsError, 
-        isFetching: calenderIsFetching,
     } = useQuery(
         'GetBookingCalenderDetails', 
         () => getBookingCalenderDetails({

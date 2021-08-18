@@ -7,6 +7,6 @@ export const getUserById = async (id: string) => {
     return axios.get(`${process.env.REACT_APP_SERVER}/contact/getContact?Id=${id}`, config)
 }
 
-export const getUserList = async () => {
-    return axios.get(`${process.env.REACT_APP_SERVER}/contact/list?Page=1&PageSize=10`, config)
+export const getUserList = async (page: number) => {
+    return axios.get(`${process.env.REACT_APP_SERVER}/contact/list?Page=${page}&PageSize=5`, config)
 }

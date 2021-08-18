@@ -65,12 +65,23 @@ const useStyles = makeStyles((theme:Theme)=> ({
 const UserListPage = () => {
     //  Style
     const classes = useStyles()
+
+    // State
+    const [page, setPage] = useState(1)
     
     // Routing 
     const history = useHistory()
 
     // Query
-    const { data, error, isLoading, isError, isFetching } = useQuery('UserInfo', () => getUserList())
+    const { 
+        data,
+        error,
+        isLoading,
+        isError,
+        isFetching
+    } = useQuery(['UserInfo', page], 
+        () => getUserList(page)
+    )
 
     // Const
     const columns: GridColDef[] = [
@@ -139,13 +150,15 @@ const UserListPage = () => {
                     </Grid>                                    
                 </Grid>                
             </Grid>
-            {(isLoading || isFetching) ? <CircularProgress />:
+            {
                 <Table 
                     columns={columns} 
-                    rows={data?.data} 
+                    rows={data?.data.pagedBookingList || []} 
                     card={(data: any) => <UserPopup data={data}/>} 
-                    handleOnRowClick={handleOnRowClick} loading={isLoading} handlePageChange={(newPage:any) => console.log(newPage)}
-                    pageCount={0}
+                    handleOnRowClick={handleOnRowClick} 
+                    loading={isLoading} 
+                    handlePageChange={(newPage:any) => setPage(newPage)}
+                    pageCount={data?.data.totalCount || 0}
                 />
             }
         </Container>

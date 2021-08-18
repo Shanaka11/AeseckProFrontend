@@ -114,9 +114,6 @@ const Confirm:React.FC<Props> = ({activity, dateTime, packageSelected, contacts,
     return (
         <Slide in={true} direction='left' mountOnEnter unmountOnExit>
             <Container className={classes.container}>
-                {    console.log(bookingIsSuccess )}
-                { console.log(bookingData)}
-                {console.log(bookingData ? bookingData!.data.status : '')}
                 {bookingIsError && <Alert message={'Booking Failed due to internal issues, Please try again if the issue persists please contact our hotline'} severity='error'/>}
                 {bookingIsSuccess && (bookingData!.data.status! === 'Failed') && <Alert message={`Booking Failed - ${bookingData?.data.msg}, Please try again`} severity='error' />}
                 <Grid container spacing={2} className={classes.header}>

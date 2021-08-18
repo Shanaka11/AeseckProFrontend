@@ -11,7 +11,6 @@ import {
     Theme,
     Typography,
 } from '@material-ui/core'
-import Skeleton from '@material-ui/lab/Skeleton';
 // Local Imports
 import avatar from '../../../assets/avatar.jpg'
 // import UserTabs from './UserTabs'
