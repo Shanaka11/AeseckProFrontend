@@ -74,13 +74,13 @@ const DateTimePicker:React.FC<Props> = ( { activePackageId, handleDateSelectConf
         isLoading: calenderIsLoading, 
         isError: calenderIsError, 
     } = useQuery(
-        'GetBookingCalenderDetails', 
+        ['GetBookingCalenderDetails', selectedDate.year], 
         () => getBookingCalenderDetails({
             "packageId": activePackageId,
             "packageCategory": 'BackeryPartyRoom',
             "monthOfTheYear": selectedDate.month,
             "year": selectedDate.year,
-            "requestUpfrontMonths": 3
+            "requestUpfrontMonths": 12 - selectedDate.month
         })
     )
 

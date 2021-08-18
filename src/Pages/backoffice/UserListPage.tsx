@@ -77,8 +77,7 @@ const UserListPage = () => {
         data,
         error,
         isLoading,
-        isError,
-        isFetching
+        isError
     } = useQuery(['UserInfo', page], 
         () => getUserList(page)
     )
