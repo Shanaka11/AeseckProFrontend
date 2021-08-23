@@ -109,11 +109,11 @@ const Carousal:React.FC<CarousalProps> = ( { children, fixed } ) => {
                         <KeyboardArrowRightIcon />
                     </IconButton>
                 </div>
-                <div className={classes.stepperContainer}>
+                {/* <div className={classes.stepperContainer}>
                     <div className={classes.stepper}>
                         { stepIcons }
                     </div>                
-                </div>        
+                </div>         */}
             </Hidden>    
             {/* Slides */}
             <div>
@@ -136,7 +136,7 @@ const Carousal:React.FC<CarousalProps> = ( { children, fixed } ) => {
                             axis={'x'}
                             index={activeIndex}
                             onChangeIndex={handleStepChange} 
-                            interval={5000} 
+                            interval={105000} 
                         >
                         {
                             children

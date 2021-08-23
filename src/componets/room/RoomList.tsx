@@ -24,9 +24,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     container:{
         paddingTop: 32,
         paddingBottom: 32,        
-        backgroundImage: "url('https://i.redd.it/lsa3lv6c2r651.png')",
-        backgroundColor: '#499F68',
-        backgroundBlendMode: 'screen',
+        backgroundColor: theme.palette.primary.main,
         color: theme.palette.text.primary
     },
     accordian: {

@@ -11,7 +11,8 @@ import {
     Theme,
     Typography,
     Button,
-    CircularProgress
+    CircularProgress,
+    Hidden
 } from '@material-ui/core'
 import EventAvailableIcon from '@material-ui/icons/EventAvailable';
 // Local Imports
@@ -146,67 +147,112 @@ const Confirm:React.FC<Props> = ({activity, dateTime, packageSelected, contacts,
                         </Grid>
                     </Grid>
                     <Grid item xs={12} md={4}>
-                        <Grid 
-                            container 
-                            justify={(bookingIsSuccess && (bookingData && bookingData!.data.status! !== 'Failed')) ? 'space-evenly' : 'center'}
-                            alignItems='center' 
-                            direction='column' 
-                            className={classes.subContainer}
-                        >
-                            {
-                                (bookingIsSuccess && (bookingData && bookingData!.data.status! !== 'Failed')) ?
-                                    <>
+                        <Hidden mdUp>
+                            <Grid container justifyContent='center'>
+                                <Grid 
+                                    container 
+                                    justify={(bookingIsSuccess && (bookingData && bookingData!.data.status! !== 'Failed')) ? 'space-evenly' : 'center'}
+                                    alignItems='center' 
+                                    direction='column' 
+                                    className={classes.subContainer}
+                                >
+                                    {
+                                        (bookingIsSuccess && (bookingData && bookingData!.data.status! !== 'Failed')) ?
+                                            <>
+                                                <Grid item>
+                                                    <Typography variant='h6' align='center'>
+                                                        Booking Request Confirmed
+                                                    </Typography>                                            
+                                                </Grid>
+                                                <Grid item>
+                                                    <Typography variant='body1' align='center'>
+                                                        A tentative booking was made, It will be confirmed upon payment
+                                                    </Typography>                                            
+                                                </Grid>
+                                                <Grid item>
+                                                    <Typography variant='body2' align='center'>
+                                                        {  `Booking Referance - ${bookingData?.data.response.id}` }
+                                                    </Typography>                                            
+                                                </Grid>
+                                                <Grid item>
+                                                    <Success className={classes.icon} />
+                                                </Grid>
+                                            </>
+                                        :
+                                            <>
+                                            <Grid item>
+                                                <EventAvailableIcon className={classes.icon}/>
+                                            </Grid>
+                                            <Grid item>
+                                                <Button
+                                                    variant='contained'
+                                                    color='secondary'
+                                                    disableElevation
+                                                    onClick={() => onConfirmClick()}
+                                                    disabled={bookingIsloading}
+                                                    startIcon={bookingIsloading && <CircularProgress size={20}/>}
+                                                    className={classes.button}
+                                                >
+                                                    Confirm Booking
+                                                </Button>
+                                            </Grid>
+                                            </>
+                                    }
+                                </Grid>
+                            </Grid>
+                        </Hidden>
+                        <Hidden smDown>
+                            <Grid 
+                                container 
+                                justify={(bookingIsSuccess && (bookingData && bookingData!.data.status! !== 'Failed')) ? 'space-evenly' : 'center'}
+                                alignItems='center' 
+                                direction='column' 
+                                className={classes.subContainer}
+                            >
+                                {
+                                    (bookingIsSuccess && (bookingData && bookingData!.data.status! !== 'Failed')) ?
+                                        <>
+                                            <Grid item>
+                                                <Typography variant='h6' align='center'>
+                                                    Booking Request Confirmed
+                                                </Typography>                                            
+                                            </Grid>
+                                            <Grid item>
+                                                <Typography variant='body1' align='center'>
+                                                    A tentative booking was made, It will be confirmed upon payment
+                                                </Typography>                                            
+                                            </Grid>
+                                            <Grid item>
+                                                <Typography variant='body2' align='center'>
+                                                    {  `Booking Referance - ${bookingData?.data.response.id}` }
+                                                </Typography>                                            
+                                            </Grid>
+                                            <Grid item>
+                                                <Success className={classes.icon} />
+                                            </Grid>
+                                        </>
+                                    :
+                                        <>
                                         <Grid item>
-                                            <Typography variant='h6' align='center'>
-                                                Booking Request Confirmed
-                                            </Typography>                                            
+                                            <EventAvailableIcon className={classes.icon}/>
                                         </Grid>
                                         <Grid item>
-                                            <Typography variant='body1' align='center'>
-                                                A tentative booking was made, It will be confirmed upon payment
-                                            </Typography>                                            
-                                        </Grid>
-                                        <Grid item>
-                                            <Typography variant='body2' align='center'>
-                                                {  `Booking Referance - ${bookingData?.data.response.id}` }
-                                            </Typography>                                            
-                                        </Grid>
-                                        <Grid item>
-                                            <Success className={classes.icon} />
-                                        </Grid>
-                                        {/* <Grid item>
                                             <Button
                                                 variant='contained'
                                                 color='secondary'
-                                                onClick={bookingReset}
+                                                disableElevation
+                                                onClick={() => onConfirmClick()}
                                                 disabled={bookingIsloading}
+                                                startIcon={bookingIsloading && <CircularProgress size={20}/>}
                                                 className={classes.button}
                                             >
-                                                Create A New Booking
+                                                Confirm Booking
                                             </Button>
-                                        </Grid> */}
-                                    </>
-                                :
-                                    <>
-                                    <Grid item>
-                                        <EventAvailableIcon className={classes.icon}/>
-                                    </Grid>
-                                    <Grid item>
-                                        <Button
-                                            variant='contained'
-                                            color='secondary'
-                                            disableElevation
-                                            onClick={() => onConfirmClick()}
-                                            disabled={bookingIsloading}
-                                            startIcon={bookingIsloading && <CircularProgress size={20}/>}
-                                            className={classes.button}
-                                        >
-                                            Confirm Booking
-                                        </Button>
-                                    </Grid>
-                                    </>
-                            }
-                        </Grid>
+                                        </Grid>
+                                        </>
+                                }
+                            </Grid>
+                        </Hidden>
                     </Grid>
                 </Grid>
                 {!(bookingIsSuccess && (bookingData && bookingData!.data.status! !== 'Failed')) &&

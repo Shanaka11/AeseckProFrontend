@@ -8,7 +8,7 @@ import {
     makeStyles,
     Theme,
     Typography,
-    CircularProgress
+    LinearProgress
 } from '@material-ui/core'
 // Local Imports
 import Carousal from '../componets/bookingpage/BookingCarousal'
@@ -20,8 +20,7 @@ import { useGetQueryParams } from '../utils/hooks/useQueryHook'
 // Style
 const useStyles = makeStyles((theme:Theme)=> ({   
     mainContainer: {
-        backgroundImage: "url('https://i.redd.it/lsa3lv6c2r651.png')",
-        backgroundColor: '#499F68',
+        backgroundColor: theme.palette.primary.main,
         backgroundBlendMode: 'screen',
         color: theme.palette.text.primary
     },    
@@ -38,11 +37,6 @@ const useStyles = makeStyles((theme:Theme)=> ({
 }))
 
 // Interface
-interface Package {
-    id: number,
-    name: string,
-    price: number
-}
 
 const BookingPage = () => {
     // Style
@@ -54,16 +48,14 @@ const BookingPage = () => {
 
     // States
     const [activeActivityId, setActiveActivityId] = useState(-1)
-    const [activePackage, setActivePackage] = useState<Package>()
-    const [show, setShow] = useState(true)
 
     // Query
     const { 
         data, 
-        error, 
+        // error, 
         isLoading, 
-        isError, 
-        isFetching
+        // isError, 
+        // isFetching
     } = useQuery('PackageSummery', () => getPackages(params.activity))    
 
     // UseEffect
@@ -76,13 +68,11 @@ const BookingPage = () => {
     // Methods
     const handleStepChange = (id:number) => {
         setActiveActivityId(response[id].id)
-        setShow(false)
-        setTimeout(() => setShow(true), 500)
     }
 
     if(isLoading || activeActivityId === -1){
         return (
-                <CircularProgress />
+                <LinearProgress />
             )
     }    
 

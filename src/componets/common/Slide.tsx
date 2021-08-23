@@ -11,15 +11,16 @@ import {
 // Style
 const useStyles = makeStyles((theme:Theme)=> ({
     image:{
-        height: 910,
+        // height: 910,
+        height: 682,
         width: '100%',
         verticalAlign: 'bottom',
         objectFit: 'cover'
     },
     details:{
         position: 'absolute',
-        top: 64,
-        height: 846,
+        top: 0,
+        height: 682,
         width: '100%',
     },
 }))

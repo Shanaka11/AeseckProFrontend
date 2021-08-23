@@ -18,7 +18,6 @@ import AccessCards from './AccessCards'
 // Style
 const useStyles = makeStyles((theme:Theme)=> ({
     container:{        
-        height: '100vh',
         backgroundColor: theme.palette.primary.light
     },
     subContainer: {
@@ -26,7 +25,7 @@ const useStyles = makeStyles((theme:Theme)=> ({
         marginBottom: 12,
     },
     buttonContainer:{ 
-        marginTop: theme.spacing(3)
+        marginTop: theme.spacing(2)
     },
     button: {
         height: 50,
@@ -91,6 +90,7 @@ const User:React.FC<Props> = ( { barcode, userStatus, refetchUser, handleDone } 
                             color='secondary'
                             className={classes.button}
                             onClick={handleDone}
+                            disableElevation
                         >
                             Done
                         </Button>

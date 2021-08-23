@@ -13,7 +13,7 @@ import {
     makeStyles,
     Theme,
     Typography,
-    CircularProgress
+    LinearProgress
 } from '@material-ui/core'
 // Local Imports
 import Carousal from '../componets/common/Carousal'
@@ -27,7 +27,7 @@ import { getActivityCenterSummary } from '../api/activityCenterApi'
 // Style
 const useStyles = makeStyles((theme:Theme)=> ({
     container:{
-        height: '80%',
+        height: '90%',
         zIndex: 300,
         [theme.breakpoints.down('xs')]:{
             height: '60%'
@@ -60,18 +60,16 @@ const Homepage = () => {
     const params:ParamsProps = useParams()
 
     // Query
-    const { data, error, isLoading, isError, isFetching } = useQuery('OrganizationSummery', () => getOrganizationSummary())
+    const { data, isLoading, isError } = useQuery('OrganizationSummery', () => getOrganizationSummary())
     const { 
         data:activityCenterData, 
-        error:activityCenterError, 
         isLoading: activityCenterIsLoading, 
         isError:activityCenterIsError, 
-        isFetching:activityCenterIsFetching
     } = useQuery('ActivityCenterSummery', () => getActivityCenterSummary(params.activity!), { enabled : params.activity ? true : false})
 
     if(isLoading || activityCenterIsLoading){
         return (
-                <CircularProgress />
+                <LinearProgress />
             )
     }
 
@@ -89,9 +87,15 @@ const Homepage = () => {
                     (params.activity ? response.activityCenters.filter((item:any) => item.id === parseInt(params.activity!))[0].images : response.images).filter((item:any) => item.imageCategory === 'HeaderImage').map((item:any, index:number) => (                            
                             <Slide key={`slide-${index}`} index={index} imgPath={item.imageUrl}>
                                 <Container className={classes.container}>
-                                    <Grid container alignItems='center' justify='space-evenly' direction='column' className={classes.subContainer}>
+                                    <Grid 
+                                        container 
+                                        alignItems='center' 
+                                        justify='flex-end' 
+                                        direction='column' 
+                                        className={classes.subContainer}
+                                    >
                                         <Grid item>
-                                            <Typography variant='h1' align='center' className={classes.header}>
+                                            <Typography variant='h2' align='center' className={classes.header}>
                                                 {params.activity ? response.activityCenters.filter((item:any) => item.id === parseInt(params.activity!))[0].title : item.imageDescription}
                                             </Typography>
                                         </Grid>

@@ -15,8 +15,7 @@ import { getUserStatus } from '../api/sessionApi'
 // Style
 const useStyles = makeStyles((theme:Theme)=> ({
     container:{        
-        backgroundImage: "url('https://i.redd.it/lsa3lv6c2r651.png')",
-        backgroundColor: '#499F68',
+        backgroundColor: theme.palette.primary.main,
         backgroundBlendMode: 'screen',        
     },
     mainContainer: {
