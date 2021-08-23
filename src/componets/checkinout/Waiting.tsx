@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme:Theme)=> ({
         backgroundColor: theme.palette.primary.main
     },
     subContainer:{
-        height: 'calc(100vh - 90px)'
+        height: 'calc(100vh + 18px)'
     },
     marginLeft:{
         marginLeft: 12

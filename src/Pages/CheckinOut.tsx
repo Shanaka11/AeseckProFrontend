@@ -19,6 +19,10 @@ const useStyles = makeStyles((theme:Theme)=> ({
         backgroundColor: '#499F68',
         backgroundBlendMode: 'screen',        
     },
+    mainContainer: {
+        height: '100vh',
+        backgroundColor: theme.palette.primary.light
+    }
 }))
 
 const CheckinOut = () => {
@@ -51,8 +55,6 @@ const CheckinOut = () => {
     const handleDone = () => {
         setPage(1)
     }
-
-    console.log(page)
     
     return (
         <div className={classes.container}>
@@ -65,12 +67,14 @@ const CheckinOut = () => {
 
                     isLoading ? 
                     <LinearProgress /> : 
-                    <User 
-                        barcode={barcode} 
-                        userStatus={data?.data.response} 
-                        refetchUser={refetch}
-                        handleDone={handleDone}
-                    />
+                    <div className={classes.mainContainer}>
+                        <User 
+                            barcode={barcode} 
+                            userStatus={data?.data.response} 
+                            refetchUser={refetch}
+                            handleDone={handleDone}
+                        />
+                    </div>
                 // </Container>
             }
         </div>

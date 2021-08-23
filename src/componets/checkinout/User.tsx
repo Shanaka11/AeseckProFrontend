@@ -18,7 +18,7 @@ import AccessCards from './AccessCards'
 // Style
 const useStyles = makeStyles((theme:Theme)=> ({
     container:{        
-        height: '100%',
+        height: '100vh',
         backgroundColor: theme.palette.primary.light
     },
     subContainer: {

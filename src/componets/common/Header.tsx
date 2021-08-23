@@ -1,10 +1,3 @@
-// TODO
-// Drawer
-// Menu - Activities
-// Menu - Avatar
-// Add Dynamic Data
-// Add Functionality
-
 // React Imports
 import React, { useState } from 'react'
 // 3rd Party
@@ -159,7 +152,7 @@ const Header = () => {
         </>
     )
 
-    if(location.pathname === '/login'){
+    if(location.pathname === '/login' || location.pathname === `/checkinout`){
         return (<></>)
     }
 
