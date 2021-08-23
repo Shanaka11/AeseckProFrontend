@@ -136,7 +136,7 @@ const Carousal:React.FC<CarousalProps> = ( { children, fixed } ) => {
                             axis={'x'}
                             index={activeIndex}
                             onChangeIndex={handleStepChange} 
-                            interval={105000} 
+                            interval={5000} 
                         >
                         {
                             children
