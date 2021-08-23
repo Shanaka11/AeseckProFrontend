@@ -20,6 +20,7 @@ import {
 import Calender from './Calender'
 import TimeList from './TimeList'
 import { getBookingCalenderDetails } from '../../api/bookingApi'
+import { useEffect } from 'react';
 
 // Style
 const useStyles = makeStyles((theme: Theme) => ({
@@ -60,12 +61,16 @@ const DateTimePicker:React.FC<Props> = ( { activePackageId, handleDateSelectConf
 
     // States
     const [selectedDate, setSelectedDate] = useState<SelectedDate>({
-        day: new Date().getDay() + 1,
+        day: new Date().getDate() + 1,
         month: new Date().getMonth() + 1,
         year: new Date().getFullYear()
     })
+
+    const [calenderYear, setCalenderYear] = useState<Number>(new Date().getFullYear())
+
     const [selectedTime, setSelectedTime] = useState<SelectedTime>()
     const [confirm, setConfirm] = useState(false)
+    const [fullCalenderData, setFullCalenderData] = useState<any[]>([])
 
     // Queries
     const { 
@@ -74,15 +79,22 @@ const DateTimePicker:React.FC<Props> = ( { activePackageId, handleDateSelectConf
         isLoading: calenderIsLoading, 
         isError: calenderIsError, 
     } = useQuery(
-        ['GetBookingCalenderDetails', selectedDate.year], 
+        ['GetBookingCalenderDetails', calenderYear], 
         () => getBookingCalenderDetails({
             "packageId": activePackageId,
             "packageCategory": 'BackeryPartyRoom',
-            "monthOfTheYear": selectedDate.month,
-            "year": selectedDate.year,
-            "requestUpfrontMonths": 12 - selectedDate.month
+            "monthOfTheYear": 1,
+            "year": calenderYear,
+            "requestUpfrontMonths": 12
         })
     )
+
+    // UseEffect
+    useEffect(() => {
+        if(!calenderIsLoading){
+            setFullCalenderData(fullCalenderData.concat(calenderData?.data.response))
+        }
+    }, [calenderData, calenderIsLoading])
 
     // Methods
     const handleDateSelect = (day:SelectedDate) => {
@@ -114,7 +126,7 @@ const DateTimePicker:React.FC<Props> = ( { activePackageId, handleDateSelectConf
     }
 
     // Consts
-    const calenderResponse = calenderData?.data.response
+    const calenderResponse = fullCalenderData
 
     return (
         <div>
@@ -162,14 +174,15 @@ const DateTimePicker:React.FC<Props> = ( { activePackageId, handleDateSelectConf
                     <Grid container justify='space-evenly'>
                         <Grid item>
                             <Calender 
-                                data={calenderResponse ? calenderResponse.filter((item:any) => item.year === selectedDate.year && item.monthOfTheYear === selectedDate.month)[0].bookingDays : []}                                    
+                                data={calenderResponse || []}                                    
                                 handleDateSelectParent={handleDateSelect}
+                                handleCalenderYearChange={setCalenderYear}
                                 loading={calenderIsLoading}
                             />
                         </Grid>
                         <Grid item>
                             <TimeList 
-                                list={calenderResponse ? calenderResponse.filter((item:any) => item.year === selectedDate.year && item.monthOfTheYear === selectedDate.month)[0].bookingDays[selectedDate.day - 1].timeSlots : []}
+                                list={calenderResponse!.length > 0 ? calenderResponse!.filter((item:any) => item.year === selectedDate.year && item.monthOfTheYear === selectedDate.month)[0].bookingDays[selectedDate.day - 1].timeSlots : []}
                                 handleTimeSelect={handleTimeSelect}   
                                 selectedTime={selectedTime}                                         
                             />
@@ -181,8 +194,9 @@ const DateTimePicker:React.FC<Props> = ( { activePackageId, handleDateSelectConf
                         <Grid item xs={12}>
                             <Grid container justify='center' alignItems='center'>
                                 <Calender 
-                                    data={calenderResponse ? calenderResponse.filter((item:any) => item.year === selectedDate.year && item.monthOfTheYear === selectedDate.month)[0].bookingDays : []}                                    
+                                    data={calenderResponse || []}                                    
                                     handleDateSelectParent={handleDateSelect}
+                                    handleCalenderYearChange={setCalenderYear}
                                     loading={calenderIsLoading}
                                 />
                             </Grid>
@@ -190,7 +204,7 @@ const DateTimePicker:React.FC<Props> = ( { activePackageId, handleDateSelectConf
                         <Grid item xs={12}>
                             <Grid container justify='center' alignItems='center'>
                                 <TimeList 
-                                    list={calenderResponse ? calenderResponse.filter((item:any) => item.year === selectedDate.year && item.monthOfTheYear === selectedDate.month)[0].bookingDays[selectedDate.day - 1].timeSlots : []}
+                                    list={calenderResponse!.length > 0 ? calenderResponse!.filter((item:any) => item.year === selectedDate.year && item.monthOfTheYear === selectedDate.month)[0].bookingDays[selectedDate.day - 1].timeSlots : []}
                                     handleTimeSelect={handleTimeSelect}   
                                     selectedTime={selectedTime}                                         
                                 />

@@ -14,6 +14,7 @@ import KeyboardArrowLeftIcon from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
 // Local Imports
 import Day from './Day'
+import { useEffect } from 'react';
 
 // Styles
 const useStyles = makeStyles((theme:Theme) => ({
@@ -47,10 +48,11 @@ interface SelectedDate {
 interface Props {
     data: any,
     handleDateSelectParent: (dayIndex: SelectedDate) => void,
+    handleCalenderYearChange: (year: number) => void,
     loading? :boolean   
 }
 
-const Calender:React.FC<Props> = ( { data, handleDateSelectParent, loading } ) => {
+const Calender:React.FC<Props> = ( { data, handleDateSelectParent, handleCalenderYearChange, loading } ) => {
         // Style
         const classes = useStyles()
 
@@ -63,8 +65,20 @@ const Calender:React.FC<Props> = ( { data, handleDateSelectParent, loading } ) =
         })       
 
         const date = new Date();
+
         date.setMonth(date.getMonth() + offset);
     
+        useEffect(() => {
+
+            const prevDate = new Date()
+
+            const currDate = new Date()
+            currDate.setMonth(currDate.getMonth() + offset)
+
+            if(prevDate.getFullYear() < currDate.getFullYear()){
+                handleCalenderYearChange(currDate.getFullYear())
+            }
+        }, [offset])
         date.setDate(1);
     
         const lastDay = new Date(
@@ -108,9 +122,10 @@ const Calender:React.FC<Props> = ( { data, handleDateSelectParent, loading } ) =
             "December"
         ];
 
+        const filteredList = !loading && data.filter((item:any) => item.year === date.getFullYear() && item.monthOfTheYear === date.getMonth() + 1)[0]
+        const bookingDays =  filteredList ? filteredList.bookingDays : []
         // Date Click Handler
         const handleDateClick = (day:number) => {
-            
             setSelectedDate({
                 day,
                 month: date.getMonth(),
@@ -147,7 +162,7 @@ const Calender:React.FC<Props> = ( { data, handleDateSelectParent, loading } ) =
                     currDate 
                     handleDateClick={handleDateClick}
                     selected={i === selectedDate.day && date.getMonth() === selectedDate.month && date.getFullYear() === selectedDate.year}
-                    availability={data.length > 0 ? data[i - 1].availabilityStatus !== 1 : false}
+                    availability={bookingDays.length > 0 ? bookingDays[i - 1].availabilityStatus !== 1 : false}
                 />
             );
             } else {
@@ -158,7 +173,7 @@ const Calender:React.FC<Props> = ( { data, handleDateSelectParent, loading } ) =
                     currMonth={loading ? false : true }
                     handleDateClick={handleDateClick}
                     selected={i === selectedDate.day && date.getMonth() === selectedDate.month && date.getFullYear() === selectedDate.year}
-                    availability={data.length > 0 ? data[i - 1].availabilityStatus !== 1 : false}
+                    availability={bookingDays.length > 0 ? bookingDays[i - 1].availabilityStatus !== 1 : false}
                 />
             );
             }

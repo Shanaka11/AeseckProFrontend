@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 // 3rd Party
 // Material UI Imports
 import { 
@@ -8,51 +8,117 @@ import {
     makeStyles,
     Theme,
     Typography,
-    CircularProgress
+    TextField,
+    LinearProgress
 } from '@material-ui/core'
 // Local Imports
 
 // Style
 const useStyles = makeStyles((theme:Theme)=> ({
     container:{
-        height: '100%',
         backgroundColor: theme.palette.primary.main
+    },
+    subContainer:{
+        height: 'calc(100vh - 90px)'
     },
     marginLeft:{
         marginLeft: 12
-    }
+    },
+    textFieldMain: {
+        width: 300,
+        [theme.breakpoints.down('sm')]:{
+            width: 225
+        },
+    },
+    textFieldUnderLine: {
+        "&&&:before": {
+            borderBottomColor: theme.palette.text.primary
+        }
+    },
+    textFieldLabel: {
+        color: theme.palette.text.primary,
+        opacity: 0.8
+    },
+    button :{
+        width: 100,
+        height: 56,
+        borderRadius: 0
+    },
+    progress: {
+        width: '100%'
+    }    
 }))
 
 // Interface
 interface WaitingProps {
-    handleCodeScan: (page: number) => void
+    handleCodeScan: (page: string) => void
 }
 
 const Waiting:React.FC<WaitingProps> = ( { handleCodeScan } ) => {
     // Style
     const classes = useStyles()
 
+    // State
+    const [barcode, setBarcode] = useState('')
+
+    // Methods
+    const handleSubmit = (event:React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault()
+        handleCodeScan(barcode)
+    }
+
     return (
-        <>
-        <Grid container justify='center' alignItems='center' className={classes.container}>
-            <Grid item>
-                <Grid container  alignItems='center'>
-                    <Typography variant='h6' color='textPrimary' >
-                        Scan your Id
-                    </Typography>
-                    <CircularProgress color='secondary' className={classes.marginLeft}/>
+        <Container className={classes.container}>
+            <Grid container justify='center' alignItems='center' className={classes.subContainer} direction='column' spacing={4}>
+                <Grid item>
+                    <Grid container>
+                        <Typography variant='h2' color='textPrimary' align='center'>
+                            Scan your Id or Enter it Below
+                        </Typography>
+                    </Grid>
                 </Grid>
-            </Grid>     
-        </Grid>
-        {/* Test Segment */}
-        <Button 
-            variant='contained'
-            color='secondary'
-            onClick={() => handleCodeScan(2)}
-        >
-            Scan Done -- Testing
-        </Button> 
-        </>      
+                <Grid item className={classes.progress}>
+                    <LinearProgress color="primary" />
+                </Grid>
+                <Grid item>
+                    <form onSubmit={handleSubmit}>
+                        <TextField
+                            variant='filled'
+                            label='Barcode/Email/Phonenumber'
+                            fullWidth
+                            // type={type || 'text'}
+                            autoComplete='no'
+                            color='secondary'
+                            className={classes.textFieldMain}
+                            InputProps={{
+                                classes:{
+                                underline: classes.textFieldUnderLine,
+
+                                }
+                            }}
+                            InputLabelProps={{
+                                className:classes.textFieldLabel,
+                                shrink: true,
+                            }}
+                            required
+                            onChange={(event) => setBarcode(event.target.value)}
+                            value={barcode}
+                            autoFocus
+                        >
+                        </TextField>
+                        <Button
+                            variant='contained'
+                            color='secondary'
+                            disableElevation
+                            className={classes.button}
+                            type='submit'
+                        >
+                            Submit
+                        </Button>
+                    </form>
+                </Grid>
+            </Grid>
+        </Container>      
     )
 }
 

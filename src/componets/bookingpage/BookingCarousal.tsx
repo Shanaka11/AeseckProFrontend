@@ -131,11 +131,11 @@ const BookingCarousal:React.FC<CarousalProps> = ( { children, fixed, handleStepC
                         <div className={classes.arrowRight}></div>
                     </div>
                 </div>
+                {/* Stepper */}
+                <div className={classes.stepContainer}>
+                    { stepIcons }
+                </div>
             </Hidden>
-            {/* Stepper */}
-            <div className={classes.stepContainer}>
-                { stepIcons }
-            </div>
             {/* Slide Container */}
             <SwipeableViews
                 axis={'x'}

@@ -13,10 +13,11 @@ import { useTheme } from '@material-ui/styles'
 // Interfaces
 interface ItemProps {
     label: string,
-    value: string|number
+    value: string|number,
+    small?: boolean
 }
 
-const Item:React.FC<ItemProps> = ({ label, value }) => {
+const Item:React.FC<ItemProps> = ({ label, value, small }) => {
     // Styles
     const theme:Theme = useTheme()
     const matches = useMediaQuery(theme.breakpoints.down("sm"))
@@ -27,7 +28,7 @@ const Item:React.FC<ItemProps> = ({ label, value }) => {
                 <Typography variant={matches ? 'subtitle2' : 'caption'} align={matches ? 'center' : undefined}>
                     { label }
                 </Typography>
-                <Typography variant='h5' component='h5' align={matches ? 'center' : undefined}>
+                <Typography variant={`${small ? 'h6' : 'h5'}`} component='h5' align={matches ? 'center' : undefined}>
                     { value }
                 </Typography>
             </Grid>

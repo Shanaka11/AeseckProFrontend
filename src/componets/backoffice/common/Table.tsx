@@ -6,6 +6,7 @@ import {
     DataGrid, 
     GridColDef, 
     GridRowParams,
+    MuiEvent
 } from '@material-ui/data-grid';
 
 import { 
@@ -49,7 +50,7 @@ interface TableProps {
     columns: GridColDef[],
     rows: any,
     card: (data: any) => any,
-    handleOnRowClick?: (param: GridRowParams, event: React.MouseEvent<Element, MouseEvent>) => void,
+    handleOnRowClick?: (param: GridRowParams, event: any) => void,
     handlePageChange: (newPage:number) => void,
     loading: boolean,
     pageCount: number,
@@ -69,7 +70,7 @@ const Table:React.FC<TableProps> = ( { columns, rows, card, handleOnRowClick, ha
 
 
     // Methods
-    const handleOnRowEnter = (param: GridRowParams, event: React.MouseEvent<Element, MouseEvent>) => {
+    const handleOnRowEnter = (param: GridRowParams, event: any) => {
         setMouseX(event.clientX) 
         setMouseY(event.clientY)
         setRowHover(true)
@@ -81,7 +82,7 @@ const Table:React.FC<TableProps> = ( { columns, rows, card, handleOnRowClick, ha
         setRowData(param.row)        
     }
 
-    const handleOnRowLeave = (param: GridRowParams, event: React.MouseEvent<Element, MouseEvent>) => {
+    const handleOnRowLeave = (param: GridRowParams, event: MuiEvent<React.SyntheticEvent<Element, Event>>) => {
         if(showCard){
             setShowCard(false)
         }
@@ -101,7 +102,7 @@ const Table:React.FC<TableProps> = ( { columns, rows, card, handleOnRowClick, ha
                 page={page}
                 rowCount={pageCount}
                 paginationMode='server'
-                onPageChange={(newPage) => {setPage(newPage.page); handlePageChange(newPage.page + 1);}}
+                onPageChange={(newPage) => {setPage(newPage); handlePageChange(newPage + 1);}}
                 loading={loading}             
                 columns={columns}
                 rows={rows}

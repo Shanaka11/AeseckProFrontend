@@ -109,12 +109,12 @@ const Carousal:React.FC<CarousalProps> = ( { children, fixed } ) => {
                         <KeyboardArrowRightIcon />
                     </IconButton>
                 </div>
-            </Hidden>
-            <div className={classes.stepperContainer}>
-                <div className={classes.stepper}>
-                    { stepIcons }
-                </div>                
-            </div>            
+                <div className={classes.stepperContainer}>
+                    <div className={classes.stepper}>
+                        { stepIcons }
+                    </div>                
+                </div>        
+            </Hidden>    
             {/* Slides */}
             <div>
                 { fixed ? 
