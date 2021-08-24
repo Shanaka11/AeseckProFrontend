@@ -10,6 +10,7 @@ import {
 // Local Imports
 import Waiting from '../componets/checkinout/Waiting'
 import User from '../componets/checkinout/User'
+import Alert from '../componets/common/Alert'
 import { getUserStatus } from '../api/sessionApi'
 
 // Style
@@ -35,13 +36,15 @@ const CheckinOut = () => {
     // Query
     const {
         data,
+        isError,
         isLoading,
         refetch
     } = useQuery(
-        'UserStatus',
+        ['UserStatus', barcode],
         () => getUserStatus(barcode),
         {
-            enabled: barcode !== ''
+            enabled: barcode !== '',
+            // onSuccess: () => setPage(2)
         }
     )
     
@@ -54,18 +57,20 @@ const CheckinOut = () => {
     const handleDone = () => {
         setPage(1)
     }
-    
+
+
     return (
         <div className={classes.container}>
-            {page === 1 ?
-                // <Container className={classes.mainContainer}>
-                    <Waiting handleCodeScan={handleCodeScan}/>
-                // </Container>
+            { console.log(isError || !data?.data.status)}
+            {
+                isLoading ?
+                <LinearProgress />
                 :
-                // <Container className={classes.mainContainer}>
-
-                    isLoading ? 
-                    <LinearProgress /> : 
+                <>
+                {(isError || !data?.data.status) && <Alert message={isError ? 'There was an error, Please scan again': data?.data.msg} severity='error'/>}
+                {(page === 1 || (isError || !data?.data.status))?
+                    <Waiting handleCodeScan={handleCodeScan}/>
+                    :
                     <div className={classes.mainContainer}>
                         <User 
                             barcode={barcode} 
@@ -74,7 +79,8 @@ const CheckinOut = () => {
                             handleDone={handleDone}
                         />
                     </div>
-                // </Container>
+                }
+                </>
             }
         </div>
     )
