@@ -1,6 +1,7 @@
 // React Imports
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 // 3rd Party
+import { useHistory } from 'react-router-dom'
 // Material UI Imports
 import { 
     Grid,
@@ -13,6 +14,8 @@ import {
 import logo from '../assets/login.jpg'
 import Login from '../componets/signInPage/Login'
 import Register from '../componets/signInPage/Register'
+import UserContext from '../context/userContext'
+import { useEffect } from 'react'
 
 
 // Style
@@ -38,6 +41,20 @@ const SignInPage:React.FC = () => {
 
     // States
     const [page, setPage] = useState(1)    
+
+    // Routing
+    const history = useHistory()
+
+    // Context
+    const { user } = useContext(UserContext)
+
+    useEffect(() => {
+        if(user){
+            // redirect
+            history.push('/')
+        }
+    },
+    [])
   
     return (
         <Grid container className={classes.mainContainer}>
