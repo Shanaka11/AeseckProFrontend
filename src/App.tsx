@@ -16,6 +16,8 @@ import BoBookingsPage from './Pages/backoffice/BookingsPage'
 import BoUserList from './Pages/backoffice/UserListPage'
 import BoUserDetail from './Pages/backoffice/UserDetailPage'
 import BoDashboard from './Pages/backoffice/Dashboard'
+// Context
+import { UserContextProvider } from './context/userContext'
 
 function App() {
 
@@ -25,21 +27,23 @@ function App() {
     <div>
       <QueryClientProvider client={queryClient}>
         <BrowserRouter>
-          <Header />
-            <Switch>            
-              <Route exact path='/' component={ Homepage } />
-              <Route exact path='/login' component={ SignInPage }/>
-              <Route exact path='/profile' component={ Profile }/>
-              <Route exact path='/checkinout' component={ CheckinOut }/>
-              <Route exact path='/backoffice' component={ BoDashboard } />
-              <Route exact path='/backoffice/bookings' component={ BoBookingsPage } />
-              <Route exact path='/backoffice/users' component={ BoUserList } />
-              <Route exact path='/backoffice/users/:id' component={ BoUserDetail } />
-              <Route exact path='/:activity' component={ Homepage }/>
-              {/* <Route exact path='/:activity/:room' component={ RoomPage }/> */}
-              <Route exact path='/:activity/booking' component={ BookingPage }/>            
-            </Switch>          
-          <Footer />
+          <UserContextProvider>
+            <Header />
+              <Switch>            
+                <Route exact path='/' component={ Homepage } />
+                <Route exact path='/login' component={ SignInPage }/>
+                <Route exact path='/profile' component={ Profile }/>
+                <Route exact path='/checkinout' component={ CheckinOut }/>
+                <Route exact path='/backoffice' component={ BoDashboard } />
+                <Route exact path='/backoffice/bookings' component={ BoBookingsPage } />
+                <Route exact path='/backoffice/users' component={ BoUserList } />
+                <Route exact path='/backoffice/users/:id' component={ BoUserDetail } />
+                <Route exact path='/:activity' component={ Homepage }/>
+                {/* <Route exact path='/:activity/:room' component={ RoomPage }/> */}
+                <Route exact path='/:activity/booking' component={ BookingPage }/>            
+              </Switch>          
+            <Footer />
+          </UserContextProvider>
         </BrowserRouter>
       </QueryClientProvider>
     </div>

@@ -1,6 +1,7 @@
 // React Imports
 import React, { useState } from 'react'
 // 3rd Party
+import { useMutation } from 'react-query'
 // Material UI Imports
 import { 
     Grid,
@@ -9,9 +10,13 @@ import {
     Theme,
     Button,
     Typography,
-    Container
+    Container,
+    CircularProgress
 } from '@material-ui/core'
 // Local Imports
+import Alert from '../common/Alert'
+import { postRegisterUser } from '../../api/userApi'
+import { useEffect } from 'react'
 
 // Style
 const useStyles = makeStyles((theme: Theme) => ({
@@ -21,7 +26,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
     gridItem: {
         width: 500,
-        marginBottom: 32,
+        marginBottom: 24,
         [theme.breakpoints.down('md')]:{
             maxWidth: 300
         },
@@ -54,19 +59,47 @@ const Register:React.FC<RegisterProps> = ( { handlePageChange } ) => {
     const classes = useStyles()
 
     // States
-    const [firstName, setFirstname] = useState('')
-    const [lastName, setLastname] = useState('')
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
-    const [password2, setPassword2] = useState('')
+    const [firstName, setFirstname] = useState('shanaka4')
+    const [middleName, setMiddleName] = useState('udesha')
+    const [sureName, setSureName] = useState('bandara')
+    const [email, setEmail] = useState('shanaka4@shanaka.com')
+    const [phoneNumber, setPhoneNumber] = useState('408364999')
+    const [password, setPassword] = useState('12345')
+    const [password2, setPassword2] = useState('12345')
+
+    // Query
+    const {
+        data: registerData,
+        isLoading: registerIsLoading,
+        isError: registerIsError,
+        mutate: registerMutate
+    } = useMutation(postRegisterUser, {
+    })
 
     // Methods
+    useEffect(() => {
+        if(registerData?.data.status !== 'Fail'){
+            // Go to the login Page
+            handlePageChange(1)
+        }        
+    }, [registerData, handlePageChange])
+
     const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
+        registerMutate({
+            contactId: 0,
+            firstName,
+            middleName,
+            sureName,
+            email,
+            phoneNumber,
+            password
+        })
     }
 
     return (
         <form onSubmit={handleFormSubmit}>
+        {(registerIsError || registerData?.data.status === 'Fail') && <Alert message={registerIsError ? 'An Error Occured, Please Try again' : registerData?.data.msg} severity='error'/>}
         <Container>
         <Grid container direction='column' justify='center' alignItems='center' className={classes.container}>
             <Grid item className={classes.gridItem}>
@@ -98,9 +131,49 @@ const Register:React.FC<RegisterProps> = ( { handlePageChange } ) => {
                 <TextField 
                     variant='filled'
                     color='secondary'
-                    label='Last Name'
-                    value={lastName}
-                    onChange={(event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => setLastname(event.target.value)}                    
+                    label='Middle Name'
+                    value={middleName}
+                    onChange={(event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => setMiddleName(event.target.value)}                    
+                    fullWidth
+                    InputProps={{
+                        classes:{
+                        underline: classes.textFieldUnderLine,
+                        }
+                        
+                    }}           
+                    InputLabelProps={{
+                        className:classes.textFieldLabel,
+                    }}
+                />  
+            </Grid>
+            <Grid item className={classes.gridItem}>
+                <TextField 
+                    variant='filled'
+                    color='secondary'
+                    label='Surename'
+                    value={sureName}
+                    onChange={(event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => setSureName(event.target.value)}                    
+                    fullWidth
+                    required
+                    InputProps={{
+                        classes:{
+                        underline: classes.textFieldUnderLine,
+                        }
+                        
+                    }}           
+                    InputLabelProps={{
+                        className:classes.textFieldLabel,
+                    }}
+                />  
+            </Grid>
+            <Grid item className={classes.gridItem}>
+                <TextField 
+                    variant='filled'
+                    color='secondary'
+                    label='Phone Number'
+                    type='number'
+                    value={phoneNumber}
+                    onChange={(event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => setPhoneNumber(event.target.value)}                    
                     fullWidth
                     required
                     InputProps={{
@@ -174,6 +247,8 @@ const Register:React.FC<RegisterProps> = ( { handlePageChange } ) => {
                     InputLabelProps={{
                         className:classes.textFieldLabel,
                     }}
+                    error={password2 !== password}
+                    helperText={password2 !== password && 'Passwords do not match'}
                 />  
             </Grid>
             <Grid item className={classes.gridItem}>
@@ -189,6 +264,8 @@ const Register:React.FC<RegisterProps> = ( { handlePageChange } ) => {
                             color='secondary'
                             type='submit'
                             disableElevation
+                            disabled={(password !== password2) || registerIsLoading}
+                            startIcon={registerIsLoading && <CircularProgress size={20}/>}
                         >
                             Register
                         </Button>                        

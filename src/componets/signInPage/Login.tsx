@@ -1,6 +1,8 @@
 // React Imports
-import React, { useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 // 3rd Party
+import { useMutation } from 'react-query'
+import { useHistory } from 'react-router-dom'
 // Material UI Imports
 import { 
     Grid,
@@ -11,11 +13,15 @@ import {
     InputAdornment,
     Button,
     Typography,
-    Container
+    Container,
+    CircularProgress
 } from '@material-ui/core'
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 // Local Imports
+import Alert from '../common/Alert'
+import UserContext from '../../context/userContext'
+import { postLoginUser } from '../../api/userApi'
 
 
 // Style
@@ -63,17 +69,59 @@ const Login:React.FC<LoginProps> = ({ handlePageChange }) => {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
 
+    // Routing
+    const history = useHistory()
+
+    // Context
+    const { setUser } = useContext(UserContext)
+
+    // Query
+    const {
+        data : loginData,
+        isLoading: loginIsLoading,
+        isError: loginIsError,
+        mutate: loginMutate
+    } = useMutation(postLoginUser)
+
     // Methods
+    useEffect(() => {
+        if(loginData?.data.status === 'True'){
+            // On Success direct to user profile page
+            setUser(loginData.data.response.user)
+            localStorage.setItem('token', loginData.data.response.token)
+            const userInfo = {
+                id: loginData.data.response.user.id,
+                username: loginData.data.response.user.userName,
+                role: loginData.data.response.user.role
+            }
+            localStorage.setItem('userInfo', JSON.stringify(userInfo))
+
+            // Depending on the role direct to backoffice dashboard or home screen
+            // For now just redirect to home
+            history.push('/')
+        }
+    }, [loginData, setUser, history])
+
     const handleClickShowPassword = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         setShowPassword(!showPassword)
     };
 
     const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    event.preventDefault();
+        event.preventDefault();
     };
+
+    const handleFormOnSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault()
+        loginMutate({
+            userReference: username,
+            password
+        })
+    }
 
     return (
         <Container>
+        {(loginIsError || loginData?.data.status === 'False') && <Alert message={loginIsError ? 'Error occured, Please try again' : loginData?.data.msg} severity='error'/>}
+        <form onSubmit={handleFormOnSubmit}>
         <Grid container direction='column' justify='center' alignItems='center' className={classes.container}>
             <Grid item className={classes.gridItem}>
                 <Typography variant='h5' color='textPrimary'>
@@ -145,6 +193,9 @@ const Login:React.FC<LoginProps> = ({ handlePageChange }) => {
                             color='secondary'
                             // fullWidth
                             disableElevation
+                            disabled={loginIsLoading}
+                            startIcon={loginIsLoading && <CircularProgress size={20}/>}
+                            type='submit'
                         >
                             LogIn
                         </Button>                        
@@ -152,6 +203,7 @@ const Login:React.FC<LoginProps> = ({ handlePageChange }) => {
                 </Grid>
             </Grid>
         </Grid>
+        </form>
         </Container>
     )
 }
