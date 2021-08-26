@@ -56,12 +56,12 @@ const BookingPage = () => {
         isLoading, 
         // isError, 
         // isFetching
-    } = useQuery('PackageSummery', () => getPackages(params.activity))    
+    } = useQuery('PackageSummery', () => getPackages(params.activity || 1))    
 
     // UseEffect
     useEffect(() => {
 
-        setActiveActivityId(parseInt(queryParams.get("activity")!))
+        setActiveActivityId(parseInt(queryParams.get("activity")!) || 1)
 
     }, [])
 

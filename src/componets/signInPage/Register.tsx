@@ -125,6 +125,7 @@ const Register:React.FC<RegisterProps> = ( { handlePageChange } ) => {
                     InputLabelProps={{
                         className:classes.textFieldLabel,
                     }}
+                    autoFocus
                 />  
             </Grid>
             <Grid item className={classes.gridItem}>

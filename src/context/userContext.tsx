@@ -10,12 +10,14 @@ interface Props {
 interface ContextProps {
     user: any,
     setUser: (user:any) => void,
+    logout: () => void
 }
 
 // Context
 const UserContext = createContext<ContextProps>({
     user: '',
     setUser: (user:any) => 1,
+    logout: () => {}
 })
 
 // Provider
@@ -27,10 +29,15 @@ export const UserContextProvider:React.FC<Props> = ({ children }) => {
     // Query
 
     // Methods
+    const logout = () => {
+        localStorage.removeItem('userInfo')
+        localStorage.removeItem('token')
+        setUser(null)
+    }
 
     return (
         <UserContext.Provider value={{
-            user, setUser
+            user, setUser, logout
         }}>
             {children}
         </UserContext.Provider>

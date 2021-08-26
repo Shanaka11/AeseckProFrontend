@@ -1,7 +1,7 @@
 // React Imports
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 // 3rd Party
-import { useLocation } from 'react-router-dom'
+import { useLocation, useHistory } from 'react-router-dom'
 // Material UI Imports
 import { 
     makeStyles,
@@ -9,7 +9,6 @@ import {
     Theme,
     AppBar,
     Toolbar,
-    Typography,
     Container,
     Tabs,
     Tab,
@@ -18,11 +17,15 @@ import {
     List,
     ListItem,
     ListItemText,
+    Avatar,
+    Menu,
+    MenuItem
 } from '@material-ui/core'
 import { useTheme } from '@material-ui/styles'
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import MenuIcon from '@material-ui/icons/Menu';
 // Local Imports
+import UserContext from '../../context/userContext'
+import logo from '../../assets/Logo.jpeg'
 
 // Style
 const useStyles = makeStyles((theme: Theme) => ({
@@ -32,8 +35,17 @@ const useStyles = makeStyles((theme: Theme) => ({
     tabs: {
       marginLeft: 'auto'
     },
+    bookingTab: {
+        backgroundColor: theme.palette.secondary.main,
+        fontWeight: 'bold'
+    },
+    logintab: {
+        backgroundColor: theme.palette.secondary.main,
+        opacity: 1
+    },
     avatar: {
-        color: '#ffffff'
+        backgroundColor: theme.palette.secondary.main,
+        cursor: 'pointer'
     },
     drawerIconContainer: {
         marginLeft: 'auto',
@@ -61,6 +73,18 @@ const useStyles = makeStyles((theme: Theme) => ({
             opacity: 1
         }
     },
+    menu: {
+        borderRadius: 0,
+    },
+
+    menuItem: {
+        backgroundColor: theme.palette.primary.light,
+        minWidth: 150
+    },
+    imageContainer : {
+        height: 50,
+        cursor: 'pointer'
+    }
   }));
 
 const Header = () => {
@@ -75,17 +99,57 @@ const Header = () => {
     // States
     const [value, setValue] = useState(0)
     const [openDrawer, setOpenDrawer] = useState(false)
+    const [menuUserOpen, setMenuUserOpen] = useState(false)
+    // const [menuActivityOpen, setMenuActivityOpen] = useState(false)
+    const [anchorEl, setAnchorEl] = useState<any>(null)
+
+    // Context
+    const { user, logout } = useContext(UserContext)
 
     // Routers
     const location = useLocation()    
+    const history = useHistory()
 
     // Methods
+    // const handleActivityOnClick = (event:any) => {
+    //     setAnchorEl(event.currentTarget)
+    //     setMenuActivityOpen(true)
+    // }
+
+    // const handleActivityMenuClose = () => {
+    //     setAnchorEl(null)
+    //     setMenuActivityOpen(false)
+    // }
+
+    const handleAvatarOnClick = (event:any) => {
+        setAnchorEl(event.currentTarget)
+        setMenuUserOpen(true)
+    }
+
+    const handleMenuClose = () => {
+        setAnchorEl(null)
+        setMenuUserOpen(false)
+    }
+
+    const handleProfileClick = () => {
+        setAnchorEl(null)
+        setMenuUserOpen(false)
+        history.push('/profile')
+    }
+
+    const handleLogoutClick = () => {
+        setAnchorEl(null)
+        setMenuUserOpen(false)
+        logout()
+    }
 
     // Components
     const tabs = (
+        <>
         <Tabs value={value} className={classes.tabs} indicatorColor='primary'>
             {/* Only show this tab when on the home page */}
-            <Tab component='a' href='#' label='Activities' onClick={ () => setValue(0)} />
+            <Tab component='a' href='/3/booking' label='Make a Booking' className={classes.bookingTab}/>
+            {/* <Tab component='a' href='#' label='Activities' onClick={ (event:any) => handleActivityOnClick(event)} /> */}
             <Tab 
                 component='a' 
                 href='' 
@@ -95,15 +159,79 @@ const Header = () => {
                     event.preventDefault();  // Stop Page Reloading
                     element && element.scrollIntoView({ behavior: "smooth", block: "start" });                    
                 }} 
+                selected
                 />
+                <Tab component='a' href='#' label='About Us' onClick={ () => setValue(0)} />
+                { !user && 
+                    <Tab component='a' href='/login' label='Sign In / Sign Up' className={classes.logintab} selected/>
+                }
         </Tabs>
+        { user && 
+            <Avatar
+                className={classes.avatar}
+                onClick={(event) => handleAvatarOnClick(event)}
+            >
+                {user.username ? user.username.substring(0,2) : 'UD'}
+            </Avatar>
+        }
+        <Menu
+            anchorEl={anchorEl}
+            open={menuUserOpen}
+            onClose={handleMenuClose}
+            MenuListProps={{
+                onMouseLeave: handleMenuClose
+            }}
+            keepMounted
+            elevation={0}
+            className={classes.menu}
+            classes= {{
+                paper: classes.menuItem
+            }}
+        >
+            <MenuItem
+                onClick={ () => handleProfileClick() }
+            >
+                Profile
+            </MenuItem>
+            <MenuItem
+                onClick= { () => handleLogoutClick() }
+            >
+                Logout
+            </MenuItem>
+        </Menu>
+        {/* <Menu
+            anchorEl={anchorEl}
+            open={menuActivityOpen}
+            onClose={handleActivityMenuClose}
+            MenuListProps={{
+                onMouseLeave: handleActivityMenuClose
+            }}
+            keepMounted
+            elevation={0}
+            className={classes.menu}
+            classes= {{
+                paper: classes.menuItem
+            }}
+        >
+            <MenuItem>
+                Gymnasium
+            </MenuItem>
+            <MenuItem>
+                Party Rooms
+            </MenuItem>
+            <MenuItem>
+                Education
+            </MenuItem>
+            <MenuItem>
+                Kids Play Area
+            </MenuItem>
+        </Menu> */}
+        </>
     )
 
     const drawer = (
         <>
         <SwipeableDrawer 
-            // disableBackdropTransition={!iOS} 
-            // disableDiscovery={iOS}
             open={openDrawer}
             onClose={() => setOpenDrawer(false)}
             onOpen={() => setOpenDrawer(true)}
@@ -113,12 +241,22 @@ const Header = () => {
         >
             <List disablePadding>
                 <ListItem 
-                    // onClick={() => { setOpenDrawer(false); setValue(route.activeIndex)}}
-                    // component = {Link}
                     divider
                     button
-                    // selected = { value === route.activeIndex}
-                    // to={route.link}
+                    classes={{
+                        selected: classes.drawerItemSelected
+                    }}
+                >
+                    <ListItemText 
+                        className={classes.drawerItem}
+                        disableTypography
+                    >
+                        Make a Booking
+                    </ListItemText>
+                </ListItem>
+                {/* <ListItem 
+                    divider
+                    button
                     classes={{
                         selected: classes.drawerItemSelected
                     }}
@@ -129,7 +267,7 @@ const Header = () => {
                     >
                         Activities
                     </ListItemText>
-                </ListItem>
+                </ListItem> */}
                 <ListItem
                     divider
                     button
@@ -144,6 +282,71 @@ const Header = () => {
                         Contact Us
                     </ListItemText>
                 </ListItem>
+                <ListItem 
+                    divider
+                    button
+                    classes={{
+                        selected: classes.drawerItemSelected
+                    }}
+                >
+                    <ListItemText 
+                        className={classes.drawerItem}
+                        disableTypography
+                    >
+                        About Us
+                    </ListItemText>
+                </ListItem>
+                { user ?
+                    <>
+                        <ListItem 
+                            divider
+                            button
+                            classes={{
+                                selected: classes.drawerItemSelected
+                            }}
+                        >
+                            <ListItemText 
+                                className={classes.drawerItem}
+                                disableTypography
+                            >
+                                Profile
+                            </ListItemText>
+                        </ListItem>
+                        <ListItem 
+                            divider
+                            button
+                            classes={{
+                                selected: classes.drawerItemSelected
+                            }}
+                        >
+                            <ListItemText 
+                                className={classes.drawerItem}
+                                disableTypography
+                                onClick={() => {logout(); setOpenDrawer(false);}}
+                            >
+                                Logout
+                            </ListItemText>
+                        </ListItem>
+                    </>
+                    :
+                    <>
+                        <ListItem 
+                            divider
+                            button
+                            classes={{
+                                selected: classes.drawerItemSelected
+                            }}
+                        >
+                            <ListItemText 
+                                className={classes.drawerItem}
+                                disableTypography
+                                onClick={() => {history.push('/login'); setOpenDrawer(false)}}
+                            >
+                                Sign In / Sign Up
+                        </ListItemText>
+                    </ListItem>
+                    </>
+                }
             </List>
         </SwipeableDrawer>        
         <IconButton onClick={() => setOpenDrawer(!openDrawer)} disableRipple className={classes.drawerIconContainer}>
@@ -160,16 +363,22 @@ const Header = () => {
     <AppBar position="static">
         <Container>
             <Toolbar className={classes.toolbar}>
-                <Typography variant="h6">
+                {/* <Typography variant="h6">
                     Community Center
-                </Typography>
+                </Typography> */}
+                <img 
+                    alt='login-img' 
+                    src={logo} 
+                    className={classes.imageContainer}
+                    onClick={() => history.push('/')}
+                />
                 { matches ? drawer : tabs }
                 {/* Show only when logged in */}
-                {false && 
+                {/* {false && 
                     <IconButton>
                         <AccountCircleIcon className={classes.avatar}/>
                     </IconButton>
-                }
+                } */}
             </Toolbar>
         </Container>
       </AppBar>
