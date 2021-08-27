@@ -54,7 +54,7 @@ const SignInPage:React.FC = () => {
             history.push('/')
         }
     },
-    [])
+    [user, history])
   
     return (
         <Grid container className={classes.mainContainer}>
