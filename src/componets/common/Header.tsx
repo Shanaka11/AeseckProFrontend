@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme: Theme) => ({
         fontWeight: 'bold'
     },
     logintab: {
-        backgroundColor: theme.palette.secondary.main,
+        // backgroundColor: theme.palette.secondary.main,
         opacity: 1
     },
     avatar: {
@@ -97,7 +97,6 @@ const Header = () => {
     // const iOS = process.browser && /iPad|iPhone|iPod/.test(navigator.userAgent);
 
     // States
-    const [value, setValue] = useState(0)
     const [openDrawer, setOpenDrawer] = useState(false)
     const [menuUserOpen, setMenuUserOpen] = useState(false)
     // const [menuActivityOpen, setMenuActivityOpen] = useState(false)
@@ -111,15 +110,6 @@ const Header = () => {
     const history = useHistory()
 
     // Methods
-    // const handleActivityOnClick = (event:any) => {
-    //     setAnchorEl(event.currentTarget)
-    //     setMenuActivityOpen(true)
-    // }
-
-    // const handleActivityMenuClose = () => {
-    //     setAnchorEl(null)
-    //     setMenuActivityOpen(false)
-    // }
 
     const handleAvatarOnClick = (event:any) => {
         setAnchorEl(event.currentTarget)
@@ -146,7 +136,7 @@ const Header = () => {
     // Components
     const tabs = (
         <>
-        <Tabs value={value} className={classes.tabs} indicatorColor='primary'>
+        <Tabs value={0} className={classes.tabs} indicatorColor='primary'>
             {/* Only show this tab when on the home page */}
             <Tab component='a' href='/3/booking' label='Make a Booking' className={classes.bookingTab}/>
             {/* <Tab component='a' href='#' label='Activities' onClick={ (event:any) => handleActivityOnClick(event)} /> */}
@@ -161,9 +151,13 @@ const Header = () => {
                 }} 
                 selected
                 />
-                <Tab component='a' href='#' label='About Us' onClick={ () => setValue(0)} />
+                <Tab 
+                    component='a' 
+                    href='/aboutus' 
+                    label='About Us' 
+                />
                 { !user && 
-                    <Tab component='a' href='/login' label='Sign In / Sign Up' className={classes.logintab} selected/>
+                    <Tab component='a' href='/login' label='Sign In' className={classes.logintab} selected/>
                 }
         </Tabs>
         { user && 
@@ -199,33 +193,6 @@ const Header = () => {
                 Logout
             </MenuItem>
         </Menu>
-        {/* <Menu
-            anchorEl={anchorEl}
-            open={menuActivityOpen}
-            onClose={handleActivityMenuClose}
-            MenuListProps={{
-                onMouseLeave: handleActivityMenuClose
-            }}
-            keepMounted
-            elevation={0}
-            className={classes.menu}
-            classes= {{
-                paper: classes.menuItem
-            }}
-        >
-            <MenuItem>
-                Gymnasium
-            </MenuItem>
-            <MenuItem>
-                Party Rooms
-            </MenuItem>
-            <MenuItem>
-                Education
-            </MenuItem>
-            <MenuItem>
-                Kids Play Area
-            </MenuItem>
-        </Menu> */}
         </>
     )
 
@@ -250,36 +217,9 @@ const Header = () => {
                     <ListItemText 
                         className={classes.drawerItem}
                         disableTypography
+                        onClick={() => {history.push('/3/booking'); setOpenDrawer(false)}}
                     >
                         Make a Booking
-                    </ListItemText>
-                </ListItem>
-                {/* <ListItem 
-                    divider
-                    button
-                    classes={{
-                        selected: classes.drawerItemSelected
-                    }}
-                >
-                    <ListItemText 
-                        className={classes.drawerItem}
-                        disableTypography
-                    >
-                        Activities
-                    </ListItemText>
-                </ListItem> */}
-                <ListItem
-                    divider
-                    button
-                    classes={{
-                        selected: classes.drawerItemSelected
-                    }}                        
-                >
-                    <ListItemText
-                        className={classes.drawerItem}
-                        disableTypography
-                    >
-                        Contact Us
                     </ListItemText>
                 </ListItem>
                 <ListItem 
@@ -288,10 +228,12 @@ const Header = () => {
                     classes={{
                         selected: classes.drawerItemSelected
                     }}
+                    
                 >
                     <ListItemText 
                         className={classes.drawerItem}
                         disableTypography
+                        onClick={() => {history.push('/aboutus'); setOpenDrawer(false)}}
                     >
                         About Us
                     </ListItemText>
@@ -342,7 +284,7 @@ const Header = () => {
                                 disableTypography
                                 onClick={() => {history.push('/login'); setOpenDrawer(false)}}
                             >
-                                Sign In / Sign Up
+                                Sign In
                         </ListItemText>
                     </ListItem>
                     </>

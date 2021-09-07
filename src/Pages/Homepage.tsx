@@ -65,7 +65,11 @@ const Homepage = () => {
         data:activityCenterData, 
         isLoading: activityCenterIsLoading, 
         isError:activityCenterIsError, 
-    } = useQuery('ActivityCenterSummery', () => getActivityCenterSummary(params.activity!), { enabled : params.activity ? true : false})
+    } = useQuery(   'ActivityCenterSummery', 
+                    () => getActivityCenterSummary(params.activity!), 
+                    { 
+                        enabled : params.activity ? (params.activity !== 'aboutus' ? true : false): false
+                    })
 
     if(isLoading || activityCenterIsLoading){
         return (
@@ -84,7 +88,11 @@ const Homepage = () => {
         <Grid container direction='column'>
             <Carousal>
                 {
-                    (params.activity ? response.activityCenters.filter((item:any) => item.id === parseInt(params.activity!))[0].images : response.images).filter((item:any) => item.imageCategory === 'HeaderImage').map((item:any, index:number) => (                            
+                    (params.activity ? 
+                        (params.activity !== 'aboutus' ? 
+                            response.activityCenters.filter((item:any) => item.id === parseInt(params.activity!))[0].images :
+                            response.activityCenters.filter((item:any) => item.title === 'About Us')[0].images): 
+                        response.images).filter((item:any) => item.imageCategory === 'HeaderImage').map((item:any, index:number) => (                            
                             <Slide key={`slide-${index}`} index={index} imgPath={item.imageUrl}>
                                 <Container className={classes.container}>
                                     <Grid 
@@ -96,7 +104,9 @@ const Homepage = () => {
                                     >
                                         <Grid item>
                                             <Typography variant='h2' align='center' className={classes.header}>
-                                                {params.activity ? response.activityCenters.filter((item:any) => item.id === parseInt(params.activity!))[0].title : item.imageDescription}
+                                                {(params.activity && params.activity !== 'aboutus')? 
+                                                response.activityCenters.filter((item:any) => item.id === parseInt(params.activity!))[0].title : 
+                                                item.imageDescription}
                                             </Typography>
                                         </Grid>
                                         <Grid item>
@@ -105,6 +115,9 @@ const Homepage = () => {
                                                 color='secondary'                                                
                                                 onClick={(event) => {
                                                     let element = document.getElementById("activities");
+                                                    if(params.activity === 'aboutus'){
+                                                        element = document.getElementById("description");                                                        
+                                                    }
                                                     event.preventDefault();  // Stop Page Reloading
                                                     element && element.scrollIntoView({ behavior: "smooth", block: "start" });                                                    
                                                 }}
@@ -118,12 +131,14 @@ const Homepage = () => {
                     ))                       
                 }
             </Carousal>            
-            <Description description={params.activity ? response.activityCenters.filter((item:any) => item.id === parseInt(params.activity!))[0].description : response.description}/>
+            <Description id='description' description={(params.activity && params.activity !== 'aboutus')? response.activityCenters.filter((item:any) => item.id === parseInt(params.activity!))[0].description : response.description}/>
+            { params.activity !== 'aboutus' &&
                 <List 
                     id='activities' 
                     data={params.activity ? activityCenterResponse.activities : response.activityCenters}
                     activityCenter={params.activity}
                 />
+            }
         </Grid>
     )
 }

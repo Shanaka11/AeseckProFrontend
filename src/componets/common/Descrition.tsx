@@ -25,16 +25,17 @@ const useStyles = makeStyles((theme: Theme) => ({
 // Interfaces
 interface DescriptionProps {
     description: string
+    id: string
 }
 
-const Descrition:React.FC<DescriptionProps> = ( { description } ) => {
+const Descrition:React.FC<DescriptionProps> = ( {id, description } ) => {
 
     // Styles
     const classes = useStyles()
 
     
     return (
-        <Grid container alignItems='center' justify='center' className={classes.mainContainer}>
+        <Grid id={id} container alignItems='center' justify='center' className={classes.mainContainer}>
             <Container>
                 <Typography variant='body1' align='center' className={classes.text}>
                     { description }
