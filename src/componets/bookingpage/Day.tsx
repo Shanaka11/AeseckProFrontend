@@ -41,6 +41,10 @@ const useStyles = makeStyles((theme:Theme) => ({
     },
     alreadyBooked: {
         backgroundColor: theme.palette.secondary.dark
+    },
+    header: {
+        backgroundColor: `${theme.palette.primary.dark} !important`,
+        color: `${theme.palette.text.primary} !important`
     }
 }))
 
@@ -52,12 +56,33 @@ interface DayProps {
     selected?: boolean, 
     availability?:boolean
     handleDateClick: (date: number) => void
+    header?: boolean
 }
 
-const Day:React.FC<DayProps> = ( { date, currMonth, currDate, selected, availability, handleDateClick } ) => {
+const Day:React.FC<DayProps> = ( { date, currMonth, currDate, selected, availability, handleDateClick, header } ) => {
 
     // Styles
     const classes = useStyles()
+
+    // Methods
+    const decodeHeader = (date: number) => {
+        switch(date){
+            case 1:
+                return 'Su'
+            case 2:
+                return 'Mo'
+            case 3:
+                return 'Tu'
+            case 4:
+                return 'We'
+            case 5:
+                return 'Th'
+            case 6:
+                return 'Fr'
+            case 7:
+                return 'Sa'
+        }
+    }
 
     return (
         <Grid item>
@@ -68,13 +93,19 @@ const Day:React.FC<DayProps> = ( { date, currMonth, currDate, selected, availabi
                     ${classes.container}
                     ${currMonth ? undefined : classes.notCurrentDate}
                     ${selected ? classes.selected : undefined}
-                    ${availability ? classes.alreadyBooked : undefined}`
+                    ${availability ? classes.alreadyBooked : undefined}
+                    ${header && classes.header }`
                 }
                 color='primary'
                 variant='contained'
                 size='small'
             >
-                {date}
+                {   
+                    header ? 
+                        decodeHeader(date)
+                    : 
+                    date
+                }
             </Button>
         </Grid>
     )

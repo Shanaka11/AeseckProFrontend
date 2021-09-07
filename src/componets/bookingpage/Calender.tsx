@@ -140,6 +140,32 @@ const Calender:React.FC<Props> = ( { data, handleDateSelectParent, handleCalende
                 year: date.getFullYear()
             })
         }
+
+        // Day Headers
+        dateMatrixRow.push(
+            <Day date={1} header handleDateClick={handleDateClick}/>
+        )
+        dateMatrixRow.push(
+            <Day date={2} header handleDateClick={handleDateClick}/>
+        )
+        dateMatrixRow.push(
+            <Day date={3} header handleDateClick={handleDateClick}/>
+        )
+        dateMatrixRow.push(
+            <Day date={4} header handleDateClick={handleDateClick}/>
+        )
+        dateMatrixRow.push(
+            <Day date={5} header handleDateClick={handleDateClick}/>
+        )
+        dateMatrixRow.push(
+            <Day date={6} header handleDateClick={handleDateClick}/>
+        )
+        dateMatrixRow.push(
+            <Day date={7} header handleDateClick={handleDateClick}/>
+        )
+
+        dateMatrix.push(dateMatrixRow.splice(0, 7));
+
         // Last Month Dates
         for (let x = firstDayIndex; x > 0; x--) {
             dateMatrixRow.push(
@@ -204,7 +230,7 @@ const Calender:React.FC<Props> = ( { data, handleDateSelectParent, handleCalende
                     <Grid container justify='space-between' alignItems='center'>
                         <Grid item>
                             <IconButton 
-                                disabled={date.getMonth() === new Date().getMonth()}
+                                disabled={date.getMonth() === new Date().getMonth() && date.getFullYear() === new Date().getFullYear()}
                                 onClick={() => {setOffset(offset - 1)}}
                             >
                                 <KeyboardArrowLeftIcon style={{ color : 'white'}}/>
