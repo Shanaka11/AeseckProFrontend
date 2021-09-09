@@ -10,15 +10,18 @@ import {
     Divider,
     Grid, 
     makeStyles,
-    TextField,
+    // TextField,
     Theme,
-    Typography,   
+    Typography,
+    CircularProgress   
 } from '@material-ui/core'
 // Local Imports
 import Table from '../../componets/backoffice/common/Table'
-import { getUserList } from '../../api/userApi'
+import { getUserList, getUserFilters } from '../../api/userApi'
+import Filter from '../../componets/backoffice/common/Filter'
 import UserPopup from '../../componets/backoffice/user/UserPopup'
 import BreadCrumbs from '../../componets/backoffice/common/BreadCrumbs'
+import FilterText from './FilterText'
 
 // Style
 const useStyles = makeStyles((theme:Theme)=> ({
@@ -48,10 +51,15 @@ const useStyles = makeStyles((theme:Theme)=> ({
     },
     buttonContainer: {
         marginTop: 'auto',
-        marginBottom: 'auto'
+        marginBottom: 'auto',
+        height: '100%'
     },
     gridContainer: {
         marginTop: theme.spacing(2)
+    },
+    filterContainer:{
+        display: 'flex',
+        alignItems: 'end'
     }    
 }))
 
@@ -61,6 +69,8 @@ const UserListPage = () => {
 
     // State
     const [page, setPage] = useState(1)
+    const [stateFilterString, setStateFilterString] = useState('')
+    const [propertyFilter, setPropertyFilter] = useState<any>(null)
     
     // Routing 
     const history = useHistory()
@@ -71,9 +81,19 @@ const UserListPage = () => {
         error,
         isLoading,
         isError
-    } = useQuery(['UserInfo', page], 
-        () => getUserList(page)
+    } = useQuery(['UserInfo', page, stateFilterString, propertyFilter], 
+        () => getUserList({
+            page: page,
+            pageSize: 5,
+            statusFilters: stateFilterString,
+            propertyFilters: propertyFilter
+        })
     )
+
+    const {
+        data: filterData,
+        isLoading: filterDataIsLoading,
+    } = useQuery(['BookingFilter'], () => getUserFilters())
 
     // Const
     const columns: GridColDef[] = [
@@ -114,6 +134,25 @@ const UserListPage = () => {
         history.push(`/backoffice/users/${param.id}`)
     }
 
+    const handleFilterChange = (filter: {name: string, value: string}) => {
+        if(filter.value === ''){
+            setPropertyFilter(null)
+        }else{
+            setPropertyFilter(
+                [
+                    {
+                        name: filter.name,
+                        operator: filter.name === 'Name' ? '_like' : '_eq',
+                        values: [
+                            filter.value
+                        ]
+                    }
+                ]
+            )   
+        }
+    }
+
+
     return (
         <Container className={classes.container}>
             <BreadCrumbs data={path}/>
@@ -123,29 +162,42 @@ const UserListPage = () => {
             <Divider />
             <Grid container spacing={1} className={classes.gridContainer}>
                 <Grid item xs={4}>
-                    <Grid container spacing={2} className={classes.buttonContainer}>
-                        <Grid item xs={12}>
-                            <TextField 
-                                variant='standard'
-                                color='secondary'
-                                label='Name'
-                                size='small'
-                                InputLabelProps={{
-                                    shrink: true
-                                }}
-                                classes={{
-                                    root: classes.fontColorBlack
-                                }}
-                                fullWidth
-                            />
+                    <Grid container spacing={2} className={classes.buttonContainer} direction='column' justifyContent='center'>
+                        <Grid item xs={12} className={classes.filterContainer}>
+                            { filterDataIsLoading ?
+                                <CircularProgress />
+                                :
+                                <FilterText menuOptions={filterData?.data.propertyFilters} handleFilterSubmit={handleFilterChange}/>
+                            }
                         </Grid>
-                    </Grid>                                    
+                    </Grid>
+                </Grid>
+                <Grid item xs={8}>
+                    <Grid container direction='column'>
+                        <Grid item>
+                            <Typography variant='body1' className={classes.textContainer} align='center'>
+                                State
+                            </Typography>                        
+                        </Grid>    
+                        <Grid item>
+                            {
+                                filterDataIsLoading ?
+                                <CircularProgress />
+                                :
+                                <Filter 
+                                    data={filterData?.data.userStatusFilters} 
+                                    filterString={stateFilterString} 
+                                    setFilterString={setStateFilterString}
+                                />
+                            }
+                        </Grid>                        
+                    </Grid>
                 </Grid>                
             </Grid>
             {
                 <Table 
                     columns={columns} 
-                    rows={data?.data.pagedBookingList || []} 
+                    rows={data?.data.pagedContactList || []} 
                     card={(data: any) => <UserPopup data={data}/>} 
                     handleOnRowClick={handleOnRowClick} 
                     loading={isLoading} 

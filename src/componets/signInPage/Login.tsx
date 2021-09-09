@@ -85,7 +85,8 @@ const Login:React.FC<LoginProps> = ({ handlePageChange }) => {
 
     // Methods
     useEffect(() => {
-        if(loginData?.data.status === 'True'){
+
+        if(loginData?.data.status === true){
             // On Success direct to user profile page
             setUser(loginData.data.response.user)
             localStorage.setItem('token', loginData.data.response.token)
