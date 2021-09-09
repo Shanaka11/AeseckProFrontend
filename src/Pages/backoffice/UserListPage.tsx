@@ -21,7 +21,7 @@ import { getUserList, getUserFilters } from '../../api/userApi'
 import Filter from '../../componets/backoffice/common/Filter'
 import UserPopup from '../../componets/backoffice/user/UserPopup'
 import BreadCrumbs from '../../componets/backoffice/common/BreadCrumbs'
-import FilterText from './FilterText'
+import FilterText from '../../componets/backoffice/common/FilterText'
 
 // Style
 const useStyles = makeStyles((theme:Theme)=> ({
