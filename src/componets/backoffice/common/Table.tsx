@@ -54,9 +54,10 @@ interface TableProps {
     handlePageChange: (newPage:number) => void,
     loading: boolean,
     pageCount: number,
+    light?: boolean
 }
 
-const Table:React.FC<TableProps> = ( { columns, rows, card, handleOnRowClick, handlePageChange, loading, pageCount } ) => {
+const Table:React.FC<TableProps> = ( { columns, rows, card, handleOnRowClick, handlePageChange, loading, pageCount, light } ) => {
     //  Style
     const classes = useStyles()
 
@@ -107,7 +108,7 @@ const Table:React.FC<TableProps> = ( { columns, rows, card, handleOnRowClick, ha
                 columns={columns}
                 rows={rows}
                 classes={{
-                    root: classes.fontColorBlack
+                    root: light ? undefined : classes.fontColorBlack
                 }}
                 onRowLeave={ handleOnRowLeave }
                 onRowEnter={ handleOnRowEnter }

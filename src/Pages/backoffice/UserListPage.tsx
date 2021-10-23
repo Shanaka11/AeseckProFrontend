@@ -4,7 +4,7 @@ import React, { useState } from 'react'
 import { useQuery } from 'react-query'
 import { useHistory } from 'react-router-dom'
 // Material UI Imports
-import { GridColDef, GridRowParams } from '@material-ui/data-grid';
+import { GridColDef, GridRowParams, GridValueGetterParams } from '@material-ui/data-grid';
 import { 
     Container,
     Divider,
@@ -104,7 +104,8 @@ const UserListPage = () => {
           align: "center",
           headerAlign: "center",
           sortable: false,
-          disableColumnMenu: true,       
+          disableColumnMenu: true,
+          valueGetter: (params: GridValueGetterParams) => {return params.row.primaryUser.id} 
         },
         { 
             field: "firstName", 
@@ -131,7 +132,7 @@ const UserListPage = () => {
 
     // Methods
     const handleOnRowClick = (param: GridRowParams, event: React.MouseEvent<Element, MouseEvent>) => {
-        history.push(`/backoffice/users/${param.id}`)
+        history.push(`/backoffice/users/${param.row.primaryUser.id}`)
     }
 
     const handleFilterChange = (filter: {name: string, value: string}) => {

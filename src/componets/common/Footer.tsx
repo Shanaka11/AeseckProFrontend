@@ -96,7 +96,7 @@ const Footer = () => {
         event.preventDefault()
     }
 
-    if(location.pathname === '/login' || location.pathname === '/checkinout'){
+    if(location.pathname === '/login' || location.pathname === '/checkinout' || location.pathname.includes('backoffice')){
         return (<></>)
     }    
 

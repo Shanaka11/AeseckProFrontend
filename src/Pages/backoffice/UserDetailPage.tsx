@@ -14,9 +14,10 @@ import {
     CircularProgress
 } from '@material-ui/core'
 // Local Imports
-import UserInfo from '../../componets/backoffice/user/UserInfo'
+// import UserInfo from '../../componets/backoffice/user/UserInfo'
+import UserInfo from '../../componets/backoffice/user/UserInfoNew'
 import errorHandler from '../../utils/errorHandler'
-import { getUserById } from '../../api/userApi'
+import { getUserProfile } from '../../api/userApi'
 
 // interfaces
 interface Params {
@@ -41,8 +42,8 @@ const UserDetailPage = () => {
     const params = useParams<Params>()
 
     // Query
-    const { data, error, isLoading, isError, isFetching } = useQuery('UserInfo', () => getUserById(params.id))    
-        
+    const { data, error, isLoading, isError, isFetching } = useQuery('UserInfo', () => getUserProfile(params.id))    
+
     if(isLoading || isFetching){
         return (
             <div className={classes.loaderContainer}>

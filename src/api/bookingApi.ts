@@ -27,3 +27,7 @@ export const getBookingFilter = async (id:number) => {
 export const changeStatus = async (data:any) => {
     return axios.post(`${process.env.REACT_APP_SERVER}/bookings/updatestatus`, data, postConfigJson)
 }
+
+export const postBookingList = async (data:any) => {
+    return axios.post(`${process.env.REACT_APP_SERVER}/bookings/list`, data, postConfigJson)
+}

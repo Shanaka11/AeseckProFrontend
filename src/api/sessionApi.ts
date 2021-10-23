@@ -31,3 +31,7 @@ export const postAttachAccessCard = async (data: { sessionId: number, accesscard
 export const postDettachAccessCard = async (data: { sessionId: number, accesscardBarcode: string}) => {
     return axios.post(`${process.env.REACT_APP_SERVER}/premises/dettachcard?sessionId=${data.sessionId}&accessCardNumber=${data.accesscardBarcode}`, {}, postConfigJson)
 }
+
+export const postSessionList = async (data:any) => {
+    return axios.post(`${process.env.REACT_APP_SERVER}/premises/sessionlist`, data, postConfigJson)
+}

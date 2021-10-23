@@ -59,13 +59,13 @@ const Register:React.FC<RegisterProps> = ( { handlePageChange } ) => {
     const classes = useStyles()
 
     // States
-    const [firstName, setFirstname] = useState('shanaka4')
-    const [middleName, setMiddleName] = useState('udesha')
-    const [sureName, setSureName] = useState('bandara')
-    const [email, setEmail] = useState('shanaka4@shanaka.com')
-    const [phoneNumber, setPhoneNumber] = useState('408364999')
-    const [password, setPassword] = useState('12345')
-    const [password2, setPassword2] = useState('12345')
+    const [firstName, setFirstname] = useState('')
+    const [middleName, setMiddleName] = useState('')
+    const [sureName, setSureName] = useState('')
+    const [email, setEmail] = useState('')
+    const [phoneNumber, setPhoneNumber] = useState('')
+    const [password, setPassword] = useState('')
+    const [password2, setPassword2] = useState('')
 
     // Query
     const {
@@ -78,7 +78,7 @@ const Register:React.FC<RegisterProps> = ( { handlePageChange } ) => {
 
     // Methods
     useEffect(() => {
-        if(registerData?.data.status !== 'Fail'){
+        if(registerData && registerData?.data.status !== 'Fail'){
             // Go to the login Page
             handlePageChange(1)
         }        
