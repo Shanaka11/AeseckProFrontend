@@ -136,9 +136,9 @@ const Header = () => {
     // Components
     const tabs = (
         <>
-        <Tabs value={0} className={classes.tabs} indicatorColor='primary'>
+        <Tabs className={classes.tabs} indicatorColor='primary'>
             {/* Only show this tab when on the home page */}
-            <Tab component='a' href='/3/booking' label='Make a Booking' className={classes.bookingTab}/>
+            {/* <Tab component='a' href='/3/booking' label='Make a Booking' className={classes.bookingTab}/> */}
             {/* <Tab component='a' href='#' label='Activities' onClick={ (event:any) => handleActivityOnClick(event)} /> */}
             <Tab 
                 component='a' 
@@ -150,15 +150,16 @@ const Header = () => {
                     element && element.scrollIntoView({ behavior: "smooth", block: "start" });                    
                 }} 
                 selected
-                />
-                <Tab 
-                    component='a' 
-                    href='/aboutus' 
-                    label='About Us' 
-                />
-                { !user && 
-                    <Tab component='a' href='/login' label='Sign In' className={classes.logintab} selected/>
-                }
+            />
+            <Tab 
+                component='a' 
+                href='/aboutus' 
+                label='About Us' 
+                selected
+            />
+            {/* { !user && 
+                <Tab component='a' href='/login' label='Sign In' className={classes.logintab} selected/>
+            } */}
         </Tabs>
         { user && 
             <Avatar
@@ -207,7 +208,7 @@ const Header = () => {
             }}
         >
             <List disablePadding>
-                <ListItem 
+                {/* <ListItem 
                     divider
                     button
                     classes={{
@@ -221,7 +222,7 @@ const Header = () => {
                     >
                         Make a Booking
                     </ListItemText>
-                </ListItem>
+                </ListItem> */}
                 <ListItem 
                     divider
                     button
@@ -272,7 +273,7 @@ const Header = () => {
                     </>
                     :
                     <>
-                        <ListItem 
+                        {/* <ListItem 
                             divider
                             button
                             classes={{
@@ -285,8 +286,8 @@ const Header = () => {
                                 onClick={() => {history.push('/login'); setOpenDrawer(false)}}
                             >
                                 Sign In
-                        </ListItemText>
-                    </ListItem>
+                            </ListItemText>
+                        </ListItem> */}
                     </>
                 }
             </List>

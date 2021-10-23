@@ -12,7 +12,7 @@ import {
 const useStyles = makeStyles((theme:Theme)=> ({
     image:{
         // height: 910,
-        height: 682,
+        height: 600,
         width: '100%',
         verticalAlign: 'bottom',
         objectFit: 'cover'
@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme:Theme)=> ({
     details:{
         position: 'absolute',
         top: 0,
-        height: 682,
+        height: 600,
         width: '100%',
     },
 }))
