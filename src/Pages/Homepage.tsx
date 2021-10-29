@@ -1,5 +1,3 @@
-// TODO
-// Fetch Data
 // React Imports
 import React from 'react'
 // 3rd Party

@@ -16,6 +16,7 @@ import BoBookingsPage from './Pages/backoffice/BookingsPage'
 import BoUserList from './Pages/backoffice/UserListPage'
 import BoUserDetail from './Pages/backoffice/UserDetailPage'
 import BoDashboard from './Pages/backoffice/Dashboard'
+import AboutUsPage from './Pages/AboutUsPage';
 // Context
 import { UserContextProvider } from './context/userContext'
 
@@ -38,6 +39,7 @@ function App() {
                 <Route exact path='/backoffice/bookings' component={ BoBookingsPage } />
                 <Route exact path='/backoffice/users' component={ BoUserList } />
                 <Route exact path='/backoffice/users/:id' component={ BoUserDetail } />
+                <Route exact path='/aboutus' component={AboutUsPage} />
                 <Route exact path='/:activity' component={ Homepage }/>
                 {/* <Route exact path='/:activity/:room' component={ RoomPage }/> */}
                 <Route exact path='/:activity/booking' component={ BookingPage }/>            
