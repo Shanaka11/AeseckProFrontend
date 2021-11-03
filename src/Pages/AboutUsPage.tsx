@@ -60,9 +60,9 @@ const AboutUsPage = () => {
                             className={classes.subContainer}
                         >
                             <Grid item>
-                                <Typography variant='h2' align='center' className={classes.header}>
+                                {/* <Typography variant='h2' align='center' className={classes.header}>
                                     About Us
-                                </Typography>
+                                </Typography> */}
                             </Grid>
                             <Grid item>
                                 <Button

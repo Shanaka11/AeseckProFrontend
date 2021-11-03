@@ -12,7 +12,8 @@ import {
 const useStyles = makeStyles((theme:Theme)=> ({
     image:{
         // height: 910,
-        height: 600,
+        maxHeight: 600,
+        height: 'calc(100vh - 200px)',
         width: '100%',
         verticalAlign: 'bottom',
         objectFit: 'cover'
@@ -20,7 +21,8 @@ const useStyles = makeStyles((theme:Theme)=> ({
     details:{
         position: 'absolute',
         top: 0,
-        height: 600,
+        maxHeight: 600,
+        height: 'calc(100vh - 200px)',
         width: '100%',
     },
 }))
