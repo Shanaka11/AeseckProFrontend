@@ -196,7 +196,7 @@ const Footer = () => {
         <Grid container alignItems='center' justify='center'>
             <Grid item>
                 <Typography variant='subtitle1' className={classes.address}>
-                    25-55 Overland Dr, Narre Warren VIC 3805
+                    1 Lonhro Blvd, Cranbourne West, VIC 3977
                 </Typography>
             </Grid>
         </Grid>
