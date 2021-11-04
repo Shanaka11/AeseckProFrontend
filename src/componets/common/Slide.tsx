@@ -13,15 +13,15 @@ const useStyles = makeStyles((theme:Theme)=> ({
     image:{
         // height: 910,
         maxHeight: 600,
-        height: 'calc(100vh - 100px)',
+        height: 'calc(100vh - 110px)',
         width: '100%',
         verticalAlign: 'bottom',
         objectFit: 'cover',
         [theme.breakpoints.down('md')]:{
-            height: 'calc(100vh - 150px)',
+            height: 'calc(100vh - 160px)',
         },
         [theme.breakpoints.down('xs')]:{
-            height: 'calc(100vh - 200px)',
+            height: 'calc(100vh - 210px)',
         }, 
     },
     aboutUsImage:{
@@ -40,13 +40,13 @@ const useStyles = makeStyles((theme:Theme)=> ({
         position: 'absolute',
         top: 0,
         maxHeight: 600,
-        height: 'calc(100vh - 100px)',
+        height: 'calc(100vh - 110px)',
         width: '100%',
         [theme.breakpoints.down('md')]:{
-            height: 'calc(100vh - 150px)',
+            height: 'calc(100vh - 160px)',
         },
         [theme.breakpoints.down('xs')]:{
-            height: 'calc(100vh - 200px)',
+            height: 'calc(100vh - 210px)',
         }, 
     },
     aboutUsDetails:{
