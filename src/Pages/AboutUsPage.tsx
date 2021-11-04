@@ -29,6 +29,7 @@ const useStyles = makeStyles((theme:Theme)=> ({
     header: {
         color: 'white',
         fontWeight: 'bold',
+        textShadow: '-2px 2px 5px #000000',
         [theme.breakpoints.down('xs')]:{
             fontSize: '3em'
         }

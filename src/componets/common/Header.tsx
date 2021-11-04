@@ -25,7 +25,7 @@ import { useTheme } from '@material-ui/styles'
 import MenuIcon from '@material-ui/icons/Menu';
 // Local Imports
 import UserContext from '../../context/userContext'
-import logo from '../../assets/Logo.png'
+import logo from '../../assets/logo.png'
 
 // Style
 const useStyles = makeStyles((theme: Theme) => ({
