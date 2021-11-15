@@ -79,15 +79,13 @@ const ListItem:React.FC<listItemProps> = ( { item, layout, activityCenter } ) =>
             </Typography>   
         </Grid>
         <Grid item>
-            {!activityCenter &&
-                <Button                
-                    variant='contained'
-                    color='secondary'
-                    href={activityCenter ? `/${activityCenter}/booking?activity=${item.id}` : `/${item.id}`}
-                >
-                    { activityCenter ? 'Make A Booking' : 'Learn More'}
-                </Button>
-            }
+            <Button                
+                variant='contained'
+                color='secondary'
+                href={activityCenter ? `/${activityCenter}/booking?activity=${item.id}` : `/${item.id}`}
+            >
+                { activityCenter ? 'Make A Booking' : 'Learn More'}
+            </Button>
         </Grid>    
         </>    
     )
