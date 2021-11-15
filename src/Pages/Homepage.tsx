@@ -20,7 +20,7 @@ import List from '../componets/homepage/List'
 import Slide from '../componets/common/Slide'
 import { getOrganizationSummary } from '../api/organizationApi'
 import { getActivityCenterSummary } from '../api/activityCenterApi'
-import OrgContext, { OrgContextProvider } from '../context/orgContext'
+import OrgContext from '../context/orgContext'
 
 
 // Style

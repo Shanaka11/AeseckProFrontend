@@ -171,6 +171,7 @@ const Header = () => {
             <Tab
                 component='a'
                 label='Activities'
+                className={classes.logintab}
                 onClick={handleActivitiesOnClick}
                 selected
             >
@@ -182,6 +183,7 @@ const Header = () => {
                 component='a' 
                 href='' 
                 label='Contact Us' 
+                className={classes.logintab}
                 onClick={ (event) => {
                     let element = document.getElementById("footer");
                     event.preventDefault();  // Stop Page Reloading
@@ -193,11 +195,12 @@ const Header = () => {
                 component='a' 
                 href='/aboutus' 
                 label='About Us' 
+                className={classes.logintab}
                 selected
             />
-            {/* { !user && 
+            { !user && 
                 <Tab component='a' href='/login' label='Sign In' className={classes.logintab} selected/>
-            } */}
+            }
         </Tabs>
         { user && 
             <Avatar
