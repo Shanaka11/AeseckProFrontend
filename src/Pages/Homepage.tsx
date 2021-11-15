@@ -1,7 +1,5 @@
-// TODO
-// Fetch Data
 // React Imports
-import React from 'react'
+import React, {useContext} from 'react'
 // 3rd Party
 import { useParams } from 'react-router-dom'
 import { useQuery } from 'react-query'
@@ -22,6 +20,7 @@ import List from '../componets/homepage/List'
 import Slide from '../componets/common/Slide'
 import { getOrganizationSummary } from '../api/organizationApi'
 import { getActivityCenterSummary } from '../api/activityCenterApi'
+import OrgContext, { OrgContextProvider } from '../context/orgContext'
 
 
 // Style
@@ -39,6 +38,7 @@ const useStyles = makeStyles((theme:Theme)=> ({
     header: {
         color: 'white',
         fontWeight: 'bold',
+        textShadow: '-2px 2px 15px #000000',
         [theme.breakpoints.down('xs')]:{
             fontSize: '3em'
         }
@@ -59,6 +59,9 @@ const Homepage = () => {
     // Router
     const params:ParamsProps = useParams()
 
+    // Context
+    const { setActivities } = useContext(OrgContext)
+
     // Query
     const { data, isLoading, isError } = useQuery('OrganizationSummery', () => getOrganizationSummary())
     const { 
@@ -71,6 +74,7 @@ const Homepage = () => {
                         enabled : params.activity ? (params.activity !== 'aboutus' ? true : false): false
                     })
 
+    
     if(isLoading || activityCenterIsLoading){
         return (
                 <LinearProgress />
@@ -83,6 +87,8 @@ const Homepage = () => {
     
     const response = data?.data.response    
     const activityCenterResponse = activityCenterData?.data.response
+
+    setActivities(response.activityCenters)
 
     return (
         <Grid container direction='column'>
