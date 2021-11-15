@@ -25,6 +25,7 @@ import { useTheme } from '@material-ui/styles'
 import MenuIcon from '@material-ui/icons/Menu';
 // Local Imports
 import UserContext from '../../context/userContext'
+import OrgContext from '../../context/orgContext';
 import logo from '../../assets/Logo.png'
 
 // Style
@@ -99,11 +100,14 @@ const Header = () => {
     // States
     const [openDrawer, setOpenDrawer] = useState(false)
     const [menuUserOpen, setMenuUserOpen] = useState(false)
+    const [menuActivitiesOpen, setMenuActivitiesOpen] = useState(false)
     // const [menuActivityOpen, setMenuActivityOpen] = useState(false)
     const [anchorEl, setAnchorEl] = useState<any>(null)
+    const [anchorElActivities, setAnchorElActivities] = useState<any>(null)
 
     // Context
     const { user, logout } = useContext(UserContext)
+    const { activities } = useContext(OrgContext)
 
     // Routers
     const location = useLocation()    
@@ -133,10 +137,44 @@ const Header = () => {
         logout()
     }
 
+    const handleActivitiesOnClick = (event:any) => {
+        setAnchorElActivities(event.currentTarget)
+        setMenuActivitiesOpen(true)
+    }
+
+    const handleActivitiesMenuItemClick = (href:string) => {
+        setAnchorElActivities(null)
+        setMenuActivitiesOpen(false)
+        history.push(href)
+    }
+
+    const handleActivitiesMenuClose = () => {
+        setAnchorElActivities(null)
+        setMenuActivitiesOpen(false)
+    }
+
     // Components
     const tabs = (
         <>
-        <Tabs className={classes.tabs} indicatorColor='primary'>
+        <Tabs 
+            value={0}
+            className={classes.tabs} 
+            indicatorColor='primary'
+        >
+            <Tab
+                component='a'
+                label='Home'
+                href='/'
+                selected
+            >
+            </Tab>
+            <Tab
+                component='a'
+                label='Activities'
+                onClick={handleActivitiesOnClick}
+                selected
+            >
+            </Tab>
             {/* Only show this tab when on the home page */}
             {/* <Tab component='a' href='/3/booking' label='Make a Booking' className={classes.bookingTab}/> */}
             {/* <Tab component='a' href='#' label='Activities' onClick={ (event:any) => handleActivityOnClick(event)} /> */}
@@ -194,6 +232,30 @@ const Header = () => {
                 Logout
             </MenuItem>
         </Menu>
+        <Menu
+            anchorEl={anchorElActivities}
+            open={menuActivitiesOpen}
+            onClose={handleActivitiesMenuClose}
+            MenuListProps={{
+                onMouseLeave: handleActivitiesMenuClose
+            }}
+            keepMounted
+            elevation={0}
+            className={classes.menu}
+            classes = {{
+                paper: classes.menuItem
+            }}
+        >
+            {
+                activities.map((item:any) => (
+                    <MenuItem
+                        onClick = { () => handleActivitiesMenuItemClick(`/${item.id}`) }
+                    >
+                        {item.title}
+                    </MenuItem>
+                ))
+            }
+        </Menu>
         </>
     )
 
@@ -223,6 +285,40 @@ const Header = () => {
                         Make a Booking
                     </ListItemText>
                 </ListItem> */}
+                <ListItem
+                    divider
+                    button
+                    classes={{
+                        selected: classes.drawerItemSelected
+                    }}                
+                >
+                    <ListItemText 
+                        className={classes.drawerItem}
+                        disableTypography
+                        onClick={() => {history.push('/'); setOpenDrawer(false)}}
+                    >
+                        Home
+                    </ListItemText>
+                </ListItem>
+                {
+                    activities.map((item:any) => (
+                        <ListItem
+                            divider
+                            button
+                            classes={{
+                                selected: classes.drawerItemSelected
+                            }}
+                        >
+                            <ListItemText 
+                                className={classes.drawerItem}
+                                disableTypography
+                                onClick={() => {history.push(`/${item.id}`); setOpenDrawer(false)}}
+                            >
+                                { item.title }
+                            </ListItemText>
+                        </ListItem>
+                    ))
+                }
                 <ListItem 
                     divider
                     button
