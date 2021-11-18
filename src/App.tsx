@@ -23,7 +23,13 @@ import { OrgContextProvider } from './context/orgContext'
 
 function App() {
 
-  const queryClient = new QueryClient()
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        refetchOnWindowFocus:false
+      }
+    }
+  })
 
   return (
     <div>
