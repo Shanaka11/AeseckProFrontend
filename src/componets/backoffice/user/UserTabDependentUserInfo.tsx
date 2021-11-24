@@ -5,8 +5,21 @@ import React from 'react'
 import { 
     GridColDef
 } from '@material-ui/data-grid';
+import AddIcon from '@material-ui/icons/Add';
+import {  
+    makeStyles,
+    Theme,
+    Button 
+} from '@material-ui/core';
 // Local Imports
 import Table from '../common/Table'
+
+// Style
+const useStyles = makeStyles((theme:Theme)=> ({
+    button: {
+        marginBottom: theme.spacing(2)
+    },
+}))
 
 interface Props {
     data: any,
@@ -14,6 +27,8 @@ interface Props {
 }
 
 const UserTabDependentUserInfo:React.FC<Props> = ( { data, client } ) => {
+    // Style
+    const classes = useStyles()
 
     // Const
     const columns: GridColDef[] = [
@@ -55,6 +70,15 @@ const UserTabDependentUserInfo:React.FC<Props> = ( { data, client } ) => {
 
     return (
         <div>
+        <Button
+            variant='contained'
+            disableElevation
+            color='primary'
+            startIcon={ <AddIcon/> }
+            className={classes.button}
+        >
+            Add Dependent Users
+        </Button>
         <Table 
             columns={columns} 
             rows={data.user.dependentUsers || []} 
