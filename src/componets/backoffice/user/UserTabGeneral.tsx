@@ -110,10 +110,10 @@ const UserTabGeneral:React.FC<Props> = ( { data, client } ) => {
         }else{
             contact.emails[0] = { 
                 contactId: contact.id,
-                emailId: 1,
+                emailId: 0,
                 default: true,
                 email : {
-                     id: 1,
+                     id: 0,
                      emailAddress : formData.email 
                     }
                 }
@@ -123,10 +123,10 @@ const UserTabGeneral:React.FC<Props> = ( { data, client } ) => {
         }else{
             contact.phoneNumber[0] = {
                 contactId: contact.id,
-                phoneNumberId: 1,
+                phoneNumberId: 0,
                 default: true,
                 phoneNumber: {
-                    id: 1,
+                    id: 0,
                     default: false,
                     countryCode: '+61',
                     number : formData.phoneNumber
@@ -142,10 +142,10 @@ const UserTabGeneral:React.FC<Props> = ( { data, client } ) => {
         }else{
             contact.addresses[0] = {
                 contactId: contact.id,
-                addressId: 1,
+                addressId: 0,
                 default: true,
                 address: {
-                    id: 1,
+                    id: 0,
                     country: 'Australia',
                     streetAddress: formData.street,
                     suburb: formData.suburb,

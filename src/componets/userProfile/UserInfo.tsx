@@ -1,5 +1,5 @@
 // React Imports
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 // 3rd Party
 import SwipeableViews from 'react-swipeable-views';
 import { useQuery } from 'react-query'
@@ -14,7 +14,6 @@ import {
     Typography,
 } from '@material-ui/core'
 // Local Imports
-import avatar from '../../assets/avatar.jpg'
 import GeneralTab from '../backoffice/user/UserTabGeneral'
 import DependetUserTab from '../backoffice/user/UserTabDependentUserInfo'
 import CheckinTab from '../backoffice/user/UserTabCheckinHistroy'
@@ -73,7 +72,7 @@ const UserInfo = () => {
 
     // Query
     const userInfo = JSON.parse(localStorage.getItem('userInfo')!)
-    const { data, error, isLoading, isError, isFetching } = useQuery('UserInfo', () => getUserProfile(userInfo!.id))  
+    const { data, isLoading } = useQuery('UserInfo', () => getUserProfile(userInfo!.id))  
     // Methods
 
     console.log(data)
