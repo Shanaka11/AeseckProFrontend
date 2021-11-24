@@ -149,7 +149,7 @@ const Footer = () => {
                             </Grid>
                             <Grid item>
                                 <Grid container>
-                                    <a href='https://www.facebook.com' rel='noopener noreferrer' target='_blank'>
+                                    <a href='https://www.facebook.com/FroliczFamilyHub/' rel='noopener noreferrer' target='_blank'>
                                         <Facebook className={classes.socialIcons}/>
                                     </a>
                                     <a href='https://www.instagram.com' rel='noopener noreferrer' target='_blank'>
