@@ -1,7 +1,7 @@
 // React Imports
 import React, {useContext} from 'react'
 // 3rd Party
-import { useParams } from 'react-router-dom'
+import { useParams, useHistory } from 'react-router-dom'
 import { useQuery } from 'react-query'
 // Material UI Imports
 import { 
@@ -21,6 +21,7 @@ import Slide from '../componets/common/Slide'
 import { getOrganizationSummary } from '../api/organizationApi'
 import { getActivityCenterSummary } from '../api/activityCenterApi'
 import OrgContext from '../context/orgContext'
+import UserContext from '../context/userContext'
 
 
 // Style
@@ -58,9 +59,10 @@ const Homepage = () => {
 
     // Router
     const params:ParamsProps = useParams()
-
+    const history = useHistory()
     // Context
     const { setActivities } = useContext(OrgContext)
+    const { user } = useContext(UserContext)
 
     // Query
     const { data, isLoading, isError } = useQuery('OrganizationSummery', () => getOrganizationSummary())
@@ -75,6 +77,13 @@ const Homepage = () => {
                     })
 
     
+
+    // IF user is admin then redirect to the dashboard
+    if(user.role === 'admin') {
+        history.push('/backoffice')
+        return null
+    }
+
     if(isLoading || activityCenterIsLoading){
         return (
                 <LinearProgress />

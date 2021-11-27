@@ -50,8 +50,12 @@ const SignInPage:React.FC = () => {
 
     useEffect(() => {
         if(user){
-            // redirect
-            history.push('/')
+            if(user.role === 'admin'){
+                history.push('/backoffice')
+            }else{
+                // redirect
+                history.push('/')
+            }
         }
     },
     [user, history])
