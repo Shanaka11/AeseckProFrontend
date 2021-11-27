@@ -51,6 +51,11 @@ const useStyles = makeStyles((theme:Theme)=> ({
     },
     fontWhite: {
         color: 'white'
+    },
+    textFieldUnderline: {
+        '&:before':{
+            borderColor: '#ffffff'//theme.palette.secondary.main,
+        }
     }
 }))
 
@@ -197,11 +202,16 @@ const UserTabGeneral:React.FC<Props> = ( { data, client } ) => {
                                 InputLabelProps={{
                                     shrink: true,
                                     classes: {
-                                        root: classes.fontWhite
+                                        root: client ? classes.fontWhite : undefined
                                     }
                                 }}
                                 classes={{
                                     root: client ? undefined : classes.fontColorBlack
+                                }}
+                                InputProps={{
+                                    classes:{
+                                        underline: client ? classes.textFieldUnderline : undefined
+                                    }                                        
                                 }}                        
                             />
                         </Grid>
@@ -217,12 +227,17 @@ const UserTabGeneral:React.FC<Props> = ( { data, client } ) => {
                                 InputLabelProps={{
                                     shrink: true,
                                     classes: {
-                                        root: classes.fontWhite
+                                        root: client ? classes.fontWhite : undefined
                                     }
                                 }}
                                 classes={{
                                     root: client ? undefined : classes.fontColorBlack
-                                }}                        
+                                }}
+                                InputProps={{
+                                    classes:{
+                                        underline: client ? classes.textFieldUnderline : undefined
+                                    }                                        
+                                }}                         
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -237,12 +252,17 @@ const UserTabGeneral:React.FC<Props> = ( { data, client } ) => {
                                 InputLabelProps={{
                                     shrink: true,
                                     classes: {
-                                        root: classes.fontWhite
+                                        root: client ? classes.fontWhite : undefined
                                     }
                                 }}
                                 classes={{
                                     root: client ? undefined : classes.fontColorBlack
-                                }}                        
+                                }}  
+                                InputProps={{
+                                    classes:{
+                                        underline: client ? classes.textFieldUnderline : undefined
+                                    }                                        
+                                }}                      
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -258,11 +278,16 @@ const UserTabGeneral:React.FC<Props> = ( { data, client } ) => {
                                 InputLabelProps={{
                                     shrink: true,
                                     classes: {
-                                        root: classes.fontWhite
+                                        root: client ? classes.fontWhite : undefined
                                     }
                                 }}
                                 classes={{
                                     root: client ? undefined : classes.fontColorBlack
+                                }}
+                                InputProps={{
+                                    classes:{
+                                        underline: client ? classes.textFieldUnderline : undefined
+                                    }                                        
                                 }}                        
                             />
                         </Grid>
@@ -278,12 +303,17 @@ const UserTabGeneral:React.FC<Props> = ( { data, client } ) => {
                                 InputLabelProps={{
                                     shrink: true,
                                     classes: {
-                                        root: classes.fontWhite
+                                        root: client ? classes.fontWhite : undefined
                                     }
                                 }}
                                 classes={{
                                     root: client ? undefined : classes.fontColorBlack
-                                }}                        
+                                }}
+                                InputProps={{
+                                    classes:{
+                                        underline: client ? classes.textFieldUnderline : undefined
+                                    }                                        
+                                }}                          
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -298,12 +328,17 @@ const UserTabGeneral:React.FC<Props> = ( { data, client } ) => {
                                 InputLabelProps={{
                                     shrink: true,
                                     classes: {
-                                        root: classes.fontWhite
+                                        root: client ? classes.fontWhite : undefined
                                     }
                                 }}
                                 classes={{
                                     root: client ? undefined : classes.fontColorBlack
-                                }}                        
+                                }}
+                                InputProps={{
+                                    classes:{
+                                        underline: client ? classes.textFieldUnderline : undefined
+                                    }                                        
+                                }}                          
                             />
                         </Grid>
                         <Grid item xs={4}>
@@ -318,11 +353,16 @@ const UserTabGeneral:React.FC<Props> = ( { data, client } ) => {
                                 InputLabelProps={{
                                     shrink: true,
                                     classes: {
-                                        root: classes.fontWhite
+                                        root: client ? classes.fontWhite : undefined
                                     }
                                 }}
                                 classes={{
                                     root: client ? undefined : classes.fontColorBlack
+                                }}
+                                InputProps={{
+                                    classes:{
+                                        underline: client ? classes.textFieldUnderline : undefined
+                                    }                                        
                                 }}                        
                             />
                         </Grid>
@@ -338,11 +378,16 @@ const UserTabGeneral:React.FC<Props> = ( { data, client } ) => {
                                 InputLabelProps={{
                                     shrink: true,
                                     classes: {
-                                        root: classes.fontWhite
+                                        root: client ? classes.fontWhite : undefined
                                     }
                                 }}
                                 classes={{
                                     root: client ? undefined : classes.fontColorBlack
+                                }}
+                                InputProps={{
+                                    classes:{
+                                        underline: client ? classes.textFieldUnderline : undefined
+                                    }                                        
                                 }}                        
                             />
                         </Grid>
@@ -358,12 +403,17 @@ const UserTabGeneral:React.FC<Props> = ( { data, client } ) => {
                                 InputLabelProps={{
                                     shrink: true,
                                     classes: {
-                                        root: classes.fontWhite
+                                        root: client ? classes.fontWhite : undefined
                                     }
                                 }}
                                 classes={{
                                     root: client ? undefined : classes.fontColorBlack
-                                }}                        
+                                }}
+                                InputProps={{
+                                    classes:{
+                                        underline: client ? classes.textFieldUnderline : undefined
+                                    }                                        
+                                }}                         
                             />
                         </Grid>
                         <Grid item xs={12} className={classes.updateButton}>

@@ -74,7 +74,7 @@ const ListItem:React.FC<listItemProps> = ( { item, layout, activityCenter } ) =>
             </Typography>                            
         </Grid>
         <Grid item>
-            <Typography variant='body1' align={small ? 'center' : layout === 0 ? 'left' : 'right'}>
+            <Typography variant='body1' align='justify'>
                 {item.description}
             </Typography>   
         </Grid>

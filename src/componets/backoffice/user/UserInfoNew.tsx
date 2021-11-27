@@ -126,7 +126,7 @@ const UserInfoNew:React.FC<UserInfoProps> = ({ data, error }) => {
                             <GeneralTab data={data}/>
                         </div>
                         <div hidden={index !== 1} className={classes.tabPanel}>
-                            <DependetUserTab data={data}/>
+                            <DependetUserTab data={data} userId={data.user.id}/>
                         </div>
                         <div hidden={index !== 2} className={classes.tabPanel}>
                             <BookingTab data={data}/>

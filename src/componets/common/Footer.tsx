@@ -149,7 +149,7 @@ const Footer = () => {
                             </Grid>
                             <Grid item>
                                 <Grid container>
-                                    <a href='https://www.facebook.com' rel='noopener noreferrer' target='_blank'>
+                                    <a href='https://www.facebook.com/FroliczFamilyHub/' rel='noopener noreferrer' target='_blank'>
                                         <Facebook className={classes.socialIcons}/>
                                     </a>
                                     <a href='https://www.instagram.com' rel='noopener noreferrer' target='_blank'>
@@ -182,7 +182,7 @@ const Footer = () => {
                         <Grid item className={classes.gridItem}>
                             <iframe 
                                 title='com-center-location-main'
-                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3143.252675498999!2d145.30271891532468!3d-38.017888479715914!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad617523f6c64ad%3A0xc551c70f2b93c4b6!2s25-55%20Overland%20Dr%2C%20Narre%20Warren%20VIC%203805%2C%20Australia!5e0!3m2!1sen!2slk!4v1628152467720!5m2!1sen!2slk" 
+                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3140.3707570642514!2d145.24007731532646!3d-38.08503297970404!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0!2zMzjCsDA1JzA2LjEiUyAxNDXCsDE0JzMyLjIiRQ!5e0!3m2!1sen!2slk!4v1635994275467!5m2!1sen!2slk" 
                                 width="100%" 
                                 height="237" 
                                 frameBorder='0px'
@@ -196,7 +196,7 @@ const Footer = () => {
         <Grid container alignItems='center' justify='center'>
             <Grid item>
                 <Typography variant='subtitle1' className={classes.address}>
-                    25-55 Overland Dr, Narre Warren VIC 3805
+                    1 Lonhro Blvd, Cranbourne West, VIC 3977
                 </Typography>
             </Grid>
         </Grid>

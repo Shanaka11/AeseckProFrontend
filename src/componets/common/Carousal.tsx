@@ -27,6 +27,7 @@ const useStyles = makeStyles((theme: Theme)=>({
         zIndex: 1000,
     },
     nav:{
+        position: 'relative',
         backgroundColor: 'black',
         color: 'white',
         opacity: 0.5,
@@ -69,13 +70,14 @@ const useStyles = makeStyles((theme: Theme)=>({
 // Interfaces
 interface CarousalProps {
     children:  React.ReactNode[],
-    fixed?: boolean,    
+    fixed?: boolean,
+    aboutUs?: boolean    
 }
 
 // Consts
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
-const Carousal:React.FC<CarousalProps> = ( { children, fixed } ) => {
+const Carousal:React.FC<CarousalProps> = ( { children, fixed, aboutUs } ) => {
 
     // Style
     const classes = useStyles()
@@ -100,6 +102,7 @@ const Carousal:React.FC<CarousalProps> = ( { children, fixed } ) => {
     return (
         <div>
         {/* Controls */}
+            {!aboutUs && 
             <Hidden smDown>
                 <div className={classes.control}>
                     <IconButton className={`${classes.nav} ${classes.navLeft}`} onClick={() => (setActiveIndex(activeIndex === 0 ? children.length - 1 : activeIndex -1))}>
@@ -115,6 +118,7 @@ const Carousal:React.FC<CarousalProps> = ( { children, fixed } ) => {
                     </div>                
                 </div>         */}
             </Hidden>    
+            }
             {/* Slides */}
             <div>
                 { fixed ? 

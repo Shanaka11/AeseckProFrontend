@@ -12,27 +12,66 @@ import {
 const useStyles = makeStyles((theme:Theme)=> ({
     image:{
         // height: 910,
-        height: 600,
+        maxHeight: 600,
+        height: 'calc(100vh - 110px)',
         width: '100%',
         verticalAlign: 'bottom',
-        objectFit: 'cover'
+        objectFit: 'cover',
+        [theme.breakpoints.down('md')]:{
+            height: 'calc(100vh - 160px)',
+        },
+        [theme.breakpoints.down('xs')]:{
+            height: 'calc(100vh - 210px)',
+        }, 
+    },
+    aboutUsImage:{
+        height: 250,
+        width: '100%',
+        verticalAlign: 'bottom',
+        objectFit: 'cover',
+        // [theme.breakpoints.down('md')]:{
+        //     height: 'calc(100vh - 150px)',
+        // },
+        [theme.breakpoints.down('xs')]:{
+            height: 150,
+        }, 
     },
     details:{
         position: 'absolute',
         top: 0,
-        height: 600,
+        maxHeight: 600,
+        height: 'calc(100vh - 110px)',
         width: '100%',
+        [theme.breakpoints.down('md')]:{
+            height: 'calc(100vh - 160px)',
+        },
+        [theme.breakpoints.down('xs')]:{
+            height: 'calc(100vh - 210px)',
+        }, 
     },
+    aboutUsDetails:{
+        position: 'absolute',
+        top: 0,
+        maxHeight: 250,
+        width: '100%',
+        // [theme.breakpoints.down('md')]:{
+        //     height: 'calc(100vh - 150px)',
+        // },
+        [theme.breakpoints.down('xs')]:{
+            height: 150,
+        }, 
+    }
 }))
 
 // Interfaces
 interface SlideProps {
     index: number,
     imgPath: string,
-    children?: React.ReactNode
+    children?: React.ReactNode,
+    aboutUs?: boolean
 }
 
-const Slide:React.FC<SlideProps> = ({ index, imgPath, children }) => {
+const Slide:React.FC<SlideProps> = ({ index, imgPath, children, aboutUs }) => {
 
     // Style
     const classes = useStyles()
@@ -41,14 +80,14 @@ const Slide:React.FC<SlideProps> = ({ index, imgPath, children }) => {
         <>
             <div>
             <img
-                className={classes.image} 
+                className={aboutUs ? classes.aboutUsImage : classes.image} 
                 // height='910'
                 // width='1920'            
                 src={imgPath}
                 alt={`carousal-${index}`}
             />
             </div>
-            <div className={classes.details}>
+            <div className={aboutUs ? classes.aboutUsDetails : classes.details}>
                 {children}
             </div>
         </>
