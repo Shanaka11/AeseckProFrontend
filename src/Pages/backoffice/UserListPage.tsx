@@ -22,6 +22,7 @@ import Filter from '../../componets/backoffice/common/Filter'
 import UserPopup from '../../componets/backoffice/user/UserPopup'
 import BreadCrumbs from '../../componets/backoffice/common/BreadCrumbs'
 import FilterText from '../../componets/backoffice/common/FilterText'
+import BackofficeWrapper from '../../componets/common/BackofficeWrapper'
 
 // Style
 const useStyles = makeStyles((theme:Theme)=> ({
@@ -155,6 +156,7 @@ const UserListPage = () => {
 
 
     return (
+        <BackofficeWrapper>
         <Container className={classes.container}>
             <BreadCrumbs data={path}/>
             <Typography variant='h6' className={classes.textContainer}>
@@ -207,6 +209,7 @@ const UserListPage = () => {
                 />
             }
         </Container>
+        </BackofficeWrapper>
     )
 }
 

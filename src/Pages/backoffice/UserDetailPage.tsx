@@ -18,6 +18,7 @@ import {
 import UserInfo from '../../componets/backoffice/user/UserInfoNew'
 import errorHandler from '../../utils/errorHandler'
 import { getUserProfile } from '../../api/userApi'
+import BackofficeWrapper from '../../componets/common/BackofficeWrapper'
 
 // interfaces
 interface Params {
@@ -46,16 +47,20 @@ const UserDetailPage = () => {
 
     if(isLoading || isFetching){
         return (
+            <BackofficeWrapper>
             <div className={classes.loaderContainer}>
                 <CircularProgress />
             </div>
+            </BackofficeWrapper>
             )
     }
 
     return (
         <>
         {
+            <BackofficeWrapper>
             <UserInfo data={data?.data.response} error={errorHandler(error, data?.data.response ? undefined : 'User Does Not Exist')} loading={isLoading}/>
+            </BackofficeWrapper>
         }
         </>
     )
