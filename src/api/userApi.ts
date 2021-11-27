@@ -35,3 +35,7 @@ export const postLoginUser = async (data: any) => {
 export const getUserFromId = async (id: string) => {
     return axios.get(`${process.env.REACT_APP_SERVER}/user/getbyid?userId=${id}`, config)
 }
+
+export const postDependentUser = async(data: any) => {
+    return axios.post(`${process.env.REACT_APP_SERVER}/user/newdependent`, data, postConfigJson)
+}

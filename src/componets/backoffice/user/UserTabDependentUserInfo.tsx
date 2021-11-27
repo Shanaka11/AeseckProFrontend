@@ -1,5 +1,5 @@
 // React Imports
-import React from 'react'
+import React, { useState } from 'react'
 // 3rd Party
 // Material UI Imports
 import { 
@@ -13,6 +13,7 @@ import {
 } from '@material-ui/core';
 // Local Imports
 import Table from '../common/Table'
+import Dialog from '../user/AddDependentUserDialog'
 
 // Style
 const useStyles = makeStyles((theme:Theme)=> ({
@@ -23,12 +24,16 @@ const useStyles = makeStyles((theme:Theme)=> ({
 
 interface Props {
     data: any,
-    client?: boolean
+    client?: boolean,
+    userId: number
 }
 
-const UserTabDependentUserInfo:React.FC<Props> = ( { data, client } ) => {
+const UserTabDependentUserInfo:React.FC<Props> = ( { data, client, userId } ) => {
     // Style
     const classes = useStyles()
+
+    // States
+    const [add, setAdd] = useState(false)
 
     // Const
     const columns: GridColDef[] = [
@@ -70,15 +75,26 @@ const UserTabDependentUserInfo:React.FC<Props> = ( { data, client } ) => {
 
     return (
         <div>
-        <Button
-            variant='contained'
-            disableElevation
-            color='primary'
-            startIcon={ <AddIcon/> }
-            className={classes.button}
-        >
-            Add Dependent Users
-        </Button>
+        {!client &&
+            <>
+            <Dialog 
+                onClose={() => setAdd(false)}
+                open={add}
+                userId={userId}
+            />
+            
+            <Button
+                variant='contained'
+                disableElevation
+                color='secondary'
+                startIcon={ <AddIcon/> }
+                className={classes.button}
+                onClick={() => setAdd(true)}
+            >
+                Add Dependent Users
+            </Button>
+            </>
+        }
         <Table 
             columns={columns} 
             rows={data.user.dependentUsers || []} 
