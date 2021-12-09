@@ -100,13 +100,12 @@ const Header = () => {
     const theme:Theme = useTheme()
 
     const matches = useMediaQuery(theme.breakpoints.down("md"))
-    // const iOS = process.browser && /iPad|iPhone|iPod/.test(navigator.userAgent);
 
     // States
     const [openDrawer, setOpenDrawer] = useState(false)
     const [menuUserOpen, setMenuUserOpen] = useState(false)
     const [menuActivitiesOpen, setMenuActivitiesOpen] = useState(false)
-    // const [menuActivityOpen, setMenuActivityOpen] = useState(false)
+
     const [anchorEl, setAnchorEl] = useState<any>(null)
     const [anchorElActivities, setAnchorElActivities] = useState<any>(null)
 
@@ -217,8 +216,9 @@ const Header = () => {
             <Avatar
                 className={backoffice ? classes.avatarBackoffice : classes.avatar}
                 onClick={(event) => handleAvatarOnClick(event)}
+                src={user.avatar}
             >
-                {user.username ? user.username.substring(0,2) : 'UD'}
+                {user.username ? user.username.substring(0,2).toUpperCase() : 'UD'}
             </Avatar>
         }
         <Menu
@@ -284,21 +284,6 @@ const Header = () => {
             }}
         >
             <List disablePadding>
-                {/* <ListItem 
-                    divider
-                    button
-                    classes={{
-                        selected: classes.drawerItemSelected
-                    }}
-                >
-                    <ListItemText 
-                        className={classes.drawerItem}
-                        disableTypography
-                        onClick={() => {history.push('/3/booking'); setOpenDrawer(false)}}
-                    >
-                        Make a Booking
-                    </ListItemText>
-                </ListItem> */}
                 <ListItem
                     divider
                     button
@@ -361,6 +346,7 @@ const Header = () => {
                             <ListItemText 
                                 className={classes.drawerItem}
                                 disableTypography
+                                onClick={() => {history.push('/profile'); setOpenDrawer(false)}}
                             >
                                 Profile
                             </ListItemText>
@@ -383,21 +369,6 @@ const Header = () => {
                     </>
                     :
                     <>
-                        {/* <ListItem 
-                            divider
-                            button
-                            classes={{
-                                selected: classes.drawerItemSelected
-                            }}
-                        >
-                            <ListItemText 
-                                className={classes.drawerItem}
-                                disableTypography
-                                onClick={() => {history.push('/login'); setOpenDrawer(false)}}
-                            >
-                                Sign In
-                            </ListItemText>
-                        </ListItem> */}
                     </>
                 }
             </List>
@@ -423,12 +394,6 @@ const Header = () => {
                     onClick={() => history.push('/')}
                 />
                 { matches ? drawer : tabs }
-                {/* Show only when logged in */}
-                {/* {false && 
-                    <IconButton>
-                        <AccountCircleIcon className={classes.avatar}/>
-                    </IconButton>
-                } */}
             </Toolbar>
         </Container>
       </AppBar>

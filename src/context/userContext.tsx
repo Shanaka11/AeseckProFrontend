@@ -1,5 +1,6 @@
 import React, {createContext, useState} from 'react'
 // 3rd Party
+import { useHistory } from 'react-router-dom'
 // Local Imports
 
 //Interface
@@ -25,6 +26,7 @@ export const UserContextProvider:React.FC<Props> = ({ children }) => {
 
     // States
     const [user, setUser] = useState<any>(localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')!) : null)
+    const history = useHistory()
 
     // Query
 
@@ -33,6 +35,7 @@ export const UserContextProvider:React.FC<Props> = ({ children }) => {
         localStorage.removeItem('userInfo')
         localStorage.removeItem('token')
         setUser(null)
+        history.push('/')
     }
 
     return (

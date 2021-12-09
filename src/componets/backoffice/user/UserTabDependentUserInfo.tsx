@@ -47,17 +47,12 @@ const UserTabDependentUserInfo:React.FC<Props> = ( { data, client, userId } ) =>
             disableColumnMenu: true,       
         },
         { 
-            field: "firstName", 
-            headerName: "First Name", 
+            field: "name", 
+            headerName: "Name", 
             flex: 1,
         },
         { 
-            field: "lastName", 
-            headerName: "Last Name", 
-            flex: 1,
-        },
-        { 
-            field: "dateofbirth", 
+            field: "dateOfBirth", 
             headerName: "Date of Birth", 
             flex: 1,
         },
