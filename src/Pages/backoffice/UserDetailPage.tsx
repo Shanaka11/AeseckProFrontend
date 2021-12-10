@@ -43,7 +43,7 @@ const UserDetailPage = () => {
     const params = useParams<Params>()
 
     // Query
-    const { data, error, isLoading, isError, isFetching } = useQuery('UserInfo', () => getUserProfile(params.id))    
+    const { data, error, isLoading, isError, isFetching, refetch } = useQuery('UserInfo', () => getUserProfile(params.id))    
 
     if(isLoading || isFetching){
         return (
@@ -59,7 +59,7 @@ const UserDetailPage = () => {
         <>
         {
             <BackofficeWrapper>
-            <UserInfo data={data?.data.response} error={errorHandler(error, data?.data.response ? undefined : 'User Does Not Exist')} loading={isLoading}/>
+                <UserInfo data={data?.data.response} error={errorHandler(error, data?.data.response ? undefined : 'User Does Not Exist')} loading={isLoading} refetch={refetch}/>
             </BackofficeWrapper>
         }
         </>

@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 // Interfaces
 interface Props {
-    onClose: () => void,
+    onClose: (success?: boolean) => void,
     open: boolean,
     userId: number
 }
@@ -51,7 +51,7 @@ const AddDependentUserDialog:React.FC<Props> = ({ open, onClose, userId }) => {
         isLoading: postDependentUserIsLoading,
         mutate: postDependentUserMutate
     } = useMutation(postDependentUser, {
-        onSuccess: () => onClose()
+        onSuccess: () => onClose(true)
     })
 
     // Methods

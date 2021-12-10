@@ -1,6 +1,8 @@
 // React Imports
 import React, { useState } from 'react'
 // 3rd Party
+import { RefetchOptions, QueryObserverResult } from 'react-query'
+import { AxiosResponse } from 'axios'
 // Material UI Imports
 import { 
     GridColDef,
@@ -26,7 +28,8 @@ const useStyles = makeStyles((theme:Theme)=> ({
 interface Props {
     data: any,
     client?: boolean,
-    userId: number
+    userId: number,
+    refetch?: (options?: RefetchOptions | undefined) => Promise<QueryObserverResult<AxiosResponse<any>, unknown>>
 }
 
 // Datagrid Methods
@@ -53,7 +56,7 @@ const dataGridGetAdultChild = (params:GridValueGetterParams) => {
     }
 }
 
-const UserTabDependentUserInfo:React.FC<Props> = ( { data, client, userId } ) => {
+const UserTabDependentUserInfo:React.FC<Props> = ( { data, client, userId, refetch } ) => {
     // Style
     const classes = useStyles()
 
@@ -100,12 +103,20 @@ const UserTabDependentUserInfo:React.FC<Props> = ( { data, client, userId } ) =>
         }
     ]
 
+    // Methods
+    const handleOnClose = (success: boolean = false) => {
+        setAdd(false)
+        if (success && refetch) {
+            refetch()
+        }
+    }
+
     return (
         <div>
         {!client &&
             <>
             <Dialog 
-                onClose={() => setAdd(false)}
+                onClose={handleOnClose}
                 open={add}
                 userId={userId}
             />

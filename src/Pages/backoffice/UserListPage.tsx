@@ -144,7 +144,7 @@ const UserListPage = () => {
                 [
                     {
                         name: filter.name,
-                        operator: filter.name === 'Name' ? '_like' : '_eq',
+                        operator: filter.name === 'Name' ? '_like' : '=',
                         values: [
                             filter.value
                         ]
