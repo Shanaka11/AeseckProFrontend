@@ -3,13 +3,14 @@ import React, { useState } from 'react'
 // 3rd Party
 // Material UI Imports
 import { 
-    GridColDef
+    GridColDef,
+    GridValueGetterParams
 } from '@material-ui/data-grid';
 import AddIcon from '@material-ui/icons/Add';
 import {  
     makeStyles,
     Theme,
-    Button 
+    Button ,
 } from '@material-ui/core';
 // Local Imports
 import Table from '../common/Table'
@@ -26,6 +27,30 @@ interface Props {
     data: any,
     client?: boolean,
     userId: number
+}
+
+// Datagrid Methods
+const dataGridCalculateAge = (birthday?: string) => {
+    if (birthday) {
+        const birthDay = new Date (birthday)
+        const currDay = new Date()
+        return currDay.getFullYear() - birthDay.getFullYear()
+    }
+}
+const dataGridGetAge = ( params:GridValueGetterParams ) => {
+    const birthDayString = params.getValue(params.id, 'dateOfBirth')?.toString()
+    return dataGridCalculateAge(birthDayString);
+}
+
+const dataGridGetAdultChild = (params:GridValueGetterParams) => {
+    const birthDayString = params.getValue(params.id, 'dateOfBirth')?.toString()
+    const age = dataGridCalculateAge(birthDayString);   
+    console.log(age)
+    if( age && age >= 18) {
+        return 'Adult'
+    }else{
+        return 'Child'
+    }
 }
 
 const UserTabDependentUserInfo:React.FC<Props> = ( { data, client, userId } ) => {
@@ -50,21 +75,28 @@ const UserTabDependentUserInfo:React.FC<Props> = ( { data, client, userId } ) =>
             field: "name", 
             headerName: "Name", 
             flex: 1,
+            sortable: false
         },
         { 
-            field: "dateOfBirth", 
+            field: "dateOfBirthDay", 
             headerName: "Date of Birth", 
             flex: 1,
+            sortable: false,
+            valueGetter: (params:GridValueGetterParams) => {return params.getValue(params.id, 'dateOfBirth')?.toString().split('T')[0] }
         },
         { 
             field: "age", 
             headerName: "Age", 
             flex: 1,
+            sortable: false,
+            valueGetter: dataGridGetAge
         },
         {
             field: "child", 
             headerName: "Child / Adult", 
             flex: 1,   
+            sortable: false,
+            valueGetter: dataGridGetAdultChild
         }
     ]
 

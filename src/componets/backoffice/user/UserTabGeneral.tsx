@@ -59,6 +59,9 @@ const useStyles = makeStyles((theme:Theme)=> ({
         '&:before':{
             borderColor: '#ffffff'//theme.palette.secondary.main,
         }
+    },
+    avatar: {
+        objectFit: 'cover'
     }
 }))
 
@@ -207,6 +210,7 @@ const UserTabGeneral:React.FC<Props> = ( { data, client } ) => {
                             >                
                                 <img 
                                     alt='img-avatar' 
+                                    className= {classes.avatar}
                                     src={avatarLink ?  avatarLink : avatar} 
                                     height={200} 
                                     width={200}
