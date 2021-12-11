@@ -6,7 +6,8 @@ import { AxiosResponse } from 'axios'
 // Material UI Imports
 import { 
     GridColDef,
-    GridValueGetterParams
+    GridValueGetterParams,
+    GridRowParams
 } from '@material-ui/data-grid';
 import AddIcon from '@material-ui/icons/Add';
 import {  
@@ -32,6 +33,15 @@ interface Props {
     refetch?: (options?: RefetchOptions | undefined) => Promise<QueryObserverResult<AxiosResponse<any>, unknown>>
 }
 
+interface DialogProps {
+    open: boolean,
+    data?: {
+        id: number,
+        name: string,
+        dateOfBirth: string
+    }
+    action: 'ADD'|'UPDATE'
+}
 // Datagrid Methods
 const dataGridCalculateAge = (birthday?: string) => {
     if (birthday) {
@@ -48,7 +58,7 @@ const dataGridGetAge = ( params:GridValueGetterParams ) => {
 const dataGridGetAdultChild = (params:GridValueGetterParams) => {
     const birthDayString = params.getValue(params.id, 'dateOfBirth')?.toString()
     const age = dataGridCalculateAge(birthDayString);   
-    console.log(age)
+
     if( age && age >= 18) {
         return 'Adult'
     }else{
@@ -61,7 +71,10 @@ const UserTabDependentUserInfo:React.FC<Props> = ( { data, client, userId, refet
     const classes = useStyles()
 
     // States
-    const [add, setAdd] = useState(false)
+    const [add, setAdd] = useState<DialogProps>({
+        action: 'ADD',
+        open: false
+    })
 
     // Const
     const columns: GridColDef[] = [
@@ -105,29 +118,43 @@ const UserTabDependentUserInfo:React.FC<Props> = ( { data, client, userId, refet
 
     // Methods
     const handleOnClose = (success: boolean = false) => {
-        setAdd(false)
+        setAdd({...add, 'open' : false})
         if (success && refetch) {
             refetch()
         }
     }
 
+    const handleRowClick = (param: GridRowParams, event: React.MouseEvent<Element, MouseEvent>) => {
+        // TODO: Update dependent user
+        // setAdd({
+        //     action: 'UPDATE',
+        //     open: true,
+        //     data: {
+        //         id: param.row.id,
+        //         name: param.row.name,
+        //         dateOfBirth: param.row.dateOfBirth,
+        //     }
+        // })
+    }
+
     return (
         <div>
-        {!client &&
+        {!client && 
             <>
-            <Dialog 
-                onClose={handleOnClose}
-                open={add}
-                userId={userId}
-            />
-            
+            {add.open &&
+                <Dialog 
+                    onClose={handleOnClose}
+                    userId={userId}
+                    dialogProps={add}
+                />
+            }
             <Button
                 variant='contained'
                 disableElevation
                 color='secondary'
                 startIcon={ <AddIcon/> }
                 className={classes.button}
-                onClick={() => setAdd(true)}
+                onClick={() => setAdd({...add, open : true, action : 'ADD'})}
             >
                 Add Dependent Users
             </Button>
@@ -137,7 +164,7 @@ const UserTabDependentUserInfo:React.FC<Props> = ( { data, client, userId, refet
             columns={columns} 
             rows={data.user.dependentUsers || []} 
             card={(data: any) => <></>} 
-            handleOnRowClick={() => {}} 
+            handleOnRowClick={handleRowClick} 
             loading={false} 
             handlePageChange={(newPage:any) => {}}
             pageCount={data.user.dependentUsers ? data.user.dependentUsers.length : 0}

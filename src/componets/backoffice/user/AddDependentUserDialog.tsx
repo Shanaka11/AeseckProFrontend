@@ -1,5 +1,5 @@
 // React
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 // 3rd Party
 import { useMutation } from 'react-query'
 import moment from 'moment';
@@ -33,18 +33,28 @@ const useStyles = makeStyles((theme: Theme) => ({
 // Interfaces
 interface Props {
     onClose: (success?: boolean) => void,
-    open: boolean,
-    userId: number
+    userId: number,
+    dialogProps: {
+        open: boolean,
+        data?: {
+            id: number,
+            name: string,
+            dateOfBirth: string
+        }
+        action: 'ADD'|'UPDATE'
+    }
 }
 
-const AddDependentUserDialog:React.FC<Props> = ({ open, onClose, userId }) => {
+const AddDependentUserDialog:React.FC<Props> = ({ onClose, userId, dialogProps }) => {
     // Style
     const classes = useStyles()
 
+    console.log(dialogProps.data ? dialogProps.data.name.split(' ')[1] : '')
+
     // State
-    const [firstName, setFirstName] = useState<String>()
-    const [lastName, setLastName] = useState<String>()
-    const [dateOfBirth, setDateOfBirth] = useState<Date>()
+    const [firstName, setFirstName] = useState<String>(dialogProps.data ? dialogProps.data.name.split(' ')[0] : '')
+    const [lastName, setLastName] = useState<String>(dialogProps.data ? dialogProps.data.name.split(' ')[1] : '')
+    const [dateOfBirth, setDateOfBirth] = useState<Date>(dialogProps.data ? new Date(dialogProps.data.dateOfBirth.split('T')[0]) : new Date())
 
     // Query
     const {
@@ -54,14 +64,26 @@ const AddDependentUserDialog:React.FC<Props> = ({ open, onClose, userId }) => {
         onSuccess: () => onClose(true)
     })
 
+    useEffect(() => {
+        if(dialogProps.data && dialogProps.action === 'UPDATE'){
+            setFirstName(dialogProps.data.name.split(' ')[0])
+            setLastName(dialogProps.data.name.split(' ')[1])
+            setDateOfBirth(new Date(dialogProps.data.dateOfBirth.split('T')[0]))
+        }else if(dialogProps.action === 'ADD') {
+            setFirstName('')
+            setLastName('')
+            setDateOfBirth(new Date())
+        }
+    }, [dialogProps])
     // Methods
+    
     const handleDateOfBirthChange = (event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
         setDateOfBirth(new Date(event.target.value))
     }
 
     const handleAddUser = () => {
         const data = {
-            'id':0,
+            'id': dialogProps.action === 'UPDATE' ? dialogProps.data!.id : 0,
             'primaryUserId': userId,
             'name': `${firstName} ${lastName}`,
             'description': '',
@@ -74,13 +96,13 @@ const AddDependentUserDialog:React.FC<Props> = ({ open, onClose, userId }) => {
 
     return (
         <Dialog
-            open={open}
+            open={dialogProps.open}
             onClose={() => onClose()}
         >
             <DialogTitle
                 className={classes.headerText}
             >
-                Add New Dependent User
+                {dialogProps.action === 'ADD' ? "Add New Dependent User" : 'Update Dependent User'}
             </DialogTitle>
             <DialogContent>
                 <TextField

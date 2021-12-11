@@ -83,8 +83,6 @@ const UserInfo:React.FC<Props> = ( { userInfo, refetch, handleDone } ) => {
         }
     }
 
-    console.log(userInfo)
-
     return (
         <Grid container className={classes.container}>
             {/* Alert */}

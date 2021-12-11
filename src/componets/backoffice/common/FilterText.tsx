@@ -57,9 +57,6 @@ interface Props {
 
 
 const FilterText:React.FC<Props> = ( { menuOptions, handleFilterSubmit } ) => {
-
-    console.log(menuOptions)
-
     // Style
     const classes = useStyles()
 

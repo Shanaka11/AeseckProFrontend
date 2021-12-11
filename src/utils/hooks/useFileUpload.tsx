@@ -26,7 +26,6 @@ const useFileUploadS3 = (onSuccess?: () => void) => {
     }, [success, filePath])
 
     const handleUpload = (e:any, name?: string) => {
-        console.log('Start New')
         setLoading(true)
 
         // if(name){
