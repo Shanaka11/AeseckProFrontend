@@ -88,13 +88,15 @@ const Login:React.FC<LoginProps> = ({ handlePageChange }) => {
 
         if(loginData?.data.status === true){
             // On Success direct to user profile page
-            setUser(loginData.data.response.user)
+            // setUser(loginData.data.response.user)
             localStorage.setItem('token', loginData.data.response.token)
             const userInfo = {
                 id: loginData.data.response.user.id,
-                username: loginData.data.response.user.userName,
-                role: loginData.data.response.user.role
+                username: loginData.data.response.contact.firstName,
+                role: loginData.data.response.user.role,
+                avatar: loginData.data.response.contact.avatarImage.s3Link
             }
+            setUser(userInfo)
             localStorage.setItem('userInfo', JSON.stringify(userInfo))
 
             // Depending on the role direct to backoffice dashboard or home screen

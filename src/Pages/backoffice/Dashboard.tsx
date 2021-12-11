@@ -11,7 +11,7 @@ import {
     Grid
 } from '@material-ui/core'
 // Local Imports
-
+import BackofficeWrapper from '../../componets/common/BackofficeWrapper'
 // Style
 const useStyles = makeStyles((theme:Theme)=> ({
     container:{        
@@ -51,6 +51,7 @@ const Dashboard:React.FC = () => {
     }
 
     return (
+        <BackofficeWrapper>
         <Container>
             <Grid container justify='center' alignContent='center' className={classes.container} spacing={3}>
                 <Grid item>
@@ -105,6 +106,7 @@ const Dashboard:React.FC = () => {
                 </Grid>                                                 */}
             </Grid>
         </Container>
+        </BackofficeWrapper>
     )
 }
 

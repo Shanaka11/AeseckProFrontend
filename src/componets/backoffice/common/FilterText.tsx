@@ -57,9 +57,6 @@ interface Props {
 
 
 const FilterText:React.FC<Props> = ( { menuOptions, handleFilterSubmit } ) => {
-
-    console.log(menuOptions)
-
     // Style
     const classes = useStyles()
 
@@ -67,7 +64,7 @@ const FilterText:React.FC<Props> = ( { menuOptions, handleFilterSubmit } ) => {
     const [anchorEl, setAnchorEl] = useState<any>(null)
     const [showMenu, setShowMenu] = useState(false)
     const [filterText, setFilterText] = useState('')
-    const [filter, setFilter] = useState(Object.keys(menuOptions)[0])
+    const [filter, setFilter] = useState(menuOptions ? Object.keys(menuOptions)[0] : '')
 
     // Methods
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {

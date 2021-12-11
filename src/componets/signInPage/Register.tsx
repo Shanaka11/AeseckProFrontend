@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
     gridItem: {
         width: 500,
-        marginBottom: 24,
+        marginBottom: 16,
         [theme.breakpoints.down('md')]:{
             maxWidth: 300
         },
@@ -78,7 +78,7 @@ const Register:React.FC<RegisterProps> = ( { handlePageChange } ) => {
 
     // Methods
     useEffect(() => {
-        if(registerData && registerData?.data.status !== 'Fail'){
+        if(registerData && registerData?.data.status !== 'Failed'){
             // Go to the login Page
             handlePageChange(1)
         }        
@@ -99,7 +99,7 @@ const Register:React.FC<RegisterProps> = ( { handlePageChange } ) => {
 
     return (
         <form onSubmit={handleFormSubmit}>
-        {(registerIsError || registerData?.data.status === 'Fail') && <Alert message={registerIsError ? 'An Error Occured, Please Try again' : registerData?.data.msg} severity='error'/>}
+        {(registerIsError || registerData?.data.status === 'Failed') && <Alert message={registerIsError ? 'An Error Occured, Please Try again' : registerData?.data.msg} severity='error'/>}
         <Container>
         <Grid container direction='column' justify='center' alignItems='center' className={classes.container}>
             <Grid item className={classes.gridItem}>

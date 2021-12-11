@@ -79,7 +79,7 @@ const Homepage = () => {
     
 
     // IF user is admin then redirect to the dashboard
-    if(user.role === 'admin') {
+    if(user && user.role === 'admin') {
         history.push('/backoffice')
         return null
     }

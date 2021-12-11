@@ -12,6 +12,7 @@ import Waiting from '../componets/checkinout/Waiting'
 import User from '../componets/checkinout/User'
 import Alert from '../componets/common/Alert'
 import { getUserStatus } from '../api/sessionApi'
+import BackofficeWrapper from '../componets/common/BackofficeWrapper'
 
 // Style
 const useStyles = makeStyles((theme:Theme)=> ({
@@ -60,6 +61,7 @@ const CheckinOut = () => {
 
 
     return (
+        <BackofficeWrapper>
         <div className={classes.container}>
             { console.log(isError || !data?.data.status)}
             {
@@ -83,6 +85,7 @@ const CheckinOut = () => {
                 </>
             }
         </div>
+        </BackofficeWrapper>
     )
 }
 
