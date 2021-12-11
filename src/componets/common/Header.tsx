@@ -177,17 +177,24 @@ const Header = () => {
                     selected
                 >
                 </Tab>
-                <Tab
+                {/* <Tab
                     component='a'
                     label='Activities'
                     className={classes.logintab}
                     onClick={handleActivitiesOnClick}
                     selected
                 >
-                </Tab>
-                {/* Only show this tab when on the home page */}
-                {/* <Tab component='a' href='/3/booking' label='Make a Booking' className={classes.bookingTab}/> */}
-                {/* <Tab component='a' href='#' label='Activities' onClick={ (event:any) => handleActivityOnClick(event)} /> */}
+                </Tab> */}
+                            {
+                activities.map((item:any) => (
+                    <Tab
+                        component='a'
+                        className={classes.logintab}
+                        href={`/${item.id}`}
+                        label={item.title}
+                    />
+                ))
+                }
                 <Tab 
                     component='a' 
                     href='' 

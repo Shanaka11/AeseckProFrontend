@@ -72,11 +72,12 @@ const SignInPage:React.FC = () => {
                     <Login handlePageChange={ setPage }/>
                 </Grid>
             </Slide>
-            <Slide direction="left" in={page === 2} mountOnEnter unmountOnExit {...(page === 2 ? { timeout: 1000 } : {})}>
+            {/* BOOKING CHANGE */}
+            {/* <Slide direction="left" in={page === 2} mountOnEnter unmountOnExit {...(page === 2 ? { timeout: 1000 } : {})}>
                 <Grid item xs={12} lg={6}>
                     <Register handlePageChange={ setPage } />
                 </Grid>
-            </Slide>
+            </Slide> */}
         </Grid>
     )
 }
