@@ -64,20 +64,25 @@ const Homepage = () => {
     const { setActivities, orgData, setOrgData, activityData, appendActivityDataList } = useContext(OrgContext)
     const { user } = useContext(UserContext)
 
+    console.log(orgData)
+
     // Query
-    const { 
-        data, 
+    const {
+        data,
         isLoading, 
         isError 
     } = useQuery(
         'OrganizationSummery', 
         () => getOrganizationSummary(),
         {
-            enabled : orgData ? true : false,
+            enabled : orgData ? false : true,
             onSuccess: (data: any) => orgDataFetchSuccessHandler(data),
             
         }
     )
+
+    console.log(orgData ? false : true)
+
     const { 
         data:activityCenterData, 
         isLoading: activityCenterIsLoading, 
@@ -99,8 +104,6 @@ const Homepage = () => {
         return null
     }
 
-    console.log(orgData)
-
     if(isLoading || activityCenterIsLoading || !orgData){
         return (
                 <LinearProgress />
@@ -112,7 +115,7 @@ const Homepage = () => {
         return <></>
     }
     
-    const response = orgData   
+    const response = data?.data.response//orgData   
     const activityCenterResponse = activityCenterData?.data.response
 
     // setOrgData(response)

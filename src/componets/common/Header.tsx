@@ -1,7 +1,7 @@
 // React Imports
 import React, { useState, useContext } from 'react'
 // 3rd Party
-import { useLocation, useHistory } from 'react-router-dom'
+import { useLocation, useHistory, Link } from 'react-router-dom'
 // Material UI Imports
 import { 
     makeStyles,
@@ -171,21 +171,13 @@ const Header = () => {
                 indicatorColor={backoffice ? 'secondary' : 'primary'}
             >
                 <Tab
-                    component='a'
+                    component={Link}
                     label='Home'
-                    href='/'
                     selected
+                    to='/'
                 >
                 </Tab>
-                {/* <Tab
-                    component='a'
-                    label='Activities'
-                    className={classes.logintab}
-                    onClick={handleActivitiesOnClick}
-                    selected
-                >
-                </Tab> */}
-                            {
+                {/* {
                 activities.map((item:any) => (
                     <Tab
                         component='a'
@@ -194,7 +186,7 @@ const Header = () => {
                         label={item.title}
                     />
                 ))
-                }
+                } */}
                 <Tab 
                     component='a' 
                     href='' 
@@ -208,14 +200,14 @@ const Header = () => {
                     selected
                 />
                 <Tab 
-                    component='a' 
-                    href='/aboutus' 
+                    component={Link}
+                    to='/aboutus'
                     label='About Us' 
                     className={classes.logintab}
                     selected
                 />
                 { !user && 
-                    <Tab component='a' href='/login' label='Sign In' className={classes.logintab} selected/>
+                    <Tab component={Link} to='/login' label='Sign In' className={classes.logintab} selected/>
                 }
             </Tabs>
         }
@@ -253,7 +245,7 @@ const Header = () => {
                 Logout
             </MenuItem>
         </Menu>
-        <Menu
+        {/* <Menu
             anchorEl={anchorElActivities}
             open={menuActivitiesOpen}
             onClose={handleActivitiesMenuClose}
@@ -276,7 +268,7 @@ const Header = () => {
                     </MenuItem>
                 ))
             }
-        </Menu>
+        </Menu> */}
         </>
     )
 
@@ -306,7 +298,7 @@ const Header = () => {
                         Home
                     </ListItemText>
                 </ListItem>
-                {
+                {/* {
                     activities.map((item:any) => (
                         <ListItem
                             divider
@@ -324,7 +316,7 @@ const Header = () => {
                             </ListItemText>
                         </ListItem>
                     ))
-                }
+                } */}
                 <ListItem 
                     divider
                     button

@@ -29,9 +29,9 @@ const OrgContext = createContext<ContextProps>({
 export const OrgContextProvider:React.FC<Props> = ({ children }) => {
 
     // States
-    const [activities, setActivities] = useState<any>([])
-    const [activityData, setActivityData] = useState<any>([])
-    const [orgData, setOrgData] = useState<any>([])
+    const [activities, setActivities] = useState<any>()
+    const [activityData, setActivityData] = useState<any>()
+    const [orgData, setOrgData] = useState<any>()
 
     // Query
 

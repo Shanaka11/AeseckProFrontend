@@ -13,6 +13,7 @@ import {
 } from '@material-ui/core'
 import { useTheme } from '@material-ui/styles'
 // Local Imports
+import Link from '../common/Link'
 
 // Style
 const useStyles = makeStyles((theme: Theme) => ({
@@ -79,13 +80,15 @@ const ListItem:React.FC<listItemProps> = ( { item, layout, activityCenter } ) =>
             </Typography>   
         </Grid>
         <Grid item>
-            <Button                
-                variant='contained'
-                color='secondary'
-                href={activityCenter ? `/${activityCenter}/booking?activity=${item.id}` : `/${item.id}`}
-            >
-                { activityCenter ? 'Make A Booking' : 'Learn More'}
-            </Button>
+            <Link to={activityCenter ? `/${activityCenter}/booking?activity=${item.id}` : `/${item.id}`}>
+                <Button                
+                    variant='contained'
+                    color='secondary'
+                    // href={activityCenter ? `/${activityCenter}/booking?activity=${item.id}` : `/${item.id}`}
+                >
+                    { activityCenter ? 'Make A Booking' : 'Learn More'}
+                </Button>
+            </Link>
         </Grid>    
         </>    
     )
