@@ -15,10 +15,10 @@ const BackofficeWrapper:React.FC<Props> = ({ children }) => {
 
     const { user } = useContext(UserContext)
 
-    if(!user || user.role !== 'admin'){
-        history.goBack()
-        return
-    }
+    // if(!user || user.role !== 'admin'){
+    //     history.goBack()
+    //     return
+    // }
 
     return (
         children

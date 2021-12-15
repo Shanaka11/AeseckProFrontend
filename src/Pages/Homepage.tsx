@@ -61,30 +61,47 @@ const Homepage = () => {
     const params:ParamsProps = useParams()
     const history = useHistory()
     // Context
-    const { setActivities } = useContext(OrgContext)
+    const { setActivities, orgData, setOrgData, activityData, appendActivityDataList } = useContext(OrgContext)
     const { user } = useContext(UserContext)
 
     // Query
-    const { data, isLoading, isError } = useQuery('OrganizationSummery', () => getOrganizationSummary())
+    const { 
+        data, 
+        isLoading, 
+        isError 
+    } = useQuery(
+        'OrganizationSummery', 
+        () => getOrganizationSummary(),
+        {
+            enabled : orgData ? true : false,
+            onSuccess: (data: any) => orgDataFetchSuccessHandler(data),
+            
+        }
+    )
     const { 
         data:activityCenterData, 
         isLoading: activityCenterIsLoading, 
         isError:activityCenterIsError, 
-    } = useQuery(   'ActivityCenterSummery', 
+    } = useQuery(   ['ActivityCenterSummery', params.activity], 
                     () => getActivityCenterSummary(params.activity!), 
                     { 
                         enabled : params.activity ? (params.activity !== 'aboutus' ? true : false): false
                     })
 
     
-
+    const orgDataFetchSuccessHandler = (data:any) => {
+        setOrgData(data?.data.response)
+    }
+    
     // IF user is admin then redirect to the dashboard
     if(user && user.role === 'admin') {
         history.push('/backoffice')
         return null
     }
 
-    if(isLoading || activityCenterIsLoading){
+    console.log(orgData)
+
+    if(isLoading || activityCenterIsLoading || !orgData){
         return (
                 <LinearProgress />
             )
@@ -92,12 +109,16 @@ const Homepage = () => {
 
     if(isError || activityCenterIsError){
         console.log('There have been a server Error if the issue persists please contact support')
+        return <></>
     }
     
-    const response = data?.data.response    
+    const response = orgData   
     const activityCenterResponse = activityCenterData?.data.response
 
-    setActivities(response.activityCenters)
+    // setOrgData(response)
+    // if(response.activityCenters) {
+    //     setActivities(response.activityCenters)
+    // }
 
     return (
         <Grid container direction='column'>
