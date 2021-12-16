@@ -70,7 +70,7 @@ const Homepage = () => {
         data:activityCenterData, 
         isLoading: activityCenterIsLoading, 
         isError:activityCenterIsError, 
-    } = useQuery(   'ActivityCenterSummery', 
+    } = useQuery(   ['ActivityCenterSummery', params.activity], 
                     () => getActivityCenterSummary(params.activity!), 
                     { 
                         enabled : params.activity ? (params.activity !== 'aboutus' ? true : false): false
