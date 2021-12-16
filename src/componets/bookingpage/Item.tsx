@@ -28,7 +28,7 @@ const Item:React.FC<ItemProps> = ({ label, value, small }) => {
                 <Typography variant={matches ? 'subtitle2' : 'caption'} align={matches ? 'center' : undefined}>
                     { label }
                 </Typography>
-                <Typography variant={`${small ? 'h6' : 'h5'}`} component='h5' align={matches ? 'center' : undefined}>
+                <Typography variant={small ? 'h6' : 'h5'} component='h5' align={matches ? 'center' : 'inherit'}>
                     { value }
                 </Typography>
             </Grid>

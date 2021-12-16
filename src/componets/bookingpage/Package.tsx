@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme: Theme) => ({
         paddingTop: 16,
         paddingBottom: 16,
         backgroundColor: theme.palette.primary.light,
-        height: 400,
+        height: 450,
         width: 300,
         cursor: 'pointer',
         transition: '0.3s background-color',

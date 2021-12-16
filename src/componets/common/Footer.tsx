@@ -152,12 +152,13 @@ const Footer = () => {
                                     <a href='https://www.facebook.com/FroliczFamilyHub/' rel='noopener noreferrer' target='_blank'>
                                         <Facebook className={classes.socialIcons}/>
                                     </a>
-                                    <a href='https://www.instagram.com' rel='noopener noreferrer' target='_blank'>
+                                    {/* Booking Release */}
+                                    {/* <a href='https://www.instagram.com' rel='noopener noreferrer' target='_blank'>
                                         <Instagram className={classes.socialIcons} />
                                     </a>
                                     <a href='https://www.twitter.com' rel='noopener noreferrer' target='_blank'>
                                         <Twitter className={classes.socialIcons}/>
-                                    </a>
+                                    </a> */}
                                     <Button
                                         type='submit'
                                         variant='contained'

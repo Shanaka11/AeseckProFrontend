@@ -84,7 +84,7 @@ const User:React.FC<Props> = ( { barcode, userStatus, refetchUser, handleDone } 
             </Grid>
             <Grid item xs={6}>
                 <Container className={classes.buttonContainer}>
-                    <Grid container justifyContent='flex-end'>
+                    <Grid container justify='flex-end'>
                         <Button
                             variant='contained'
                             color='secondary'

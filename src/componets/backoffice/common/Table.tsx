@@ -103,7 +103,7 @@ const Table:React.FC<TableProps> = ( { columns, rows, card, handleOnRowClick, ha
                 page={page}
                 rowCount={pageCount}
                 paginationMode='server'
-                onPageChange={(newPage) => {setPage(newPage); handlePageChange(newPage + 1);}}
+                onPageChange={(newPage) => {setPage(newPage.page); handlePageChange(newPage.page + 1);}}
                 loading={loading}             
                 columns={columns}
                 rows={rows}

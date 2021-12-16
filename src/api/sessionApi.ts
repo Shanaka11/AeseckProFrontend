@@ -12,7 +12,6 @@ export const postCheckinPrimary = async (data:any) => {
 }
 
 export const postCheckoutPrimary = async (data:any) => {
-    console.log(data)
     return axios.post(`${process.env.REACT_APP_SERVER}/premises/checkoutprimary`, data, postConfigJson)
 }
 

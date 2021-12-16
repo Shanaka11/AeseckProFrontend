@@ -18,6 +18,7 @@ import {
 import UserInfo from '../../componets/backoffice/user/UserInfoNew'
 import errorHandler from '../../utils/errorHandler'
 import { getUserProfile } from '../../api/userApi'
+import BackofficeWrapper from '../../componets/common/BackofficeWrapper'
 
 // interfaces
 interface Params {
@@ -42,20 +43,24 @@ const UserDetailPage = () => {
     const params = useParams<Params>()
 
     // Query
-    const { data, error, isLoading, isError, isFetching } = useQuery('UserInfo', () => getUserProfile(params.id))    
+    const { data, error, isLoading, isError, isFetching, refetch } = useQuery('UserInfo', () => getUserProfile(params.id))    
 
     if(isLoading || isFetching){
         return (
+            <BackofficeWrapper>
             <div className={classes.loaderContainer}>
                 <CircularProgress />
             </div>
+            </BackofficeWrapper>
             )
     }
 
     return (
         <>
         {
-            <UserInfo data={data?.data.response} error={errorHandler(error, data?.data.response ? undefined : 'User Does Not Exist')} loading={isLoading}/>
+            <BackofficeWrapper>
+                <UserInfo data={data?.data.response} error={errorHandler(error, data?.data.response ? undefined : 'User Does Not Exist')} loading={isLoading} refetch={refetch}/>
+            </BackofficeWrapper>
         }
         </>
     )

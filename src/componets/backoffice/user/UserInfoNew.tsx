@@ -2,6 +2,8 @@
 import React, { useState } from 'react'
 // 3rd Party
 import SwipeableViews from 'react-swipeable-views';
+import { RefetchOptions, QueryObserverResult } from 'react-query'
+import { AxiosResponse } from 'axios'
 // Material UI Imports
 import { 
     Container,
@@ -74,10 +76,11 @@ const useStyles = makeStyles((theme:Theme)=> ({
 interface UserInfoProps {
     data: any,
     error?: errorHandlerResp,
-    loading: boolean
+    loading: boolean,
+    refetch?: (options?: RefetchOptions | undefined) => Promise<QueryObserverResult<AxiosResponse<any>, unknown>>
 }
 
-const UserInfoNew:React.FC<UserInfoProps> = ({ data, error }) => {
+const UserInfoNew:React.FC<UserInfoProps> = ({ data, error, refetch }) => {
     // Styles
     const classes = useStyles()
 
@@ -126,7 +129,7 @@ const UserInfoNew:React.FC<UserInfoProps> = ({ data, error }) => {
                             <GeneralTab data={data}/>
                         </div>
                         <div hidden={index !== 1} className={classes.tabPanel}>
-                            <DependetUserTab data={data}/>
+                            <DependetUserTab data={data} userId={data.user.id} refetch={refetch}/>
                         </div>
                         <div hidden={index !== 2} className={classes.tabPanel}>
                             <BookingTab data={data}/>

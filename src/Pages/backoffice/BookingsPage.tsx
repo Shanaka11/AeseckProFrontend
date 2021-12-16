@@ -25,6 +25,7 @@ import Filter from '../../componets/backoffice/common/Filter'
 import BookingPopup from '../../componets/backoffice/booking/BookingPopup'
 import BookingActions from '../../componets/backoffice/booking/BookingActions'
 import { getBookingList, getBookingFilter } from '../../api/bookingApi'
+import BackofficeWrapper from '../../componets/common/BackofficeWrapper'
 
 
 // Style
@@ -163,6 +164,7 @@ const BookingsPage = () => {
     ]
 
     return (
+        <BackofficeWrapper>
         <Container className={classes.container}>
             <BreadCrumbs data={path}/>
             <Typography variant='h6' className={classes.textContainer}>
@@ -267,6 +269,7 @@ const BookingsPage = () => {
                 pageCount={data?.data.totalCount || 0}
             />
         </Container>
+        </BackofficeWrapper>
     )
 }
 

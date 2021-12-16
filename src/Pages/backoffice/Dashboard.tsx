@@ -1,5 +1,5 @@
 // React Imports
-import React, { useState } from 'react'
+import React from 'react'
 // 3rd Party
 import { useHistory } from 'react-router-dom'
 // Material UI Imports
@@ -11,7 +11,7 @@ import {
     Grid
 } from '@material-ui/core'
 // Local Imports
-
+import BackofficeWrapper from '../../componets/common/BackofficeWrapper'
 // Style
 const useStyles = makeStyles((theme:Theme)=> ({
     container:{        
@@ -44,11 +44,14 @@ const Dashboard:React.FC = () => {
                 break;
             case 4:
                 history.push('/backoffice/activities')
-                break;                                    
+                break;         
+            case 5:
+                history.push('/checkinout')                           
         }
     }
 
     return (
+        <BackofficeWrapper>
         <Container>
             <Grid container justify='center' alignContent='center' className={classes.container} spacing={3}>
                 <Grid item>
@@ -76,6 +79,16 @@ const Dashboard:React.FC = () => {
                         variant='contained'
                         color='secondary'
                         className={classes.button}
+                        onClick={(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => handleNavigation(5)}
+                    >
+                        Checkout Counter
+                    </Button>
+                </Grid>
+                {/* <Grid item>
+                    <Button
+                        variant='contained'
+                        color='secondary'
+                        className={classes.button}
                         onClick={(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => handleNavigation(3)}
                     >
                         Activity Centers
@@ -90,9 +103,10 @@ const Dashboard:React.FC = () => {
                     >
                         Activity
                     </Button>
-                </Grid>                                                
+                </Grid>                                                 */}
             </Grid>
         </Container>
+        </BackofficeWrapper>
     )
 }
 

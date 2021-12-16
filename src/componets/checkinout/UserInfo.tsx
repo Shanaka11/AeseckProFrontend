@@ -105,7 +105,7 @@ const UserInfo:React.FC<Props> = ( { userInfo, refetch, handleDone } ) => {
                             </Grid>
                             <Grid item xs={6}>
                                 <Grid container justify='center' alignItems='center'>
-                                    <img alt='img-avatar' src={avatar} className={classes.avatar}/>
+                                    <img alt='img-avatar' src={userInfo.avatar ? userInfo.avatar : avatar} className={classes.avatar}/>
                                 </Grid>
                             </Grid>
                         </Grid>

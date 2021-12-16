@@ -1,7 +1,7 @@
 // React Imports
 import React, { useState, useContext } from 'react'
 // 3rd Party
-import { useLocation, useHistory } from 'react-router-dom'
+import { useLocation, useHistory, Link } from 'react-router-dom'
 // Material UI Imports
 import { 
     makeStyles,
@@ -47,6 +47,11 @@ const useStyles = makeStyles((theme: Theme) => ({
     avatar: {
         backgroundColor: theme.palette.secondary.main,
         cursor: 'pointer'
+    },
+    avatarBackoffice: {
+        backgroundColor: theme.palette.primary.main,
+        cursor: 'pointer',
+        marginLeft: 'auto'
     },
     drawerIconContainer: {
         marginLeft: 'auto',
@@ -95,13 +100,12 @@ const Header = () => {
     const theme:Theme = useTheme()
 
     const matches = useMediaQuery(theme.breakpoints.down("md"))
-    // const iOS = process.browser && /iPad|iPhone|iPod/.test(navigator.userAgent);
 
     // States
     const [openDrawer, setOpenDrawer] = useState(false)
     const [menuUserOpen, setMenuUserOpen] = useState(false)
     const [menuActivitiesOpen, setMenuActivitiesOpen] = useState(false)
-    // const [menuActivityOpen, setMenuActivityOpen] = useState(false)
+
     const [anchorEl, setAnchorEl] = useState<any>(null)
     const [anchorElActivities, setAnchorElActivities] = useState<any>(null)
 
@@ -112,6 +116,9 @@ const Header = () => {
     // Routers
     const location = useLocation()    
     const history = useHistory()
+
+    // Const
+    const backoffice = location.pathname.includes('/backoffice')
 
     // Methods
 
@@ -156,55 +163,63 @@ const Header = () => {
     // Components
     const tabs = (
         <>
-        <Tabs 
-            value={0}
-            className={classes.tabs} 
-            indicatorColor='primary'
-        >
-            <Tab
-                component='a'
-                label='Home'
-                href='/'
-                selected
+        {   
+            !backoffice &&
+            <Tabs 
+                value={0}
+                className={classes.tabs} 
+                indicatorColor={backoffice ? 'secondary' : 'primary'}
             >
-            </Tab>
-            <Tab
-                component='a'
-                label='Activities'
-                onClick={handleActivitiesOnClick}
-                selected
-            >
-            </Tab>
-            {/* Only show this tab when on the home page */}
-            {/* <Tab component='a' href='/3/booking' label='Make a Booking' className={classes.bookingTab}/> */}
-            {/* <Tab component='a' href='#' label='Activities' onClick={ (event:any) => handleActivityOnClick(event)} /> */}
-            <Tab 
-                component='a' 
-                href='' 
-                label='Contact Us' 
-                onClick={ (event) => {
-                    let element = document.getElementById("footer");
-                    event.preventDefault();  // Stop Page Reloading
-                    element && element.scrollIntoView({ behavior: "smooth", block: "start" });                    
-                }} 
-                selected
-            />
-            <Tab 
-                component='a' 
-                href='/aboutus' 
-                label='About Us' 
-                selected
-            />
-            {/* { !user && 
-                <Tab component='a' href='/login' label='Sign In' className={classes.logintab} selected/>
-            } */}
-        </Tabs>
+                <Tab
+                    component={Link}
+                    label='Home'
+                    to='/'
+                    selected
+                >
+                </Tab>
+                {
+                    activities.map((item:any) => (
+                        <Tab
+                            component= {Link}
+                            to={`/${item.id}`}
+                            label={item.title}
+                            className={classes.logintab}
+                        >
+                        </Tab>
+                    ))
+                }
+                <Tab 
+                    component='a' 
+                    href='' 
+                    label='Contact Us' 
+                    className={classes.logintab}
+                    onClick={ (event) => {
+                        let element = document.getElementById("footer");
+                        event.preventDefault();  // Stop Page Reloading
+                        element && element.scrollIntoView({ behavior: "smooth", block: "start" });                    
+                    }} 
+                    selected
+                />
+                <Tab 
+                    component={Link} 
+                    to='/aboutus' 
+                    label='About Us' 
+                    className={classes.logintab}
+                    selected
+                />
+                {/* Booking Release */}
+                { !user && 
+                    <Tab component={Link} to='/login' label='Sign In' className={classes.logintab} selected/>
+                }
+            </Tabs>
+        }
         { user && 
             <Avatar
-                className={classes.avatar}
+                className={backoffice ? classes.avatarBackoffice : classes.avatar}
                 onClick={(event) => handleAvatarOnClick(event)}
+                src={user.avatar}
             >
-                {user.username ? user.username.substring(0,2) : 'UD'}
+                {user.username ? user.username.substring(0,2).toUpperCase() : 'UD'}
             </Avatar>
         }
         <Menu
@@ -232,7 +247,7 @@ const Header = () => {
                 Logout
             </MenuItem>
         </Menu>
-        <Menu
+        {/* <Menu
             anchorEl={anchorElActivities}
             open={menuActivitiesOpen}
             onClose={handleActivitiesMenuClose}
@@ -255,7 +270,7 @@ const Header = () => {
                     </MenuItem>
                 ))
             }
-        </Menu>
+        </Menu> */}
         </>
     )
 
@@ -270,21 +285,6 @@ const Header = () => {
             }}
         >
             <List disablePadding>
-                {/* <ListItem 
-                    divider
-                    button
-                    classes={{
-                        selected: classes.drawerItemSelected
-                    }}
-                >
-                    <ListItemText 
-                        className={classes.drawerItem}
-                        disableTypography
-                        onClick={() => {history.push('/3/booking'); setOpenDrawer(false)}}
-                    >
-                        Make a Booking
-                    </ListItemText>
-                </ListItem> */}
                 <ListItem
                     divider
                     button
@@ -347,6 +347,7 @@ const Header = () => {
                             <ListItemText 
                                 className={classes.drawerItem}
                                 disableTypography
+                                onClick={() => {history.push('/profile'); setOpenDrawer(false)}}
                             >
                                 Profile
                             </ListItemText>
@@ -369,21 +370,6 @@ const Header = () => {
                     </>
                     :
                     <>
-                        {/* <ListItem 
-                            divider
-                            button
-                            classes={{
-                                selected: classes.drawerItemSelected
-                            }}
-                        >
-                            <ListItemText 
-                                className={classes.drawerItem}
-                                disableTypography
-                                onClick={() => {history.push('/login'); setOpenDrawer(false)}}
-                            >
-                                Sign In
-                            </ListItemText>
-                        </ListItem> */}
                     </>
                 }
             </List>
@@ -399,12 +385,9 @@ const Header = () => {
     }
 
     return (
-    <AppBar position="static">
+    <AppBar position="static" color={backoffice ? 'secondary' : 'primary'}>
         <Container>
             <Toolbar className={classes.toolbar}>
-                {/* <Typography variant="h6">
-                    Community Center
-                </Typography> */}
                 <img 
                     alt='login-img' 
                     src={logo} 
@@ -412,12 +395,6 @@ const Header = () => {
                     onClick={() => history.push('/')}
                 />
                 { matches ? drawer : tabs }
-                {/* Show only when logged in */}
-                {/* {false && 
-                    <IconButton>
-                        <AccountCircleIcon className={classes.avatar}/>
-                    </IconButton>
-                } */}
             </Toolbar>
         </Container>
       </AppBar>

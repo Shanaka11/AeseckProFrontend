@@ -9,11 +9,14 @@ import {
     Grid,
     Typography,
     Button,
-    TextField
+    TextField,
+    CircularProgress
 } from '@material-ui/core'
 // Local Imports
 import avatar from '../../../assets/avatar.jpg'
 import { postSaveContact } from '../../../api/userApi'
+import useFileUpload from '../../../utils/hooks/useFileUpload'
+import { useHistory } from 'react-router'
 
 // Style
 const useStyles = makeStyles((theme:Theme)=> ({
@@ -51,6 +54,14 @@ const useStyles = makeStyles((theme:Theme)=> ({
     },
     fontWhite: {
         color: 'white'
+    },
+    textFieldUnderline: {
+        '&:before':{
+            borderColor: '#ffffff'//theme.palette.secondary.main,
+        }
+    },
+    avatar: {
+        objectFit: 'cover'
     }
 }))
 
@@ -65,6 +76,12 @@ const UserTabGeneral:React.FC<Props> = ( { data, client } ) => {
     // Style
     const classes = useStyles()
 
+    // History
+    const history = useHistory()
+
+    // File Upload
+    const { loading, filePath, handleUpload} = useFileUpload(() => updateContact(true))
+
     // Query
     const {
         isLoading: updateContactIsLoading,
@@ -73,8 +90,6 @@ const UserTabGeneral:React.FC<Props> = ( { data, client } ) => {
 
 
     // State
-
-    const [showUpButton, setShowUpButton] = useState(false)
     const [formData, setFormData] = useState({
         firstName: data.contact.firstName,
         middleName: data.contact.middleName,
@@ -85,26 +100,46 @@ const UserTabGeneral:React.FC<Props> = ( { data, client } ) => {
         suburb: data.contact.addresses[0] ? data.contact.addresses[0].address.suburb : null,
         state: data.contact.addresses[0] ? data.contact.addresses[0].address.state : null,
         postalCode: data.contact.addresses[0] ? data.contact.addresses[0].address.postalCode : null,
+        avatar: data.contact.avatarImage,
         edited: false
     })
-
+    const [avatarLink] = useState(data.contact.avatarImage ? data.contact.avatarImage.s3Link : null)
 
     // Methods
     const handleFormChange = (event:any) => {
         const name = event.target.name
-        setFormData({
-            ...formData,
-            [name]: event.target.value,
-            edited: true
-        })
+        if( name ==='profilePic') {
+            handleUpload(event, `Avatar_${data.contact.id}_${data.contact.firstName}`)
+        }else{
+            setFormData({
+                ...formData,
+                [name]: event.target.value,
+                edited: true
+            })
+        }
     }
 
     const handleOnSubmit = (event:any) => {
         event.preventDefault()
+        updateContact()
+    }
+
+    const updateContact = (success :boolean = false) => {
         const contact = data.contact
         contact.firstName = formData.firstName
         contact.middleName = formData.middleName
         contact.surename = formData.surename
+        if(formData.avatar || success){
+            contact.avatar = {
+                id: formData.avatar ? formData.avatar.id : 0,
+                type: formData.avatar ? formData.avatar.type : `Avatar Image`,
+                name: formData.avatar ? formData.avatar.name : `Avatar_${data.contact.id}_${data.contact.firstName}`,
+                description: formData.avatar ? formData.avatar.description : `Avatar_${data.contact.id}_${data.contact.firstName}`,
+                s3Link: success ? filePath : formData.avatar.s3Link ,
+            }
+        }else{
+            contact.avatar = null
+        }
         if(contact.emails[0]){
             contact.emails[0].email.emailAddress = formData.email
         }else{
@@ -156,6 +191,9 @@ const UserTabGeneral:React.FC<Props> = ( { data, client } ) => {
         }
 
         updateContactMutate(contact)
+        if(success) {
+            history.go(0)
+        }
     }
 
     return (
@@ -169,18 +207,31 @@ const UserTabGeneral:React.FC<Props> = ( { data, client } ) => {
                                 justify='center' 
                                 alignItems='center' 
                                 className={classes.uploadButtonContainer}
-                                onMouseEnter={ () => setShowUpButton(true)}
-                                onMouseLeave={ () => setShowUpButton(false)}
                             >                
-                                <img alt='img-avatar' src={avatar} height={200} width={200}/>
-                                { showUpButton &&
+                                <img 
+                                    alt='img-avatar' 
+                                    className= {classes.avatar}
+                                    src={avatarLink ?  avatarLink : avatar} 
+                                    height={200} 
+                                    width={200}
+                                />
+                                { //showUpButton &&
                                     <Button
                                         variant='contained'
                                         color='secondary'
                                         disableElevation
                                         className={classes.uploadButton}
+                                        component='label'
+                                        disabled= {loading}
+                                        startIcon={loading && <CircularProgress size={20} />}
                                     >
                                         Upload Image
+                                        <input
+                                            name='profilePic'
+                                            type='file'
+                                            hidden
+                                            onChange={handleFormChange}
+                                        />
                                     </Button>
                                 }   
                             </Grid>  
@@ -197,11 +248,16 @@ const UserTabGeneral:React.FC<Props> = ( { data, client } ) => {
                                 InputLabelProps={{
                                     shrink: true,
                                     classes: {
-                                        root: classes.fontWhite
+                                        root: client ? classes.fontWhite : undefined
                                     }
                                 }}
                                 classes={{
                                     root: client ? undefined : classes.fontColorBlack
+                                }}
+                                InputProps={{
+                                    classes:{
+                                        underline: client ? classes.textFieldUnderline : undefined
+                                    }                                        
                                 }}                        
                             />
                         </Grid>
@@ -217,12 +273,17 @@ const UserTabGeneral:React.FC<Props> = ( { data, client } ) => {
                                 InputLabelProps={{
                                     shrink: true,
                                     classes: {
-                                        root: classes.fontWhite
+                                        root: client ? classes.fontWhite : undefined
                                     }
                                 }}
                                 classes={{
                                     root: client ? undefined : classes.fontColorBlack
-                                }}                        
+                                }}
+                                InputProps={{
+                                    classes:{
+                                        underline: client ? classes.textFieldUnderline : undefined
+                                    }                                        
+                                }}                         
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -237,12 +298,17 @@ const UserTabGeneral:React.FC<Props> = ( { data, client } ) => {
                                 InputLabelProps={{
                                     shrink: true,
                                     classes: {
-                                        root: classes.fontWhite
+                                        root: client ? classes.fontWhite : undefined
                                     }
                                 }}
                                 classes={{
                                     root: client ? undefined : classes.fontColorBlack
-                                }}                        
+                                }}  
+                                InputProps={{
+                                    classes:{
+                                        underline: client ? classes.textFieldUnderline : undefined
+                                    }                                        
+                                }}                      
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -258,11 +324,16 @@ const UserTabGeneral:React.FC<Props> = ( { data, client } ) => {
                                 InputLabelProps={{
                                     shrink: true,
                                     classes: {
-                                        root: classes.fontWhite
+                                        root: client ? classes.fontWhite : undefined
                                     }
                                 }}
                                 classes={{
                                     root: client ? undefined : classes.fontColorBlack
+                                }}
+                                InputProps={{
+                                    classes:{
+                                        underline: client ? classes.textFieldUnderline : undefined
+                                    }                                        
                                 }}                        
                             />
                         </Grid>
@@ -278,12 +349,17 @@ const UserTabGeneral:React.FC<Props> = ( { data, client } ) => {
                                 InputLabelProps={{
                                     shrink: true,
                                     classes: {
-                                        root: classes.fontWhite
+                                        root: client ? classes.fontWhite : undefined
                                     }
                                 }}
                                 classes={{
                                     root: client ? undefined : classes.fontColorBlack
-                                }}                        
+                                }}
+                                InputProps={{
+                                    classes:{
+                                        underline: client ? classes.textFieldUnderline : undefined
+                                    }                                        
+                                }}                          
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -298,12 +374,17 @@ const UserTabGeneral:React.FC<Props> = ( { data, client } ) => {
                                 InputLabelProps={{
                                     shrink: true,
                                     classes: {
-                                        root: classes.fontWhite
+                                        root: client ? classes.fontWhite : undefined
                                     }
                                 }}
                                 classes={{
                                     root: client ? undefined : classes.fontColorBlack
-                                }}                        
+                                }}
+                                InputProps={{
+                                    classes:{
+                                        underline: client ? classes.textFieldUnderline : undefined
+                                    }                                        
+                                }}                          
                             />
                         </Grid>
                         <Grid item xs={4}>
@@ -318,11 +399,16 @@ const UserTabGeneral:React.FC<Props> = ( { data, client } ) => {
                                 InputLabelProps={{
                                     shrink: true,
                                     classes: {
-                                        root: classes.fontWhite
+                                        root: client ? classes.fontWhite : undefined
                                     }
                                 }}
                                 classes={{
                                     root: client ? undefined : classes.fontColorBlack
+                                }}
+                                InputProps={{
+                                    classes:{
+                                        underline: client ? classes.textFieldUnderline : undefined
+                                    }                                        
                                 }}                        
                             />
                         </Grid>
@@ -338,11 +424,16 @@ const UserTabGeneral:React.FC<Props> = ( { data, client } ) => {
                                 InputLabelProps={{
                                     shrink: true,
                                     classes: {
-                                        root: classes.fontWhite
+                                        root: client ? classes.fontWhite : undefined
                                     }
                                 }}
                                 classes={{
                                     root: client ? undefined : classes.fontColorBlack
+                                }}
+                                InputProps={{
+                                    classes:{
+                                        underline: client ? classes.textFieldUnderline : undefined
+                                    }                                        
                                 }}                        
                             />
                         </Grid>
@@ -358,16 +449,21 @@ const UserTabGeneral:React.FC<Props> = ( { data, client } ) => {
                                 InputLabelProps={{
                                     shrink: true,
                                     classes: {
-                                        root: classes.fontWhite
+                                        root: client ? classes.fontWhite : undefined
                                     }
                                 }}
                                 classes={{
                                     root: client ? undefined : classes.fontColorBlack
-                                }}                        
+                                }}
+                                InputProps={{
+                                    classes:{
+                                        underline: client ? classes.textFieldUnderline : undefined
+                                    }                                        
+                                }}                         
                             />
                         </Grid>
                         <Grid item xs={12} className={classes.updateButton}>
-                            <Grid container justifyContent='flex-end'>
+                            <Grid container justify='flex-end'>
                                 <Grid item>
                                     <Button
                                         variant='contained'
@@ -385,7 +481,7 @@ const UserTabGeneral:React.FC<Props> = ( { data, client } ) => {
                 </Grid>
                 { !client && 
                 <Grid item xs={12} md={6}>
-                    <Grid container justifyContent='center' alignItems='center' direction='column' className={classes.membershipContainer}>
+                    <Grid container justify='center' alignItems='center' direction='column' className={classes.membershipContainer}>
                         <Grid item>
                             <Typography
                                 variant = 'h6'

@@ -88,13 +88,15 @@ const Login:React.FC<LoginProps> = ({ handlePageChange }) => {
 
         if(loginData?.data.status === true){
             // On Success direct to user profile page
-            setUser(loginData.data.response.user)
+            // setUser(loginData.data.response.user)
             localStorage.setItem('token', loginData.data.response.token)
             const userInfo = {
                 id: loginData.data.response.user.id,
-                username: loginData.data.response.user.userName,
-                role: loginData.data.response.user.role
+                username: loginData.data.response.contact.firstName,
+                role: loginData.data.response.user.role,
+                avatar: loginData.data.response.contact.avatarImage.s3Link
             }
+            setUser(userInfo)
             localStorage.setItem('userInfo', JSON.stringify(userInfo))
 
             // Depending on the role direct to backoffice dashboard or home screen
@@ -184,11 +186,12 @@ const Login:React.FC<LoginProps> = ({ handlePageChange }) => {
             </Grid>
             <Grid item className={classes.gridItem}>
                 <Grid container alignItems='center' justify='space-between'>
-                    <Grid item>
+                    {/* Booking Release */}
+                    {/* <Grid item>
                         <Typography variant='subtitle2' color='textPrimary'>
                             New ? <span className={classes.link} onClick={(event: React.MouseEvent<HTMLSpanElement, MouseEvent>) => handlePageChange(2)}>Click Here</span> to Sign Up
                         </Typography>
-                    </Grid>
+                    </Grid> */}
                     <Grid item>
                         <Button
                             variant='contained'

@@ -75,8 +75,6 @@ const UserInfo = () => {
     const { data, isLoading } = useQuery('UserInfo', () => getUserProfile(userInfo!.id))  
     // Methods
 
-    console.log(data)
-
     return (
         <Grid container className={classes.container}>
             <Grid item xs={12} className={classes.gridItem}>
@@ -101,7 +99,7 @@ const UserInfo = () => {
                         <GeneralTab data={data?.data.response} client/>
                     </div>
                     <div hidden={index !== 1} className={classes.tabPanel}>
-                        <DependetUserTab data={data?.data.response} client/>
+                        <DependetUserTab data={data?.data.response} client userId={userInfo!.id}/>
                     </div>
                     <div hidden={index !== 2} className={classes.tabPanel}>
                         <BookingTab data={data?.data.response} client/>
