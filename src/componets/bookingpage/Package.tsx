@@ -17,12 +17,15 @@ const useStyles = makeStyles((theme: Theme) => ({
         paddingTop: 16,
         paddingBottom: 16,
         backgroundColor: theme.palette.primary.light,
-        height: 450,
-        width: 300,
+        height: 600,
+        width: 350,
         cursor: 'pointer',
         transition: '0.3s background-color',
         '&:hover': {
             backgroundColor: theme.palette.primary.main, 
+        },
+        [theme.breakpoints.down('xs')] : {
+            width: 300
         }
     },
   }));
@@ -59,9 +62,11 @@ const Package:React.FC<Props> = ( { data, handlePackageSelect } ) => {
             </Typography>
             <Typography
                 variant='body1'
-                align='center'
+                // align='center'
+                style={{ marginLeft: '1em', marginRight: '1em'}}
             >
-                {data.description}
+                {/* {data.description} */}
+                <div dangerouslySetInnerHTML={{'__html': data.description}}/>
             </Typography>
             <Grid item>
                 <Button

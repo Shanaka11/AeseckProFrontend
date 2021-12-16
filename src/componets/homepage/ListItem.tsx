@@ -138,7 +138,7 @@ const ListItem:React.FC<listItemProps> = ( { item, layout, activityCenter } ) =>
     return (
         <Grid container className={`${classes.container}  ${layout === 0 ? classes.layout1 : classes.layout2}`}>
         <Container>
-            <Grid container spacing={2}>
+            <Grid container spacing={2} style={{ justifyContent: 'center' }}>
                 { layout === 0 ? layout1 : small ? layout1 : layout2 }
             </Grid>
         </Container>
