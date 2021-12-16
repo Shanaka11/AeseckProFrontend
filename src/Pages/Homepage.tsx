@@ -75,7 +75,7 @@ const Homepage = () => {
         'OrganizationSummery', 
         () => getOrganizationSummary(),
         {
-            enabled : orgData ? false : true,
+            // enabled : orgData ? false : true,
             onSuccess: (data: any) => orgDataFetchSuccessHandler(data),
             
         }
