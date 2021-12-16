@@ -378,8 +378,21 @@ const Header = () => {
                         </ListItem>
                     </>
                     :
-                    <>
-                    </>
+                    <ListItem 
+                        divider
+                        button
+                        classes={{
+                            selected: classes.drawerItemSelected
+                        }}
+                    >
+                        <ListItemText 
+                            className={classes.drawerItem}
+                            disableTypography
+                            onClick={() => {history.push('/login'); setOpenDrawer(false)}}
+                        >
+                            Sign In
+                        </ListItemText>
+                    </ListItem>
                 }
             </List>
         </SwipeableDrawer>        
