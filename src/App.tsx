@@ -28,7 +28,8 @@ function App() {
       queries: {
         refetchOnWindowFocus:false,
         refetchOnMount:false,
-        refetchOnReconnect:false
+        refetchOnReconnect:false,
+        cacheTime: 20 * 60 * 1000
       }
     }
   })
