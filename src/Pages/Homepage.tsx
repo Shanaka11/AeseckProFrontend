@@ -11,7 +11,9 @@ import {
     makeStyles,
     Theme,
     Typography,
-    LinearProgress
+    LinearProgress,
+    useMediaQuery,
+    useTheme
 } from '@material-ui/core'
 // Local Imports
 import Carousal from '../componets/common/Carousal'
@@ -56,6 +58,8 @@ const Homepage = () => {
 
     // Style
     const classes = useStyles()
+    const theme = useTheme()
+    const lgDown = useMediaQuery(theme.breakpoints.down('xs'))
 
     // Router
     const params:ParamsProps = useParams()
@@ -103,12 +107,26 @@ const Homepage = () => {
         <Grid container direction='column'>
             <Carousal>
                 {
+                    !params.activity &&
+                    <Slide
+                        key={`slide-${0}`}
+                        index={0}
+                        imgPath={
+                            lgDown ? 
+                            'https://frolicz.s3.ap-southeast-2.amazonaws.com/263996642_427488339015974_2965143640089594765_n.jpeg'
+                            :
+                            'https://frolicz.s3.ap-southeast-2.amazonaws.com/265207423_868073263867798_7418132739640296239_n+2.jpeg'
+                        }
+                    >
+                    </Slide>
+                }
+                {
                     (params.activity ? 
                         (params.activity !== 'aboutus' ? 
                             response.activityCenters.filter((item:any) => item.id === parseInt(params.activity!))[0].images :
                             response.activityCenters.filter((item:any) => item.title === 'About Us')[0].images): 
                         response.images).filter((item:any) => item.imageCategory === 'HeaderImage').map((item:any, index:number) => (                            
-                            <Slide key={`slide-${index}`} index={index} imgPath={item.imageUrl}>
+                            <Slide key={`slide-${index + 1}`} index={index + 1} imgPath={item.imageUrl}>
                                 <Container className={classes.container}>
                                     <Grid 
                                         container 
