@@ -186,11 +186,12 @@ const Login:React.FC<LoginProps> = ({ handlePageChange }) => {
             </Grid>
             <Grid item className={classes.gridItem}>
                 <Grid container alignItems='center' justify='space-between'>
-                    <Grid item>
+                    {/* Booking Release */}
+                    {/* <Grid item>
                         <Typography variant='subtitle2' color='textPrimary'>
                             New ? <span className={classes.link} onClick={(event: React.MouseEvent<HTMLSpanElement, MouseEvent>) => handlePageChange(2)}>Click Here</span> to Sign Up
                         </Typography>
-                    </Grid>
+                    </Grid> */}
                     <Grid item>
                         <Button
                             variant='contained'

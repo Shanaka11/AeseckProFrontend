@@ -1,7 +1,7 @@
 // React Imports
 import React, { useState, useContext } from 'react'
 // 3rd Party
-import { useLocation, useHistory } from 'react-router-dom'
+import { useLocation, useHistory, Link } from 'react-router-dom'
 // Material UI Imports
 import { 
     makeStyles,
@@ -171,23 +171,23 @@ const Header = () => {
                 indicatorColor={backoffice ? 'secondary' : 'primary'}
             >
                 <Tab
-                    component='a'
+                    component={Link}
                     label='Home'
-                    href='/'
+                    to='/'
                     selected
                 >
                 </Tab>
-                <Tab
-                    component='a'
-                    label='Activities'
-                    className={classes.logintab}
-                    onClick={handleActivitiesOnClick}
-                    selected
-                >
-                </Tab>
-                {/* Only show this tab when on the home page */}
-                {/* <Tab component='a' href='/3/booking' label='Make a Booking' className={classes.bookingTab}/> */}
-                {/* <Tab component='a' href='#' label='Activities' onClick={ (event:any) => handleActivityOnClick(event)} /> */}
+                {
+                    activities.map((item:any) => (
+                        <Tab
+                            component= {Link}
+                            to={`/${item.id}`}
+                            label={item.title}
+                            className={classes.logintab}
+                        >
+                        </Tab>
+                    ))
+                }
                 <Tab 
                     component='a' 
                     href='' 
@@ -201,14 +201,15 @@ const Header = () => {
                     selected
                 />
                 <Tab 
-                    component='a' 
-                    href='/aboutus' 
+                    component={Link} 
+                    to='/aboutus' 
                     label='About Us' 
                     className={classes.logintab}
                     selected
                 />
+                {/* Booking Release */}
                 { !user && 
-                    <Tab component='a' href='/login' label='Sign In' className={classes.logintab} selected/>
+                    <Tab component={Link} to='/login' label='Sign In' className={classes.logintab} selected/>
                 }
             </Tabs>
         }
@@ -246,7 +247,7 @@ const Header = () => {
                 Logout
             </MenuItem>
         </Menu>
-        <Menu
+        {/* <Menu
             anchorEl={anchorElActivities}
             open={menuActivitiesOpen}
             onClose={handleActivitiesMenuClose}
@@ -269,7 +270,7 @@ const Header = () => {
                     </MenuItem>
                 ))
             }
-        </Menu>
+        </Menu> */}
         </>
     )
 
