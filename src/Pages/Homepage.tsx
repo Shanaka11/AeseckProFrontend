@@ -105,9 +105,8 @@ const Homepage = () => {
 
     return (
         <Grid container direction='column'>
-            <Carousal>
-                {
-                    !params.activity &&
+            {!params.activity &&
+                <Carousal>
                     <Slide
                         key={`slide-${0}`}
                         index={0}
@@ -119,14 +118,54 @@ const Homepage = () => {
                         }
                     >
                     </Slide>
-                }
+                    {
+                        response.images.filter((item:any) => item.imageCategory === 'HeaderImage').map((item:any, index:number) => (                            
+                            <Slide key={`slide-${!params.activity ? index + 1 : index}`} index={!params.activity ? index + 1 : index} imgPath={item.imageUrl}>
+                                <Container className={classes.container}>
+                                    <Grid 
+                                        container 
+                                        alignItems='center' 
+                                        justify='flex-end' 
+                                        direction='column' 
+                                        className={classes.subContainer}
+                                    >
+                                        <Grid item>
+                                            <Typography variant='h2' align='center' className={classes.header}>
+                                                {(params.activity && params.activity !== 'aboutus')? 
+                                                response.activityCenters.filter((item:any) => item.id === parseInt(params.activity!))[0].title : 
+                                                item.imageDescription}
+                                            </Typography>
+                                        </Grid>
+                                        <Grid item>
+                                            <Button
+                                                variant='contained'
+                                                color='secondary'                                                
+                                                onClick={(event) => {
+                                                    let element = document.getElementById("activities");
+                                                    if(params.activity === 'aboutus'){
+                                                        element = document.getElementById("description");                                                        
+                                                    }
+                                                    event.preventDefault();  // Stop Page Reloading
+                                                    element && element.scrollIntoView({ behavior: "smooth", block: "start" });                                                    
+                                                }}
+                                            >
+                                                Learn More
+                                            </Button>
+                                        </Grid>
+                                    </Grid>
+                                </Container>
+                            </Slide>
+                    ))
+                    }
+                </Carousal>
+            }
+            {params.activity &&
+            <Carousal>
                 {
-                    (params.activity ? 
                         (params.activity !== 'aboutus' ? 
                             response.activityCenters.filter((item:any) => item.id === parseInt(params.activity!))[0].images :
-                            response.activityCenters.filter((item:any) => item.title === 'About Us')[0].images): 
-                        response.images).filter((item:any) => item.imageCategory === 'HeaderImage').map((item:any, index:number) => (                            
-                            <Slide key={`slide-${index + 1}`} index={index + 1} imgPath={item.imageUrl}>
+                            response.activityCenters.filter((item:any) => item.title === 'About Us')[0].images).filter((item:any) => item.imageCategory === 'HeaderImage').map((item:any, index:number) => (                            
+                            <Slide key={`slide-${index}`} index={index} imgPath={item.imageUrl}>
                                 <Container className={classes.container}>
                                     <Grid 
                                         container 
@@ -163,7 +202,8 @@ const Homepage = () => {
                             </Slide>
                     ))                       
                 }
-            </Carousal>            
+            </Carousal>  
+            }          
             <Description id='description' description={(params.activity && params.activity !== 'aboutus')? response.activityCenters.filter((item:any) => item.id === parseInt(params.activity!))[0].description : response.description}/>
             { params.activity !== 'aboutus' &&
                 <List 
