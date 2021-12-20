@@ -178,8 +178,8 @@ const Header = () => {
                 <Tab
                     component={Link}
                     label='Home'
-                    to='/'
                     selected
+                    to='/'
                 >
                 </Tab>
                 {
@@ -218,7 +218,7 @@ const Header = () => {
                 { !user && 
                     <Tab component={Link} to='/login' label='Sign In' className={classes.logintab} selected/>
                 }
-                </>
+                </
                 }
             </Tabs>
         }
@@ -309,7 +309,7 @@ const Header = () => {
                         Home
                     </ListItemText>
                 </ListItem>
-                {
+                {/* {
                     activities.map((item:any) => (
                         <ListItem
                             divider
@@ -327,7 +327,7 @@ const Header = () => {
                             </ListItemText>
                         </ListItem>
                     ))
-                }
+                } */}
                 <ListItem 
                     divider
                     button

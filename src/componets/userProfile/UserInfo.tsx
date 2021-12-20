@@ -1,5 +1,5 @@
 // React Imports
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 // 3rd Party
 import SwipeableViews from 'react-swipeable-views';
 import { useQuery } from 'react-query'
@@ -19,6 +19,7 @@ import DependetUserTab from '../backoffice/user/UserTabDependentUserInfo'
 import CheckinTab from '../backoffice/user/UserTabCheckinHistroy'
 import BookingTab from '../backoffice/user/UserTabBookingHistory'
 import { getUserProfile } from '../../api/userApi'
+import userContext from '../../context/userContext'
 
 // Style
 const useStyles = makeStyles((theme:Theme)=> ({
@@ -67,6 +68,8 @@ const UserInfo = () => {
     // Style
     const classes = useStyles()
 
+    const { user } = useContext(userContext)
+
     // State
     const [index, setIndex] = useState(0)
 
@@ -84,30 +87,50 @@ const UserInfo = () => {
             </Grid>
             { isLoading ? <CircularProgress /> :
             <Grid item xs={12} className={classes.tabContainer}>
-                <Tabs value={index} onChange={(event: React.ChangeEvent<{}>, newValue: number) => {setIndex(newValue)}} className={classes.tabItem}>
-                    <Tab label="General" />
-                    <Tab label="Dependent Users" />
-                    <Tab label="Booking History" />
-                    <Tab label="Checkin History" />
-                </Tabs>
-                <SwipeableViews
-                    axis={'x'}
-                    index={index}
-                    onChangeIndex={(index: number) => {setIndex(index)}}
-                >
-                    <div hidden={index !== 0} className={classes.tabPanel}>
-                        <GeneralTab data={data?.data.response} client/>
-                    </div>
-                    <div hidden={index !== 1} className={classes.tabPanel}>
-                        <DependetUserTab data={data?.data.response} client userId={userInfo!.id}/>
-                    </div>
-                    <div hidden={index !== 2} className={classes.tabPanel}>
-                        <BookingTab data={data?.data.response} client/>
-                    </div>
-                    <div hidden={index !== 3} className={classes.tabPanel}>
-                        <CheckinTab data={data?.data.response} client/>
-                    </div>
-                </SwipeableViews>   
+                {
+                    user.role !== 'admin' ?
+                        <Tabs value={index} onChange={(event: React.ChangeEvent<{}>, newValue: number) => {setIndex(newValue)}} className={classes.tabItem}>
+                            <Tab label="General" />
+                            <Tab label="Dependent Users" />
+                            <Tab label="Booking History" />
+                            <Tab label="Checkin History" />
+                        </Tabs>
+                    :
+                        <Tabs value={index} onChange={(event: React.ChangeEvent<{}>, newValue: number) => {setIndex(newValue)}} className={classes.tabItem}>
+                            <Tab label="General" />
+                        </Tabs>
+                }
+                {
+                    user.role !== 'admin' ?
+                    <SwipeableViews
+                        axis={'x'}
+                        index={index}
+                        onChangeIndex={(index: number) => {setIndex(index)}}
+                    >
+                        <div hidden={index !== 0} className={classes.tabPanel}>
+                            <GeneralTab data={data?.data.response} client/>
+                        </div>
+                        <div hidden={index !== 1} className={classes.tabPanel}>
+                            <DependetUserTab data={data?.data.response} client userId={userInfo!.id}/>
+                        </div>
+                        <div hidden={index !== 2} className={classes.tabPanel}>
+                            <BookingTab data={data?.data.response} client/>
+                        </div>
+                        <div hidden={index !== 3} className={classes.tabPanel}>
+                            <CheckinTab data={data?.data.response} client/>
+                        </div>
+                    </SwipeableViews>  
+                    :
+                    // <SwipeableViews
+                    //     axis={'x'}
+                    //     index={index}
+                    //     onChangeIndex={(index: number) => {setIndex(index)}}
+                    // >
+                        <div hidden={index !== 0} className={classes.tabPanel}>
+                            <GeneralTab data={data?.data.response} client/>
+                        </div>
+                    // </Sw/ipeableViews>  
+                } 
             </Grid>
             }
         </Grid>

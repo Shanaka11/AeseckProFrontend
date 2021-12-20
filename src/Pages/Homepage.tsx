@@ -65,11 +65,28 @@ const Homepage = () => {
     const params:ParamsProps = useParams()
     const history = useHistory()
     // Context
-    const { setActivities } = useContext(OrgContext)
+    const { setActivities, orgData, setOrgData, activityData, appendActivityDataList } = useContext(OrgContext)
     const { user } = useContext(UserContext)
 
+    console.log(orgData)
+
     // Query
-    const { data, isLoading, isError } = useQuery('OrganizationSummery', () => getOrganizationSummary())
+    const {
+        data,
+        isLoading, 
+        isError 
+    } = useQuery(
+        'OrganizationSummery', 
+        () => getOrganizationSummary(),
+        {
+            // enabled : orgData ? false : true,
+            onSuccess: (data: any) => orgDataFetchSuccessHandler(data),
+            
+        }
+    )
+
+    console.log(orgData ? false : true)
+
     const { 
         data:activityCenterData, 
         isLoading: activityCenterIsLoading, 
@@ -81,14 +98,17 @@ const Homepage = () => {
                     })
 
     
-
+    const orgDataFetchSuccessHandler = (data:any) => {
+        setOrgData(data?.data.response)
+    }
+    
     // IF user is admin then redirect to the dashboard
     if(user && user.role === 'admin') {
         history.push('/backoffice')
         return null
     }
 
-    if(isLoading || activityCenterIsLoading){
+    if(isLoading || activityCenterIsLoading || !orgData){
         return (
                 <LinearProgress />
             )
@@ -96,12 +116,16 @@ const Homepage = () => {
 
     if(isError || activityCenterIsError){
         console.log('There have been a server Error if the issue persists please contact support')
+        return <></>
     }
     
-    const response = data?.data.response    
+    const response = data?.data.response//orgData   
     const activityCenterResponse = activityCenterData?.data.response
 
-    setActivities(response.activityCenters)
+    // setOrgData(response)
+    // if(response.activityCenters) {
+    //     setActivities(response.activityCenters)
+    // }
 
     return (
         <Grid container direction='column'>
