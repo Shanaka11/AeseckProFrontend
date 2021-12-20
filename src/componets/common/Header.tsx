@@ -218,7 +218,7 @@ const Header = () => {
                 { !user && 
                     <Tab component={Link} to='/login' label='Sign In' className={classes.logintab} selected/>
                 }
-                </
+                </>
                 }
             </Tabs>
         }
