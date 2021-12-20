@@ -108,7 +108,7 @@ const AccessCards:React.FC<Props> = ( { sessionId, accessCardList, refetchUser }
         <BarcodeModal show={scanBarcode ? true : false} handleClose={() => setScanBarcode(false)} handleSubmit={handleBarcodeScanDone}/>
         <Grid container direction='column' className={classes.container}>
             <Grid item>
-                <Grid container justifyContent='space-between'>
+                <Grid container justify='space-between'>
                     <Button
                         variant='contained'
                         color='secondary'

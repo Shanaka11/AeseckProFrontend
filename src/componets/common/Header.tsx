@@ -161,6 +161,11 @@ const Header = () => {
     }
 
     // Components
+
+    if(location.pathname === `/checkinout`){
+        return (<></>)
+    }
+
     const tabs = (
         <>
         {   
@@ -177,16 +182,19 @@ const Header = () => {
                     to='/'
                 >
                 </Tab>
-                {/* {
-                activities.map((item:any) => (
-                    <Tab
-                        component='a'
-                        className={classes.logintab}
-                        href={`/${item.id}`}
-                        label={item.title}
-                    />
-                ))
-                } */}
+                {
+                    activities.map((item:any) => (
+                        <Tab
+                            component= {Link}
+                            to={`/${item.id}`}
+                            label={item.title}
+                            className={classes.logintab}
+                        >
+                        </Tab>
+                    ))
+                }
+                {location.pathname !== '/login' &&
+                <>
                 <Tab 
                     component='a' 
                     href='' 
@@ -200,14 +208,17 @@ const Header = () => {
                     selected
                 />
                 <Tab 
-                    component={Link}
-                    to='/aboutus'
+                    component={Link} 
+                    to='/aboutus' 
                     label='About Us' 
                     className={classes.logintab}
                     selected
                 />
+                {/* Booking Release */}
                 { !user && 
                     <Tab component={Link} to='/login' label='Sign In' className={classes.logintab} selected/>
+                }
+                </
                 }
             </Tabs>
         }
@@ -367,8 +378,21 @@ const Header = () => {
                         </ListItem>
                     </>
                     :
-                    <>
-                    </>
+                    <ListItem 
+                        divider
+                        button
+                        classes={{
+                            selected: classes.drawerItemSelected
+                        }}
+                    >
+                        <ListItemText 
+                            className={classes.drawerItem}
+                            disableTypography
+                            onClick={() => {history.push('/login'); setOpenDrawer(false)}}
+                        >
+                            Sign In
+                        </ListItemText>
+                    </ListItem>
                 }
             </List>
         </SwipeableDrawer>        
@@ -377,10 +401,6 @@ const Header = () => {
         </IconButton>
         </>
     )
-
-    if(location.pathname === '/login' || location.pathname === `/checkinout`){
-        return (<></>)
-    }
 
     return (
     <AppBar position="static" color={backoffice ? 'secondary' : 'primary'}>

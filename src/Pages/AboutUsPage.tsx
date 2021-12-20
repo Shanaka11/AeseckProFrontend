@@ -116,7 +116,7 @@ const AboutUsPage = () => {
                         <Grid item xs={6} className={classes.imageMainContainer}>
                             <Grid 
                                 container 
-                                justifyContent='center' 
+                                justify='center' 
                                 alignItems='center'
                                 direction='column'
                                 className={classes.imageContainer}

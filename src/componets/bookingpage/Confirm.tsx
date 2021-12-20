@@ -148,7 +148,7 @@ const Confirm:React.FC<Props> = ({activity, dateTime, packageSelected, contacts,
                     </Grid>
                     <Grid item xs={12} md={4}>
                         <Hidden mdUp>
-                            <Grid container justifyContent='center'>
+                            <Grid container justify='center'>
                                 <Grid 
                                     container 
                                     justify={(bookingIsSuccess && (bookingData && bookingData!.data.status! !== 'Failed')) ? 'space-evenly' : 'center'}

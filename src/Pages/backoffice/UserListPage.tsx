@@ -165,7 +165,7 @@ const UserListPage = () => {
             <Divider />
             <Grid container spacing={1} className={classes.gridContainer}>
                 <Grid item xs={4}>
-                    <Grid container spacing={2} className={classes.buttonContainer} direction='column' justifyContent='center'>
+                    <Grid container spacing={2} className={classes.buttonContainer} direction='column' justify='center'>
                         <Grid item xs={12} className={classes.filterContainer}>
                             { filterDataIsLoading ?
                                 <CircularProgress />

@@ -463,7 +463,7 @@ const UserTabGeneral:React.FC<Props> = ( { data, client } ) => {
                             />
                         </Grid>
                         <Grid item xs={12} className={classes.updateButton}>
-                            <Grid container justifyContent='flex-end'>
+                            <Grid container justify='flex-end'>
                                 <Grid item>
                                     <Button
                                         variant='contained'
@@ -481,7 +481,7 @@ const UserTabGeneral:React.FC<Props> = ( { data, client } ) => {
                 </Grid>
                 { !client && 
                 <Grid item xs={12} md={6}>
-                    <Grid container justifyContent='center' alignItems='center' direction='column' className={classes.membershipContainer}>
+                    <Grid container justify='center' alignItems='center' direction='column' className={classes.membershipContainer}>
                         <Grid item>
                             <Typography
                                 variant = 'h6'

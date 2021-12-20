@@ -80,11 +80,13 @@ const ListItem:React.FC<listItemProps> = ( { item, layout, activityCenter } ) =>
             </Typography>   
         </Grid>
         <Grid item>
-            <Link to={activityCenter ? `/${activityCenter}/booking?activity=${item.id}` : `/${item.id}`}>
+
+            <Link
+                to={activityCenter ? `/${activityCenter}/booking?activity=${item.id}` : `/${item.id}`}
+            >
                 <Button                
                     variant='contained'
                     color='secondary'
-                    // href={activityCenter ? `/${activityCenter}/booking?activity=${item.id}` : `/${item.id}`}
                 >
                     { activityCenter ? 'Make A Booking' : 'Learn More'}
                 </Button>
@@ -137,7 +139,7 @@ const ListItem:React.FC<listItemProps> = ( { item, layout, activityCenter } ) =>
     return (
         <Grid container className={`${classes.container}  ${layout === 0 ? classes.layout1 : classes.layout2}`}>
         <Container>
-            <Grid container spacing={2}>
+            <Grid container spacing={2} style={{ justifyContent: 'center' }}>
                 { layout === 0 ? layout1 : small ? layout1 : layout2 }
             </Grid>
         </Container>

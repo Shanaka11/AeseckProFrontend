@@ -8,10 +8,10 @@ interface Props {
     to: string
 }
 
-const Link: React.FC<Props> = ({to, children}) => {
+const Link:React.FC<Props> = ( { to, children} ) => {
     return (
         <RouterLink to={to} style={{ textDecoration: 'none'}}>
-            { children }
+            {children}
         </RouterLink>
     )
 }

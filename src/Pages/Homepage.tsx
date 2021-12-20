@@ -11,7 +11,9 @@ import {
     makeStyles,
     Theme,
     Typography,
-    LinearProgress
+    LinearProgress,
+    useMediaQuery,
+    useTheme
 } from '@material-ui/core'
 // Local Imports
 import Carousal from '../componets/common/Carousal'
@@ -56,6 +58,8 @@ const Homepage = () => {
 
     // Style
     const classes = useStyles()
+    const theme = useTheme()
+    const lgDown = useMediaQuery(theme.breakpoints.down('xs'))
 
     // Router
     const params:ParamsProps = useParams()
@@ -125,13 +129,66 @@ const Homepage = () => {
 
     return (
         <Grid container direction='column'>
+            {!params.activity &&
+                <Carousal>
+                    <Slide
+                        key={`slide-${0}`}
+                        index={0}
+                        imgPath={
+                            lgDown ? 
+                            'https://frolicz.s3.ap-southeast-2.amazonaws.com/263996642_427488339015974_2965143640089594765_n.jpeg'
+                            :
+                            'https://frolicz.s3.ap-southeast-2.amazonaws.com/265207423_868073263867798_7418132739640296239_n+2.jpeg'
+                        }
+                    >
+                    </Slide>
+                    {
+                        response.images.filter((item:any) => item.imageCategory === 'HeaderImage').map((item:any, index:number) => (                            
+                            <Slide key={`slide-${!params.activity ? index + 1 : index}`} index={!params.activity ? index + 1 : index} imgPath={item.imageUrl}>
+                                <Container className={classes.container}>
+                                    <Grid 
+                                        container 
+                                        alignItems='center' 
+                                        justify='flex-end' 
+                                        direction='column' 
+                                        className={classes.subContainer}
+                                    >
+                                        <Grid item>
+                                            <Typography variant='h2' align='center' className={classes.header}>
+                                                {(params.activity && params.activity !== 'aboutus')? 
+                                                response.activityCenters.filter((item:any) => item.id === parseInt(params.activity!))[0].title : 
+                                                item.imageDescription}
+                                            </Typography>
+                                        </Grid>
+                                        <Grid item>
+                                            <Button
+                                                variant='contained'
+                                                color='secondary'                                                
+                                                onClick={(event) => {
+                                                    let element = document.getElementById("activities");
+                                                    if(params.activity === 'aboutus'){
+                                                        element = document.getElementById("description");                                                        
+                                                    }
+                                                    event.preventDefault();  // Stop Page Reloading
+                                                    element && element.scrollIntoView({ behavior: "smooth", block: "start" });                                                    
+                                                }}
+                                            >
+                                                Learn More
+                                            </Button>
+                                        </Grid>
+                                    </Grid>
+                                </Container>
+                            </Slide>
+                    ))
+                    }
+                </Carousal>
+            }
+            {params.activity &&
             <Carousal>
                 {
-                    (params.activity ? 
                         (params.activity !== 'aboutus' ? 
                             response.activityCenters.filter((item:any) => item.id === parseInt(params.activity!))[0].images :
-                            response.activityCenters.filter((item:any) => item.title === 'About Us')[0].images): 
-                        response.images).filter((item:any) => item.imageCategory === 'HeaderImage').map((item:any, index:number) => (                            
+                            response.activityCenters.filter((item:any) => item.title === 'About Us')[0].images).filter((item:any) => item.imageCategory === 'HeaderImage').map((item:any, index:number) => (                            
                             <Slide key={`slide-${index}`} index={index} imgPath={item.imageUrl}>
                                 <Container className={classes.container}>
                                     <Grid 
@@ -169,7 +226,8 @@ const Homepage = () => {
                             </Slide>
                     ))                       
                 }
-            </Carousal>            
+            </Carousal>  
+            }          
             <Description id='description' description={(params.activity && params.activity !== 'aboutus')? response.activityCenters.filter((item:any) => item.id === parseInt(params.activity!))[0].description : response.description}/>
             { params.activity !== 'aboutus' &&
                 <List 
