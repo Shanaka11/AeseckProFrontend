@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme: Theme) => ({
         paddingTop: 16,
         paddingBottom: 16,
         backgroundColor: theme.palette.primary.light,
-        height: 600,
+        minHeight: 600,
         width: 350,
         cursor: 'pointer',
         transition: '0.3s background-color',
@@ -53,34 +53,43 @@ const Package:React.FC<Props> = ( { data, handlePackageSelect } ) => {
                 price: data.genericFinanceRate.netAmount
             })}
         >
-            <Typography
-                variant='h4'
-                component='h4'
-                align='center'
-            >
-                {data.displayName}
-            </Typography>
-            <Typography
-                variant='body1'
-                // align='center'
-                style={{ marginLeft: '1em', marginRight: '1em'}}
-            >
-                {/* {data.description} */}
-                <div dangerouslySetInnerHTML={{'__html': data.description}}/>
-            </Typography>
-            <Grid item>
-                <Button
-                    variant='contained'
-                    color='secondary'
-                    disableElevation
-                    onClick={(event) => handlePackageSelect({
-                        id: data.id,
-                        name: data.displayName,
-                        price: data.genericFinanceRate.netAmount
-                    })}
+            <Grid item container direction='column'>
+                <Typography
+                    variant='h4'
+                    component='h4'
+                    align='center'
                 >
-                    Select
-                </Button>
+                    {data.displayName}
+                </Typography>
+                <Typography
+                    variant='body1'
+                    style={{ marginTop: '2em', marginLeft: '1em', marginRight: '1em'}}
+                >
+                    <div dangerouslySetInnerHTML={{'__html': data.description}}/>
+                </Typography>
+            </Grid>
+            <Grid item container direction='column' alignItems='center'>
+                <Typography
+                    variant='h3'
+                    component='h3'
+                    align='center'
+                >
+                    {`${data.genericFinanceRate.netAmount} AUD`}
+                </Typography>
+                <Grid item  style={{ marginTop: '1em'}}>
+                    <Button
+                        variant='contained'
+                        color='secondary'
+                        disableElevation
+                        onClick={(event) => handlePackageSelect({
+                            id: data.id,
+                            name: data.displayName,
+                            price: data.genericFinanceRate.netAmount
+                        })}
+                    >
+                        Select
+                    </Button>
+                </Grid>
             </Grid>
         </Grid>
     )

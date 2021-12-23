@@ -68,8 +68,18 @@ const Homepage = () => {
     const { setActivities } = useContext(OrgContext)
     const { user } = useContext(UserContext)
 
+
     // Query
-    const { data, isLoading, isError } = useQuery('OrganizationSummery', () => getOrganizationSummary())
+    const {
+        data,
+        isLoading, 
+        isError 
+    } = useQuery(
+        'OrganizationSummery', 
+        () => getOrganizationSummary()
+    )
+
+
     const { 
         data:activityCenterData, 
         isLoading: activityCenterIsLoading, 
@@ -81,7 +91,6 @@ const Homepage = () => {
                     })
 
     
-
     // IF user is admin then redirect to the dashboard
     if(user && user.role === 'admin') {
         history.push('/backoffice')
@@ -96,13 +105,15 @@ const Homepage = () => {
 
     if(isError || activityCenterIsError){
         console.log('There have been a server Error if the issue persists please contact support')
+        return <></>
     }
     
-    const response = data?.data.response    
+    const response = data?.data.response//orgData   
     const activityCenterResponse = activityCenterData?.data.response
-
-    setActivities(response.activityCenters)
-
+    
+    if(response.activityCenters) {
+        setActivities(response.activityCenters)
+    }
     return (
         <Grid container direction='column'>
             {!params.activity &&
@@ -120,7 +131,7 @@ const Homepage = () => {
                     </Slide>
                     {
                         response.images.filter((item:any) => item.imageCategory === 'HeaderImage').map((item:any, index:number) => (                            
-                            <Slide key={`slide-${!params.activity ? index + 1 : index}`} index={!params.activity ? index + 1 : index} imgPath={item.imageUrl}>
+                            <Slide key={`slide-${index + 1 }`} index={index + 1} imgPath={item.imageUrl}>
                                 <Container className={classes.container}>
                                     <Grid 
                                         container 
@@ -131,9 +142,7 @@ const Homepage = () => {
                                     >
                                         <Grid item>
                                             <Typography variant='h2' align='center' className={classes.header}>
-                                                {(params.activity && params.activity !== 'aboutus')? 
-                                                response.activityCenters.filter((item:any) => item.id === parseInt(params.activity!))[0].title : 
-                                                item.imageDescription}
+                                                { item.imageDescription }
                                             </Typography>
                                         </Grid>
                                         <Grid item>

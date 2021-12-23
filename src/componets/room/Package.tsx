@@ -10,6 +10,7 @@ import {
     Button,
 } from '@material-ui/core'
 // Local Imports
+import Link from '../common/Link'
 
 const useStyles = makeStyles((theme: Theme) => ({
     container:{
@@ -68,14 +69,15 @@ const Package:React.FC<PackageProps> = ( { data, activity, roomId } ) => {
                             </Typography>
                         </Grid>
                         <Grid item>
+                            <Link to={`/${activity}/room/booking?room=${roomId}&package=${data.packageName}#activities`}>
                             <Button
                                 variant='contained'
                                 color='primary'
                                 className={classes.button}
-                                href={`/${activity}/room/booking?room=${roomId}&package=${data.packageName}#activities`}
                             >
                                 Book Now
                             </Button>
+                            </Link>
                         </Grid>
                     </Grid>
                 </Grid>

@@ -80,6 +80,7 @@ const ListItem:React.FC<listItemProps> = ( { item, layout, activityCenter } ) =>
             </Typography>   
         </Grid>
         <Grid item>
+
             <Link
                 to={activityCenter ? `/${activityCenter}/booking?activity=${item.id}` : `/${item.id}`}
             >

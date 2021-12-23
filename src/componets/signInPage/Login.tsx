@@ -94,14 +94,18 @@ const Login:React.FC<LoginProps> = ({ handlePageChange }) => {
                 id: loginData.data.response.user.id,
                 username: loginData.data.response.contact.firstName,
                 role: loginData.data.response.user.role,
-                avatar: loginData.data.response.contact.avatarImage.s3Link
+                avatar: loginData.data.response.contact.avatarImage ? loginData.data.response.contact.avatarImage.s3Link : ''
             }
             setUser(userInfo)
             localStorage.setItem('userInfo', JSON.stringify(userInfo))
 
             // Depending on the role direct to backoffice dashboard or home screen
             // For now just redirect to home
-            history.push('/')
+            if(loginData.data.response.user.role === 'admin'){
+                history.push('/backoffice')
+            }else{
+                history.push('/')
+            }
         }
     }, [loginData, setUser, history])
 

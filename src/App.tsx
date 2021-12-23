@@ -3,6 +3,7 @@ import React from 'react';
 // 3rd Party Imports
 import {BrowserRouter, Route, Switch} from 'react-router-dom'
 import { QueryClientProvider, QueryClient } from 'react-query'
+import { ReactQueryDevtools } from 'react-query/devtools'
 // Material UI Imports
 // Local Imports
 import Header from './componets/common/Header'
@@ -29,8 +30,8 @@ function App() {
         refetchOnWindowFocus:false,
         refetchOnMount:false,
         refetchOnReconnect:false,
-        cacheTime: 20 * 60 * 1000
-      }
+        staleTime: 20 * 60 * 1000
+      },
     }
   })
 
@@ -38,6 +39,7 @@ function App() {
     <div>
       <OrgContextProvider>
         <QueryClientProvider client={queryClient}>
+          {/* <ReactQueryDevtools initialIsOpen={false}/> */}
             <BrowserRouter>
               <UserContextProvider>
                 <Header />
