@@ -65,10 +65,9 @@ const Homepage = () => {
     const params:ParamsProps = useParams()
     const history = useHistory()
     // Context
-    const { setActivities, orgData, setOrgData, activityData, appendActivityDataList } = useContext(OrgContext)
+    const { setActivities } = useContext(OrgContext)
     const { user } = useContext(UserContext)
 
-    console.log(orgData)
 
     // Query
     const {
@@ -77,15 +76,9 @@ const Homepage = () => {
         isError 
     } = useQuery(
         'OrganizationSummery', 
-        () => getOrganizationSummary(),
-        {
-            // enabled : orgData ? false : true,
-            onSuccess: (data: any) => orgDataFetchSuccessHandler(data),
-            
-        }
+        () => getOrganizationSummary()
     )
 
-    console.log(orgData ? false : true)
 
     const { 
         data:activityCenterData, 
@@ -98,17 +91,13 @@ const Homepage = () => {
                     })
 
     
-    const orgDataFetchSuccessHandler = (data:any) => {
-        setOrgData(data?.data.response)
-    }
-    
     // IF user is admin then redirect to the dashboard
     if(user && user.role === 'admin') {
         history.push('/backoffice')
         return null
     }
 
-    if(isLoading || activityCenterIsLoading || !orgData){
+    if(isLoading || activityCenterIsLoading){
         return (
                 <LinearProgress />
             )
@@ -121,12 +110,10 @@ const Homepage = () => {
     
     const response = data?.data.response//orgData   
     const activityCenterResponse = activityCenterData?.data.response
-
-    // setOrgData(response)
-    // if(response.activityCenters) {
-    //     setActivities(response.activityCenters)
-    // }
-
+    
+    if(response.activityCenters) {
+        setActivities(response.activityCenters)
+    }
     return (
         <Grid container direction='column'>
             {!params.activity &&
@@ -144,7 +131,7 @@ const Homepage = () => {
                     </Slide>
                     {
                         response.images.filter((item:any) => item.imageCategory === 'HeaderImage').map((item:any, index:number) => (                            
-                            <Slide key={`slide-${!params.activity ? index + 1 : index}`} index={!params.activity ? index + 1 : index} imgPath={item.imageUrl}>
+                            <Slide key={`slide-${index + 1 }`} index={index + 1} imgPath={item.imageUrl}>
                                 <Container className={classes.container}>
                                     <Grid 
                                         container 
@@ -155,9 +142,7 @@ const Homepage = () => {
                                     >
                                         <Grid item>
                                             <Typography variant='h2' align='center' className={classes.header}>
-                                                {(params.activity && params.activity !== 'aboutus')? 
-                                                response.activityCenters.filter((item:any) => item.id === parseInt(params.activity!))[0].title : 
-                                                item.imageDescription}
+                                                { item.imageDescription }
                                             </Typography>
                                         </Grid>
                                         <Grid item>
