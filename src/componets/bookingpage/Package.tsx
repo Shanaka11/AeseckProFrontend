@@ -68,7 +68,7 @@ const Package:React.FC<Props> = ( { data, handlePackageSelect } ) => {
                     <div dangerouslySetInnerHTML={{'__html': data.description}}/>
                 </Typography>
             </Grid>
-            <Grid item container direction='column' alignItems='center'>
+            <Grid item container direction='column' alignItems='center' style={{ marginTop: '1em'}}>
                 <Typography
                     variant='h3'
                     component='h3'
